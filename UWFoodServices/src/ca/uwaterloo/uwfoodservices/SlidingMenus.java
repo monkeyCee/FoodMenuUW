@@ -1,9 +1,12 @@
 package ca.uwaterloo.uwfoodservices;
 
 import android.app.ActionBar.Tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
@@ -41,14 +44,23 @@ public class SlidingMenus extends SlidingFragmentActivity{
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		int itemId = item.getItemId();
+		Log.d(item.getTitle() + "", "itemtostring");
+		if (item.getTitle() == "Settings") {
+			Intent settingsActivity = new Intent(getBaseContext(), SettingsActivity.class);
+			startActivity(settingsActivity);
+			return true;
+		} else if (itemId == android.R.id.home) {
 			toggle();
 			return true;
+		} else if (item.getTitle() == "Refresh") {
+			//loadPage();
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		

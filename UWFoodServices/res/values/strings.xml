@@ -3,7 +3,6 @@
 
     <string name="app_name" translatable="false">UW Food Services</string>
     <string name="hello_world" translatable="false">Hello world!</string>
-    <string name="menu_settings" translatable="false">Settings</string>
     <string name="mainScreenText" translatable="false">What would you like to view?</string>
     <string name="mainscreen" translatable="false">Images for the main screen!</string>
     <string name="title_activity_restaurant_menu_list" translatable="false">RestaurantMenuList</string>
@@ -11,6 +10,7 @@
     <string name="locationText" translatable="false">Location &amp; Hours</string>
     <string name="title_activity_location_hours">LocationHours</string>
     <string name="action_settings">Settings</string>
+    <string name="action_settings">Example Settings</string>
     <string name="title_map">Map View</string>
     <string name="title_list">List View</string>
     <string name="title_activity_menu_list">MenuList</string>
@@ -18,9 +18,60 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="title_activity_menu_lists">MenuLists</string>
-    
+
     <!-- Menu List strings. -->
     <string name="menu_settings">Settings</string>
     <string name="cd">Content Description</string>
+
+    <!-- Menu List Network strings. -->
+    <string name="updated">Last updated:</string>
+    <string name="lost_connection">Lost connection.</string>
+    <string name="wifi_connected">Wi-Fi reconnected.</string>
+    <string name="connection_error">Unable to load content. Check your network connection.</string>
+    <string name="xml_error">Error parsing XML.</string>
+
+    <!-- Settings menu items -->
+    <string name="settings">Settings</string>
+    <string name="settingstest">Example Settings</string>
+    <string name="refresh">Refresh</string>
+
+    <!-- Preferences items -->
+    <string name="inline_preferences">Inline Preferences</string>
+    <string name="title_checkbox_preference">Checkbox Preference</string>
+    <string name="summary_checkbox_preference">Summary Checkbox Preference</string>
+    <string name="dialog_based_preferences">Inline Preferences</string>
+    <string name="title_edittext_preference">Edit Text Preference</string>
+    <string name="summary_edittext_preference">Summary Edit Text Preference</string>
+    <string name="dialog_title_edittext_preference">Dialog Edit Text Preference</string>
+    <string name="title_list_preference">Title List Preference</string>
+    <string name="summary_list_preference">Summary List Preference</string>
+    <string name="entries_list_preference">Entries List Preference</string>
+    <string name="entryvalues_list_preference">Entry Values List Preference</string>
+    <string name="dialog_title_list_preference">Dialog Title List Preference</string>
+    <string name="launch_preferences">Launch Preferences</string>
+    <string name="title_screen_preference">Title Screen Preference</string>
+    <string name="summary_screen_preference">Summary Screen Preference</string>
+    <string name="title_next_screen_toggle_preference">Title Next Screen Preference</string>
+    <string name="summary_next_screen_toggle_preference">Summary Next Screen Preference</string>
+    <string name="title_intent_preference">Title Intent Preference</string>
+    <string name="summary_intent_preference">Summary Intent Preference</string>
+    <string name="preference_attributes">Preference Attributes</string>
+    <string name="title_parent_preference">Title Parent Preference</string>
+    <string name="summary_parent_preference">Summary Parent Preference</string>
+    <string name="title_child_preference">Title Child Preference</string>
+    <string name="summary_child_preference">Summary Child Preference</string>
+    <string name="title_activity_settings">Settings Activity</string>
+    
+    <string name="network_preferences">Network</string>
+    
+    <string name="title_connection_type_preference">Connection Type</string>
+    <string name="summary_connection_type_preference">Network connection used to download data.</string>
+    <string name="dialog_title_connection_type_preference">Connection Type</string>
+    
+    <string name="title_store_data_preference">Store Data</string>
+    <string name="summary_store_data_preference">Stores data for use offline.</string>
+    
+    <string name="title_fetch_weekly_preference">Fetch Automatically</string>
+    <string name="summary_fetch_weekly_preference">Weekly fetches new data.</string>
 
 </resources>

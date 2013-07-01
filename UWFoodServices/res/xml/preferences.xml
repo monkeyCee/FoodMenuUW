@@ -1,0 +1,31 @@
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="@string/network_preferences">
+
+        <ListPreference
+                android:key="connection_type_preference"
+                android:title="@string/title_connection_type_preference"
+                android:summary="@string/summary_connection_type_preference" 
+                android:defaultValue="Both Wi-Fi and Data"
+                android:entries="@array/entries_connection_type_preference"
+                android:entryValues="@array/entryvalues_connection_type_preference"
+                android:dialogTitle="@string/dialog_title_connection_type_preference" />
+        
+        <CheckBoxPreference
+                android:key="save_data_preference"
+                android:title="@string/title_store_data_preference"
+                android:summary="@string/summary_store_data_preference" />
+        
+        <!-- The visual style of a child is defined by this styled theme attribute. -->
+        <CheckBoxPreference
+                android:key="fetch_weekly_preference"
+                android:dependency="save_data_preference"
+                android:layout="?android:attr/preferenceLayoutChild"
+                android:title="@string/title_fetch_weekly_preference"
+                android:summary="@string/summary_fetch_weekly_preference" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

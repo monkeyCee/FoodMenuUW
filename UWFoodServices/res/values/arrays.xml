@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Copyright (C) 2012 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <string-array name="listArray">
+        <item>Only when on Wi-Fi</item>
+        <item>On any network</item>
+    </string-array>
+    <string-array name="listValues">
+        <item>Wi-Fi</item>
+        <item>Any</item>
+    </string-array>
+    <string-array name="entries_connection_type_preference">
+        <item>Both Wifi and Data</item>
+        <item>Data Only</item>
+        <item>Wifi Only</item>
+        <item>None</item>
+    </string-array>
+    <string-array name="entryvalues_connection_type_preference">
+        <item>Both Wi-Fi and Data</item>
+        <item>Wi-Fi Only</item>
+        <item>Data Only</item>
+        <item>None</item>
+    </string-array>
+    <string-array name="entries_list_preference">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+    </string-array>
+    <string-array name="entryvalues_list_preference">
+        <item>Entry Value 1</item>
+        <item>Entry Value 2</item>
+    </string-array>
+</resources>
