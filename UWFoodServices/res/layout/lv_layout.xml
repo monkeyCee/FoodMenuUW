@@ -1,0 +1,41 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:context=".MainActivity"
+    style="@style/listViewItem"
+    android:background="@android:drawable/list_selector_background"
+    >
+
+    <View
+        android:id="@+id/item_separator"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lvDividerHeight"
+        android:background="@color/lvDividerColor"/>
+
+    <ImageButton
+        style="@style/listViewItemButtonStyle"
+        android:background="@android:drawable/list_selector_background"
+        android:src="@drawable/ic_details"
+        android:id="@+id/button"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:contentDescription="@string/cd"
+        />
+	
+    <TextView
+        android:id="@+id/lv_item_header"
+        style="@style/listViewPrimaryDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@id/button"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:textIsSelectable="false" />
+
+</RelativeLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    
+    <!-- Menu List colors. -->
+    <color name="lvHeaderTextColor">#3992B5</color>
+    <color name="primaryTextColor">#FFFFFF</color>
+    <color name="secondaryTextColor">#777777</color>
+
+    <color name="goblinGreen">#3992B5</color>
+    <color name="lvHeaderDividerColor">#3992B5</color>
+    <color name="lvDividerColor">#A0A0A0</color>
+</resources>

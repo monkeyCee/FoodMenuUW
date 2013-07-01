@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainScreen" >
+
+    <ImageView
+        android:id="@+id/menuImage"
+        android:contentDescription="@string/mainscreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/menu" 
+        android:adjustViewBounds="true"
+        android:clickable="true"/>
+
+    <ImageView
+        android:id="@+id/locationImage"
+        android:contentDescription="@string/mainscreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/menuImage"
+        android:adjustViewBounds="true"
+        android:src="@drawable/hours"
+        android:clickable="true" />
+
+    <TextView
+        android:id="@+id/menuText"
+        android:layout_alignParentRight="@+id/menuImage"
+        android:layout_alignParentBottom="@+id/menuImage"
+        android:text="@string/menuText"
+        android:textSize="25sp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="0dp"
+        style="@style/style_white" />
+
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_alignParentRight="@+id/locationImage"
+        android:layout_centerVertical="@+id/locationImage"
+        android:text="@string/locationText"
+        android:textSize="25sp"
+        android:layout_marginTop="225dp"
+        android:layout_marginLeft="155dp"
+        style="@style/style_white" />
+
+</RelativeLayout>
