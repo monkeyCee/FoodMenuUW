@@ -1,10 +1,11 @@
 package ca.uwaterloo.uwfoodservices;
 
+import android.app.ActionBar.Tab;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -50,8 +51,31 @@ public class SlidingMenus extends SlidingFragmentActivity{
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_lists, menu);
+		
+		menu.add("Settings")
+        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+		menu.add("Refresh")
+        .setIcon(R.drawable.refresh)
+        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		
 		return true;
+	}
+
+
+	public void onTabSelected(com.actionbarsherlock.app.ActionBar.Tab tab,
+			android.app.FragmentTransaction arg1) {
+		
+	}
+
+	public void onTabUnselected(com.actionbarsherlock.app.ActionBar.Tab arg0,
+			android.app.FragmentTransaction arg1) {
+		
+	}
+
+	public void onTabReselected(com.actionbarsherlock.app.ActionBar.Tab arg0,
+			android.app.FragmentTransaction arg1) {
+		
 	}
 
 }

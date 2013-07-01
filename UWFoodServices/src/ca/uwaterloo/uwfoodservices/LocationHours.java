@@ -1,127 +1,145 @@
 package ca.uwaterloo.uwfoodservices;
 
-import java.util.Locale;
 
-import android.app.ActionBar;
+import java.util.ArrayList;
+
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.InflateException;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import ca.uwaterloo.uwfoodservices.MenuLists.MenuFragment;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-public class LocationHours extends FragmentActivity implements
-		ActionBar.TabListener {
+public class LocationHours extends SlidingMenus implements ActionBar.TabListener{
+
+	ViewPager vp;
 	
-	SectionsPagerAdapter mSectionsPagerAdapter;
-
-	ViewPager mViewPager;
-
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_location_hours);
-
-		final ActionBar actionBar = getActionBar();
+		
+		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		
+		actionBar.setDisplayUseLogoEnabled(false);
 
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
+		vp = (ViewPager) findViewById(R.id.pager);
+		vp.setAdapter(new MenuAdapter(getSupportFragmentManager()));
 
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+		vp.setOnPageChangeListener(new OnPageChangeListener() {
+			@Override
+			public void onPageScrollStateChanged(int arg0) { }
 
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) { }
 
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+			@Override
+			public void onPageSelected(int position) {
+				switch (position) {
+				case 0:
+					getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+					break;
+				default:
+					getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+					break;
+				}
+			}
+
+		});
+		
+		vp.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				actionBar.setSelectedNavigationItem(position);
+			}
+		});
+		
+		for (int i = 0; i < 2; i++) {
 			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
+					.setText(MenuAdapter.location_tabs[i])
 					.setTabListener(this));
 		}
+
+		vp.setCurrentItem(0);
+		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		
 	}
+
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.location_hours, menu);
-		return true;
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		vp.setCurrentItem(tab.getPosition());
 	}
+
 
 	@Override
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-		mViewPager.setCurrentItem(tab.getPosition());
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		
 	}
+
 
 	@Override
-	public void onTabUnselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		
 	}
+	
+	public static class MenuAdapter extends FragmentPagerAdapter {
 
-	@Override
-	public void onTabReselected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
-	}
+		private ArrayList<MenuFragment> mFragments;
 
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+		public final static String[] location_tabs = new String[] {"ListView", "MapView"};
 
-		public SectionsPagerAdapter(FragmentManager fm) {
+		public MenuAdapter(FragmentManager fm) {
 			super(fm);
+			mFragments = new ArrayList<MenuFragment>();
+			for (int i = 0; i < location_tabs.length; i++)
+				mFragments.add(new MenuFragment());
+		}
+
+		@Override
+		public int getCount() {
+			return location_tabs.length;
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-	    		if(position == 0){
-	    			Fragment fragment = new MyMapFragment();
-	    			Bundle args = new Bundle();
-		    		args.putInt(MyMapFragment.ARG_SECTION_NUMBER, position);
-		    		fragment.setArguments(args);
-		    		return fragment;	
-	    		}
-	    		else{
-	    			Fragment fragment = new ListViewFragment();
-	    			Bundle args = new Bundle();
-		    		args.putInt(ListViewFragment.ARG_SECTION_NUMBER, position);
-		    		fragment.setArguments(args);
-		    		return fragment;
-	    		}
-	    				
+			if(position == 0){
+				Fragment fragment = new ListViewFragment();
+				Bundle args = new Bundle();
+				args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
+				fragment.setArguments(args);
+				return fragment;		
 			}
-
-		@Override
-		public int getCount() {
-			return 2;
+			else{
+				Fragment fragment = new MyMapFragment();
+				Bundle args = new Bundle();
+				args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
+				fragment.setArguments(args);
+				return fragment;
+			}
+			
 		}
 
-		@Override
-		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				return getString(R.string.title_map).toUpperCase(l);
-			case 1:
-				return getString(R.string.title_list).toUpperCase(l);
-			}
-			return null;
-		}
 	}
-
-	public static class MyMapFragment extends Fragment {
+	
+public static class MyMapFragment extends Fragment {
 		
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		GoogleMap myMap;

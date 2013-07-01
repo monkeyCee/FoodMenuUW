@@ -27,9 +27,6 @@ public class MainScreen extends Activity {
 		
 		TextView text_menu = (TextView) findViewById(R.id.menuText);
 		TextView text_location = (TextView) findViewById(R.id.locationText);
-		Typeface font = Typeface.createFromAsset(getAssets(), "Amaranth-Bold.otf");
-		text_menu.setTypeface(font);
-		text_location.setTypeface(font);
 		
 		image_menu.setOnClickListener(new View.OnClickListener(){
 

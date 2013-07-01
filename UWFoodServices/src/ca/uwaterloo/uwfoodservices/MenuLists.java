@@ -9,9 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 
 import android.content.Context;
@@ -34,6 +32,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
@@ -52,7 +52,7 @@ String restaurant_selection;
 		
 		Log.d("Restaurant Selected", restaurant_selection);
 		
-		final ActionBar actionBar = getActionBar();
+		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		
 		actionBar.setTitle(restaurant_selection);
@@ -551,6 +551,27 @@ String restaurant_selection;
 			    } catch (InflateException e) {}
 			 return view;
 		}
+	}
+
+	@Override
+	public void onTabSelected(com.actionbarsherlock.app.ActionBar.Tab tab,
+			android.support.v4.app.FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTabUnselected(com.actionbarsherlock.app.ActionBar.Tab tab,
+			android.support.v4.app.FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTabReselected(com.actionbarsherlock.app.ActionBar.Tab tab,
+			android.support.v4.app.FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

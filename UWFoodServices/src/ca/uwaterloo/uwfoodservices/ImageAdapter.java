@@ -71,9 +71,6 @@ public class ImageAdapter extends BaseAdapter{
 				holder = (ViewHolder) convertView.getTag();
 			}
 			
-			Typeface font = Typeface.createFromAsset(context.getAssets(), "Amaranth-Bold.otf");
-			holder.location.setTypeface(font);
-			holder.restaraunt_name.setTypeface(font);
 			holder.restaraunt_name.setText(restaurant_list[position]);
 			holder.location.setText(location_list[position]);
 			holder.thumbnail.setImageResource(image_list[position]);
@@ -85,9 +82,8 @@ public class ImageAdapter extends BaseAdapter{
 				convertView = inflater.inflate(R.layout.sliding_row, null);
 			}
 			
-			Typeface font = Typeface.createFromAsset(context.getAssets(), "Amaranth-Bold.otf");
 			TextView slidingText = (TextView) convertView.findViewById(R.id.text);
-			slidingText.setTypeface(font);
+			slidingText.setTextSize(20);
 			slidingText.setText(sliding_list[position]);
 			
 			return convertView;
