@@ -25,8 +25,13 @@ public class MainScreen extends Activity {
 		final Intent intent_restaurant = new Intent(this, RestaurantMenuList.class);
 		final Intent intent_location = new Intent(this, LocationHours.class);
 		
+		Typeface tf = Typeface.createFromAsset(getAssets(),
+	            "Roboto-Medium.ttf");
+		
 		TextView text_menu = (TextView) findViewById(R.id.menuText);
 		TextView text_location = (TextView) findViewById(R.id.locationText);
+		text_menu.setTypeface(tf);
+		text_location.setTypeface(tf);
 		
 		image_menu.setOnClickListener(new View.OnClickListener(){
 

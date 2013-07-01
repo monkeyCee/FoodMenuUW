@@ -20,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.content.Intent;
+import android.graphics.Typeface;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -696,8 +697,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                    item.setTag(LIST_HEADER);
 
 	                }
-
+	                Typeface tf = Typeface.createFromAsset(mContext.getAssets(),
+	        	            "Roboto-Bold.ttf");
 	                TextView headerTextView = (TextView)item.findViewById(R.id.lv_list_hdr);
+	                headerTextView.setTypeface(tf);
 	                headerTextView.setText(headerText);
 	                return item;
 	            }
@@ -710,7 +713,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	            }
 
 	            TextView header = (TextView)item.findViewById(R.id.lv_item_header);
+	            Typeface tf = Typeface.createFromAsset(mContext.getAssets(),
+	    	            "Roboto-Light.ttf");
 	            header.setText(LIST.get(position % LIST.size()));
+	            header.setTypeface(tf);
 
 	            //Set last divider in a sublist invisible
 	            View divider = item.findViewById(R.id.item_separator);
