@@ -6,6 +6,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Menu List dimensions. -->
+    <dimen name="dateTextSize">23sp</dimen>
+    
     <dimen name="lvPrimaryTextSize">18sp</dimen>
     <dimen name="lvSecondaryTextSize">14sp</dimen>
 
