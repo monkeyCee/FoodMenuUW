@@ -16,30 +16,34 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 import ca.uwaterloo.uwfoodservices.MenuLists.MenuFragment;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class LocationHours extends SlidingMenus implements ActionBar.TabListener{
 
 	ViewPager vp;
-	
+	ActionBar actionBar;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_location_hours);
 		
-		final ActionBar actionBar = getSupportActionBar();
+		actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		
 		actionBar.setDisplayUseLogoEnabled(false);
@@ -146,9 +150,11 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 public static class MyMapFragment extends Fragment {
 		
 		public static final String ARG_SECTION_NUMBER = "section_number";
-		GoogleMap myMap;
+		GoogleMap myMap = null;
 		GoogleMapOptions options = new GoogleMapOptions();
-	
+		static final LatLng UW = new LatLng(43.4722, -80.5472);
+		CameraPosition camera = new CameraPosition(UW, 14, 0, 0);
+		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
@@ -156,53 +162,68 @@ public static class MyMapFragment extends Fragment {
 			  try {
 			        view = inflater.inflate(
 							R.layout.fragment_map, container, false);
+			        
+			        options.camera(CameraPosition.fromLatLngZoom(new LatLng(37.4005502611301, -5.98233461380005), 16))
+		            .compassEnabled(false).mapType(GoogleMap.MAP_TYPE_NORMAL).rotateGesturesEnabled(false).scrollGesturesEnabled(false).tiltGesturesEnabled(false)
+		            .zoomControlsEnabled(false).zoomGesturesEnabled(false);
+			        
 			          SupportMapFragment mySupportMapFragment 
-			           = (SupportMapFragment)getFragmentManager().findFragmentById(R.id.mapFragment);
-			             myMap = mySupportMapFragment.getMap();   
+			           = (SupportMapFragment)getFragmentManager().findFragmentById(R.id.map);
+			          mySupportMapFragment = SupportMapFragment.newInstance(options);
+			          myMap = mySupportMapFragment.getMap();   
 			             
 			             if(myMap != null){
-			            	 options.mapType(GoogleMap.MAP_TYPE_NORMAL)
-			            	 .compassEnabled(false)
-			            	 .camera(new CameraPosition(new LatLng(43.4722,-80.5472), 14, 0, 0));
 			             }
 			             
 			    } catch (InflateException e) {}
 			 return view;
 		}
 	}
+
+public static class ListViewFragment extends Fragment {
+
+	public static final String ARG_SECTION_NUMBER = "section_number";
+	private ListView listView;
+	private Context context;
 	
-	public static class ListViewFragment extends Fragment {
+	public void onAttach(Activity activity){
+        super.onAttach(activity);
+        context = getActivity();
+      }
 
-		public static final String ARG_SECTION_NUMBER = "section_number";
-		private ListView listView;
-		private Context context;
-		
-		public void onAttach(Activity activity){
-	        super.onAttach(activity);
-	        context = getActivity();
-	      }
+	 @Override
+	    public void onActivityCreated(Bundle savedInstanceState) {
+	     super.onActivityCreated(savedInstanceState);
+	     init();
+	    }
+	 
+	 public void init() {
+	     listView.setAdapter(new ImageAdapter(context, -1));
+	   }
+	 
+	@Override
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = null;
+		  try {
+		        view = inflater.inflate(
+						R.layout.activity_restaurant_menu_list, container, false);
+		        listView = (ListView) view.findViewById(R.id.list_restaurant);
+		        
+		        listView.setOnItemClickListener(new OnItemClickListener() {
 
-		 @Override
-		    public void onActivityCreated(Bundle savedInstanceState) {
-		     super.onActivityCreated(savedInstanceState);
-		     init();
-		    }
-		 
-		 public void init() {
-		     listView.setAdapter(new ImageAdapter(context, -1));
-		   }
-		 
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View view = null;
-			  try {
-			        view = inflater.inflate(
-							R.layout.activity_restaurant_menu_list, container, false);
-			        listView = (ListView) view.findViewById(R.id.list_restaurant);
-			    } catch (InflateException e) {}
-			 return view;
-		}
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view, int position,
+							long id) {
+						
+						getActivity().getActionBar().setSelectedNavigationItem(1);
+						
+					}
+				});
+		    } catch (InflateException e) {}
+		 return view;
 	}
+}
+
 
 }

@@ -1,6 +1,5 @@
 package ca.uwaterloo.uwfoodservices;
 
-import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
