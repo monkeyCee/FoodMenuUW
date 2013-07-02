@@ -42,7 +42,6 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
@@ -534,21 +533,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 
 	}
 
-	@Override
-	public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
-		
-	}
-
-	@Override
-	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction arg1) {
-		vp.setCurrentItem(tab.getPosition());
-	}
-
-	@Override
-	public void onTabUnselected(Tab arg0, FragmentTransaction arg1) {
-		
-	}
-	
 	public static class MenuFragment extends Fragment {
 		/**
 		 * The fragment argument representing the section number for this
@@ -778,21 +762,19 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	@Override
 	public void onTabSelected(com.actionbarsherlock.app.ActionBar.Tab tab,
 			android.support.v4.app.FragmentTransaction ft) {
-		// TODO Auto-generated method stub
+		vp.setCurrentItem(tab.getPosition());
 		
 	}
 
 	@Override
 	public void onTabUnselected(com.actionbarsherlock.app.ActionBar.Tab tab,
 			android.support.v4.app.FragmentTransaction ft) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void onTabReselected(com.actionbarsherlock.app.ActionBar.Tab tab,
 			android.support.v4.app.FragmentTransaction ft) {
-		// TODO Auto-generated method stub
 		
 	}
 }
