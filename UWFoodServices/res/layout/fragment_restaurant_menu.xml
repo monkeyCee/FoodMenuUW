@@ -8,12 +8,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".RestaurantMenu$DummySectionFragment" >
 
+    <TextView
+        android:id="@+id/textDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/list_menu"
+        android:layout_alignRight="@+id/list_menu"
+        android:gravity="center"
+        android:textSize="@dimen/dateTextSize"
+        android:textStyle="bold"
+        android:textColor="#0099CC"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
     <ListView
       android:id="@+id/list_menu"
       android:layout_width="match_parent"
         android:layout_height="match_parent" 
         android:layout_margin="10dp"
-        android:divider="@null">
+        android:divider="@null"
+      android:paddingTop="15dp" >
     </ListView>
 
 </RelativeLayout>
