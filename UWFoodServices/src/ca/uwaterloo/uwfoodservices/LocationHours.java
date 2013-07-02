@@ -22,7 +22,11 @@ import ca.uwaterloo.uwfoodservices.MenuLists.MenuFragment;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class LocationHours extends SlidingMenus implements ActionBar.TabListener{
@@ -143,6 +147,7 @@ public static class MyMapFragment extends Fragment {
 		
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		GoogleMap myMap;
+		GoogleMapOptions options = new GoogleMapOptions();
 	
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -156,7 +161,9 @@ public static class MyMapFragment extends Fragment {
 			             myMap = mySupportMapFragment.getMap();   
 			             
 			             if(myMap != null){
-			            	 myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+			            	 options.mapType(GoogleMap.MAP_TYPE_NORMAL)
+			            	 .compassEnabled(false)
+			            	 .camera(new CameraPosition(new LatLng(43.4722,-80.5472), 14, 0, 0));
 			             }
 			             
 			    } catch (InflateException e) {}

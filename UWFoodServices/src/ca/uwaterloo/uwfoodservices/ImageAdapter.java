@@ -28,11 +28,14 @@ public class ImageAdapter extends BaseAdapter{
 			"Davis Centre", "REV","Davis Centre", "REV","Davis Centre", "REV","Davis Centre", "REV"};
 	
 	private String[] sliding_list = {"Home", "Restaurant List", "Location & Hours", "About Us"};
+	Typeface tf;
 	
 	public ImageAdapter(Context context, int id){
 		this.context = context;
 		inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.id = id;
+		tf = Typeface.createFromAsset(context.getAssets(),
+	            "Roboto-Regular.ttf");
 	}
 	
 	@Override
@@ -71,10 +74,13 @@ public class ImageAdapter extends BaseAdapter{
 				holder = (ViewHolder) convertView.getTag();
 			}
 			
+			
 			holder.restaraunt_name.setText(restaurant_list[position]);
 			holder.location.setText(location_list[position]);
 			holder.thumbnail.setImageResource(image_list[position]);
-			
+			holder.restaraunt_name.setTypeface(tf);
+			holder.location.setTypeface(tf);
+				
 			return convertView;
 		}
 		else{
@@ -84,6 +90,7 @@ public class ImageAdapter extends BaseAdapter{
 			
 			TextView slidingText = (TextView) convertView.findViewById(R.id.text);
 			slidingText.setTextSize(20);
+			slidingText.setTypeface(tf);
 			slidingText.setText(sliding_list[position]);
 			
 			return convertView;
