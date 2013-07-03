@@ -236,6 +236,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     @Override
     public void onResume() {
     	super.onResume();
+    	vp.getAdapter().notifyDataSetChanged();
 
     	IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = new NetworkReceiver();
@@ -251,6 +252,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     @Override
     public void onRestart() {
     	super.onRestart();
+    	vp.getAdapter().notifyDataSetChanged();
 
     	IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = new NetworkReceiver();
@@ -837,8 +839,8 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	@Override
 	public void onTabSelected(com.actionbarsherlock.app.ActionBar.Tab tab,
 			android.support.v4.app.FragmentTransaction ft) {
+		vp.getAdapter().notifyDataSetChanged();
 		vp.setCurrentItem(tab.getPosition());
-		
 	}
 
 	@Override

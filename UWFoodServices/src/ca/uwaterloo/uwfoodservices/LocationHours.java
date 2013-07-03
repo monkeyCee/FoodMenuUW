@@ -163,13 +163,9 @@ public static class MyMapFragment extends Fragment {
 			        view = inflater.inflate(
 							R.layout.fragment_map, container, false);
 			        
-			        options.camera(CameraPosition.fromLatLngZoom(new LatLng(37.4005502611301, -5.98233461380005), 16))
-		            .compassEnabled(false).mapType(GoogleMap.MAP_TYPE_NORMAL).rotateGesturesEnabled(false).scrollGesturesEnabled(false).tiltGesturesEnabled(false)
-		            .zoomControlsEnabled(false).zoomGesturesEnabled(false);
 			        
 			          SupportMapFragment mySupportMapFragment 
-			           = (SupportMapFragment)getFragmentManager().findFragmentById(R.id.map);
-			          mySupportMapFragment = SupportMapFragment.newInstance(options);
+			           = (SupportMapFragment)getFragmentManager().findFragmentById(R.id.mapFragment);
 			          myMap = mySupportMapFragment.getMap();   
 			             
 			             if(myMap != null){
