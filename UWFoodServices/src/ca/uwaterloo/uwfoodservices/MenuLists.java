@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -114,7 +115,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		Intent intent = getIntent();
 		restaurant_selection = intent.getStringExtra("Restaurant Name");
 		
-		Log.d("Restaurant Selected", restaurant_selection);
+		//Log.d("Restaurant Selected", restaurant_selection);
 		
 		// Date handling
 		calendar = Calendar.getInstance();
@@ -528,6 +529,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		public String day;
+		private Context context;
 
 		public static final int HDR_POS1 = 0;
 	    public static int HDR_POS2 = 2;

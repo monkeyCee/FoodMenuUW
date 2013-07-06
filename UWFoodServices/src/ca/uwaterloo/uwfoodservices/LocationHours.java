@@ -36,10 +36,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-public class LocationHours extends SlidingMenus implements ActionBar.TabListener{
+public class LocationHours extends SlidingMenus implements ActionBar.TabListener, ActivityCommunicator{
 
 	ViewPager vp;
 	ActionBar actionBar;
+	public FragmentCommunicator fragmentCommunicator;
 
 	
 	@Override
@@ -245,4 +246,12 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 			return super.onOptionsItemSelected(item);
 		}
 	}
+
+
+	@Override
+	public void passDataToActivity(int position) {
+		fragmentCommunicator.passDataToFragment(position);
+		
+	}
+
 }
