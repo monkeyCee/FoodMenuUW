@@ -1,5 +1,5 @@
 package ca.uwaterloo.uwfoodservices;
 
 public interface ActivityCommunicator {
-	public void passDataToActivity(String someValue);
+	public void passDataToActivity(int position);
 }

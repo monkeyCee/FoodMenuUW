@@ -12,18 +12,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
-
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.content.Intent;
-import android.graphics.Typeface;
-
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -34,8 +32,6 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
-
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +41,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -586,6 +581,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		public String day;
+		private Context context;
 
 		public static final int HDR_POS1 = 0;
 	    public static int HDR_POS2 = 2;
@@ -803,39 +799,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	    }
 	}
 	
-	public static class ListViewFragment extends Fragment {
-
-		public static final String ARG_SECTION_NUMBER = "section_number";
-		private ListView listView;
-		private Context context;
-		
-		public void onAttach(Activity activity){
-	        super.onAttach(activity);
-	        context = getActivity();
-	      }
-
-		 @Override
-		    public void onActivityCreated(Bundle savedInstanceState) {
-		     super.onActivityCreated(savedInstanceState);
-		     init();
-		    }
-		 
-		 public void init() {
-		     listView.setAdapter(new ImageAdapter(context, -1));
-		   }
-		 
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View view = null;
-			  try {
-			        view = inflater.inflate(
-							R.layout.activity_restaurant_menu_list, container, false);
-			        listView = (ListView) view.findViewById(R.id.list_restaurant);
-			    } catch (InflateException e) {}
-			 return view;
-		}
-	}
 
 	@Override
 	public void onTabSelected(com.actionbarsherlock.app.ActionBar.Tab tab,

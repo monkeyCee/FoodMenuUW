@@ -36,10 +36,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-public class LocationHours extends SlidingMenus implements ActionBar.TabListener{
+public class LocationHours extends SlidingMenus implements ActionBar.TabListener, ActivityCommunicator{
 
 	ViewPager vp;
 	ActionBar actionBar;
+	public FragmentCommunicator fragmentCommunicator;
 
 	
 	@Override
@@ -151,80 +152,6 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 
 	}
 	
-	public static class MyMapFragment extends Fragment {
-		
-		public static final String ARG_SECTION_NUMBER = "section_number";
-		GoogleMap myMap = null;
-		GoogleMapOptions options = new GoogleMapOptions();
-		static final LatLng UW = new LatLng(43.4722, -80.5472);
-		CameraPosition camera = new CameraPosition(UW, 14, 0, 0);
-		
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View view = null;
-			  try {
-			        view = inflater.inflate(
-							R.layout.fragment_map, container, false);
-			        
-			        
-			          SupportMapFragment mySupportMapFragment 
-			           = (SupportMapFragment)getFragmentManager().findFragmentById(R.id.mapFragment);
-			          myMap = mySupportMapFragment.getMap();   
-			             
-			             if(myMap != null){
-			             }
-			             
-			    } catch (InflateException e) {}
-			 return view;
-		}
-	}
-
-	public static class ListViewFragment extends Fragment {
-
-		public static final String ARG_SECTION_NUMBER = "section_number";
-		private ListView listView;
-		private Context context;
-		
-		public void onAttach(Activity activity){
-	        super.onAttach(activity);
-	        context = getActivity();
-	      }
-	
-		 @Override
-		    public void onActivityCreated(Bundle savedInstanceState) {
-		     super.onActivityCreated(savedInstanceState);
-		     init();
-		    }
-		 
-		 public void init() {
-		     listView.setAdapter(new ImageAdapter(context, -1));
-		   }
-		 
-		@Override
-		public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-				Bundle savedInstanceState) {
-			View view = null;
-			  try {
-			        view = inflater.inflate(
-							R.layout.activity_restaurant_menu_list, container, false);
-			        listView = (ListView) view.findViewById(R.id.list_restaurant);
-			        
-			        listView.setOnItemClickListener(new OnItemClickListener() {
-	
-						@Override
-						public void onItemClick(AdapterView<?> parent, View view, int position,
-								long id) {
-							
-							getActivity().getActionBar().setSelectedNavigationItem(1);
-							
-						}
-					});
-			    } catch (InflateException e) {}
-			 return view;
-		}
-	}
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
@@ -243,4 +170,15 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 			return super.onOptionsItemSelected(item);
 		}
 	}
+
+
+	@Override
+	public void passDataToActivity(int position) {
+		fragmentCommunicator.passDataToFragment(position);
+		
+	}
+
+
+
+
 }
