@@ -40,6 +40,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 
 	ViewPager vp;
 	ActionBar actionBar;
+
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

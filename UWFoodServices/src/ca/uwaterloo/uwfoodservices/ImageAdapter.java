@@ -15,17 +15,7 @@ public class ImageAdapter extends BaseAdapter{
 	private ViewHolder holder;
 	private int id;
 
-	private Context context;;
-	private Integer[] image_list = {R.drawable.bonappetit, R.drawable.browsers, R.drawable.brubakers, R.drawable.ceit, R.drawable.eye_opener,
-			R.drawable.festivalfare, R.drawable.liquidassets, R.drawable.mls, R.drawable.mudies, R.drawable.pas, R.drawable.pastryplus,
-			R.drawable.revelation, R.drawable.subway, R.drawable.tims, R.drawable.universityclub, R.drawable.williams_0};
-	//Default Data. Will have to generate dynamically.
-	private String[] restaurant_list = {"Bon Appetit", "Browsers Café", "Brubakers", "CEIT Café", "Eye-Opener", "Festival Fare",
-			"Liquid Assets", "MLS Café", "Mudie's", "PAS", "Pastry Plus", "REVelation", "Subway", "Tim Hortons", "University Club",
-			"Williams Café"};
-
-	private String[] location_list = {"Davis Centre", "REV", "Davis Centre", "REV","Davis Centre", "REV","Davis Centre", "REV",
-			"Davis Centre", "REV","Davis Centre", "REV","Davis Centre", "REV","Davis Centre", "REV"};
+	private Context context;
 	
 	private String[] sliding_list = {"Home", "Restaurant List", "Location & Hours", "About Us"};
 	Typeface tf;
@@ -41,7 +31,7 @@ public class ImageAdapter extends BaseAdapter{
 	@Override
 	public int getCount() {
 		if(id==-1)
-			return image_list.length;
+			return new RestarauntLocationHolder().image_list.length;
 		else
 			return sliding_list.length;
 	}
@@ -49,7 +39,7 @@ public class ImageAdapter extends BaseAdapter{
 	@Override
 	public Object getItem(int position) {
 		if(id==-1)
-			return restaurant_list[position];
+			return new RestarauntLocationHolder().restaurant_list[position];
 		else
 			return sliding_list[position];
 	}
@@ -75,9 +65,9 @@ public class ImageAdapter extends BaseAdapter{
 			}
 			
 			
-			holder.restaraunt_name.setText(restaurant_list[position]);
-			holder.location.setText(location_list[position]);
-			holder.thumbnail.setImageResource(image_list[position]);
+			holder.restaraunt_name.setText(new RestarauntLocationHolder().restaurant_list[position]);
+			holder.location.setText(new RestarauntLocationHolder().location_list[position]);
+			holder.thumbnail.setImageResource(new RestarauntLocationHolder().image_list[position]);
 			holder.restaraunt_name.setTypeface(tf);
 			holder.location.setTypeface(tf);
 				
