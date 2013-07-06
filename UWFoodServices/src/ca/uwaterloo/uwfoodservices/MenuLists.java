@@ -229,9 +229,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         // device loses its Wi-Fi connection midway through the user using the app,
         // you don't want to refresh the display--this would force the display of
         // an error page instead of the menu content.
+        /*
         if (refreshDisplay) {
             loadPage();
-        }
+        }*/
     }
     
     @Override
@@ -253,6 +254,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     @Override
     public void onRestart() {
     	super.onRestart();
+    	/*
     	vp.getAdapter().notifyDataSetChanged();
 
     	IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -264,6 +266,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         if (refreshDisplay) {
             loadPage();
         }
+        */
     }
     
     @Override
