@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -23,6 +24,9 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 	static final LatLng UW = new LatLng(43.4722, -80.5472);
 	private Context context;
 	
+	CameraPosition camera = new CameraPosition(UW, 14, 0, 0);
+	int restaurant;
+	
 	public MyMapFragment(){
 	}
 	
@@ -32,7 +36,6 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 	  context = getActivity();
 	  ((LocationHours)context).fragmentCommunicator = this;
 	}
-	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +60,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 
 	@Override
 	public void passDataToFragment(int position) {
-	// Broken by changes to RestaurantLocationHolder
+	// Broken by changes to RestaurantLocationHolder. 
 		/*
 		String restaurant;
 		
@@ -86,6 +89,14 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 			.position(new Coordinates().points.get(position))
 			.title(restaurant)
 			.snippet("Info Comes Here"));
+
+		String restaurant = new RestarauntLocationHolder().restaurant_list[position];
+		Log.d("Restaurant Clicked", restaurant);
+		Marker restaurant_location = myMap.addMarker(new MarkerOptions()
+        .position(UW)
+        .title(restaurant)
+        .snippet("Info Comes Here"));
+		restaurant_location.showInfoWindow();
 		
 			restaurant_location.showInfoWindow();
 		}
