@@ -38,8 +38,8 @@ public class JSONParser {
 	public JSONObject getJSONFromUrl(String url) {
 		try {
 			
-			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-			StrictMode.setThreadPolicy(policy);
+			//StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			//StrictMode.setThreadPolicy(policy);
 			
 			// Setting up a default client to get the data
 			DefaultHttpClient httpClient = new DefaultHttpClient();

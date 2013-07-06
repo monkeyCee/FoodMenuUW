@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import ca.uwaterloo.uwfoodservices.MenuLists.MenuFragment;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -147,7 +150,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 
 	}
 	
-public static class MyMapFragment extends Fragment {
+	public static class MyMapFragment extends Fragment {
 		
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		GoogleMap myMap = null;
@@ -176,50 +179,67 @@ public static class MyMapFragment extends Fragment {
 		}
 	}
 
-public static class ListViewFragment extends Fragment {
+	public static class ListViewFragment extends Fragment {
 
-	public static final String ARG_SECTION_NUMBER = "section_number";
-	private ListView listView;
-	private Context context;
+		public static final String ARG_SECTION_NUMBER = "section_number";
+		private ListView listView;
+		private Context context;
+		
+		public void onAttach(Activity activity){
+	        super.onAttach(activity);
+	        context = getActivity();
+	      }
 	
-	public void onAttach(Activity activity){
-        super.onAttach(activity);
-        context = getActivity();
-      }
-
-	 @Override
-	    public void onActivityCreated(Bundle savedInstanceState) {
-	     super.onActivityCreated(savedInstanceState);
-	     init();
-	    }
-	 
-	 public void init() {
-	     listView.setAdapter(new ImageAdapter(context, -1));
-	   }
-	 
-	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = null;
-		  try {
-		        view = inflater.inflate(
-						R.layout.activity_restaurant_menu_list, container, false);
-		        listView = (ListView) view.findViewById(R.id.list_restaurant);
-		        
-		        listView.setOnItemClickListener(new OnItemClickListener() {
-
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view, int position,
-							long id) {
-						
-						getActivity().getActionBar().setSelectedNavigationItem(1);
-						
-					}
-				});
-		    } catch (InflateException e) {}
-		 return view;
+		 @Override
+		    public void onActivityCreated(Bundle savedInstanceState) {
+		     super.onActivityCreated(savedInstanceState);
+		     init();
+		    }
+		 
+		 public void init() {
+		     listView.setAdapter(new ImageAdapter(context, -1));
+		   }
+		 
+		@Override
+		public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+				Bundle savedInstanceState) {
+			View view = null;
+			  try {
+			        view = inflater.inflate(
+							R.layout.activity_restaurant_menu_list, container, false);
+			        listView = (ListView) view.findViewById(R.id.list_restaurant);
+			        
+			        listView.setOnItemClickListener(new OnItemClickListener() {
+	
+						@Override
+						public void onItemClick(AdapterView<?> parent, View view, int position,
+								long id) {
+							
+							getActivity().getActionBar().setSelectedNavigationItem(1);
+							
+						}
+					});
+			    } catch (InflateException e) {}
+			 return view;
+		}
 	}
-}
-
-
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int itemId = item.getItemId();
+		Log.d(item.getTitle() + "", "itemtostring");
+		if (item.getTitle() == "Settings") {
+			Intent settingsActivity = new Intent(getBaseContext(), SettingsActivity.class);
+			startActivity(settingsActivity);
+			return true;
+		} else if (itemId == android.R.id.home) {
+			toggle();
+			return true;
+		} else if (item.getTitle() == "Refresh") {
+			Log.d("load", "load");
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
+	}
 }

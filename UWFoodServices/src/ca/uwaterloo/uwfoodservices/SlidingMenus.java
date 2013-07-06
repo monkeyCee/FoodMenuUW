@@ -41,7 +41,7 @@ public class SlidingMenus extends SlidingFragmentActivity{
 
 	}
 
-	@Override
+	/*@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
 		Log.d(item.getTitle() + "", "itemtostring");
@@ -53,12 +53,12 @@ public class SlidingMenus extends SlidingFragmentActivity{
 			toggle();
 			return true;
 		} else if (item.getTitle() == "Refresh") {
-			//loadPage();
+			
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
-	}
+	}*/
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,5 +1,7 @@
 package ca.uwaterloo.uwfoodservices;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 
 import android.app.Activity;
@@ -22,6 +24,22 @@ public class RestaurantMenuList extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant_menu_list);
 		
+		Thread trd = new Thread(new Runnable(){
+			  @Override
+			  public void run(){
+				  try {
+					Log.d(DataFetcher.FetchRestaurants(27, "98bbbd30b3e4f621d9cb544a790086d6") + "", "restaurants");
+					Log.d(DataFetcher.FetchMealTimes("98bbbd30b3e4f621d9cb544a790086d6") + "", "mealTimes");
+					Log.d(DataFetcher.FetchHours("98bbbd30b3e4f621d9cb544a790086d6") + "", "hours");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			  }
+		});
+		trd.start();
+		
+		/*
 		try {
 			Log.d(DataFetcher.FetchRestaurants(27, "98bbbd30b3e4f621d9cb544a790086d6") + "", "restaurants");
 			Log.d(DataFetcher.FetchMealTimes("98bbbd30b3e4f621d9cb544a790086d6") + "", "mealTimes");
@@ -29,7 +47,7 @@ public class RestaurantMenuList extends Activity {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		final Intent intent_menu = new Intent(this, MenuLists.class);
 		final ImageAdapter imageAdapter = new ImageAdapter(this, -1);
@@ -50,11 +68,12 @@ public class RestaurantMenuList extends Activity {
 		});
 
 	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_restaurant_menu_list, menu);
 		return true;
 	}
-
+	
 }

@@ -46,6 +46,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
@@ -853,6 +854,26 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	public void onTabReselected(com.actionbarsherlock.app.ActionBar.Tab tab,
 			android.support.v4.app.FragmentTransaction ft) {
 		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int itemId = item.getItemId();
+		Log.d(item.getTitle() + "", "itemtostring");
+		if (item.getTitle() == "Settings") {
+			Intent settingsActivity = new Intent(getBaseContext(), SettingsActivity.class);
+			startActivity(settingsActivity);
+			return true;
+		} else if (itemId == android.R.id.home) {
+			toggle();
+			return true;
+		} else if (item.getTitle() == "Refresh") {
+			Log.d("load", "load");
+			loadPage();
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
 	}
 }
 
