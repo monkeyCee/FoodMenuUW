@@ -12,18 +12,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.content.Intent;
-import android.graphics.Typeface;
-
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -34,7 +31,6 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
-
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +41,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -191,18 +186,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		vp.setCurrentItem(weekDay);
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 		
-		/*try {
-			dwt = new DownloadWebpageTask().execute().get();
-			//Log.d(dwt.get(2).get(0), "result3");
-		
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-	
 		// Register BroadcastReceiver to track connection changes.
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 		receiver = new NetworkReceiver();
@@ -254,19 +237,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     @Override
     public void onRestart() {
     	super.onRestart();
-    	/*
-    	vp.getAdapter().notifyDataSetChanged();
-
-    	IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        receiver = new NetworkReceiver();
-        this.registerReceiver(receiver, filter);
-        
-        updateConnectedFlags();
-        Log.d(refreshDisplay + "", "network refresh restart");
-        if (refreshDisplay) {
-            loadPage();
-        }
-        */
     }
     
     @Override
@@ -335,37 +305,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         // Show: "Unable to load content. Check your network connection."
     }
     
-    // Populates the activity's options menu.
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.mainmenu, menu);
-        return true;
-    }
-    */
-    // Handles the user's menu selection.
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-		if (itemId == R.id.settings) {
-			Intent settingsActivity = new Intent(getBaseContext(), SettingsActivity.class);
-			startActivity(settingsActivity);
-			return true;
-		} else if (itemId == R.id.settingstest) {
-			Intent settingsActivityTest = new Intent(getBaseContext(), SettingsActivityTest.class);
-			startActivity(settingsActivityTest);
-			return true;
-		} else if (itemId == R.id.refresh) {
-			loadPage();
-			return true;
-		} else {
-			return super.onOptionsItemSelected(item);
-		}
-    }
-    */
-	
 	private static final String TAG_META = "meta";
 	private static final String TAG_MESSAGE = "message";
 	
@@ -672,42 +611,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			} else {
 				LIST.add("There is nothing on the menu");
 			}
-			
-			/*TextView resultText = (TextView) rootView.findViewById(R.id.section_label);
-			int positionLunch = getArguments().getInt(ARG_SECTION_NUMBER)*2;
-			int positionDinner = getArguments().getInt(ARG_SECTION_NUMBER)*2 + 1;
-			String textLunch = "Lunch: \n";
-			String textDinner = "Dinner: \n";
-			if (dwt.get(positionLunch).get(0).get(0) != "") {
-				for (int i = 0; i < dwt.get(positionLunch).size(); i ++) {
-					for (int j = 0; j < dwt.get(positionLunch).get(i).size(); j ++) {
-						textLunch += dwt.get(positionLunch).get(i).get(j) + " ";
-					}
-					textLunch += "\n";
-				}
-			} else {
-				textLunch += "There is nothing on the menu. \n";
-			}
-			if (dwt.get(positionDinner).get(0).get(0) != "") {
-				for (int i = 0; i < dwt.get(positionDinner).size(); i ++) {
-					for (int j = 0; j < dwt.get(positionDinner).get(i).size(); j ++) {
-						textDinner += dwt.get(positionDinner).get(i).get(j) + " ";
-					}
-					textDinner += "\n";
-				}
-			} else {
-				textDinner += "There is nothing on the menu. \n";
-			}
-			resultText.setText(textLunch + textDinner);
-			*/
-			/* if (dwt.get((getArguments().getInt(ARG_SECTION_NUMBER)-1) * 2).get(0) != "") {
-				String resultString = dwt.get((getArguments().getInt(ARG_SECTION_NUMBER)-1) * 2).get(0) + "\n" + 
-						dwt.get((getArguments().getInt(ARG_SECTION_NUMBER)-1) * 2 + 1).get(0);
-				resultText.setText(resultString);
-			} else {
-				resultText.setText("There is nothing on the menu.");
-			}
-			*/
 			
 			return rootView;
 		}
