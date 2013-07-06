@@ -50,7 +50,7 @@ public class ListViewFragment extends Fragment {
 					public void onItemClick(AdapterView<?> parent, View view, int position,
 							long id) {
 						
-//						activityCommunicator.passDataToActivity("Hi from Custom Fragment");
+						activityCommunicator.passDataToActivity(position);
 						getActivity().getActionBar().setSelectedNavigationItem(1);
 						
 					}

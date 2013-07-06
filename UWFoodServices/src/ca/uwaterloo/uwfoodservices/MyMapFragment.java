@@ -1,5 +1,7 @@
 package ca.uwaterloo.uwfoodservices;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +15,8 @@ import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MyMapFragment extends Fragment implements FragmentCommunicator{
 	
@@ -21,7 +25,16 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 	GoogleMapOptions options = new GoogleMapOptions();
 	static final LatLng UW = new LatLng(43.4722, -80.5472);
 	CameraPosition camera = new CameraPosition(UW, 14, 0, 0);
+	Context context;
 	int restaurant;
+	
+	@Override
+	 public void onAttach(Activity activity){
+	  super.onAttach(activity);
+	  context = getActivity();
+	  ((LocationHours)context).fragmentCommunicator = this;
+	}
+	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,12 +56,18 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		 return view;
 	}
 
+
 	@Override
-	public void passDataToFragment(String someValue) {
-		
-		// Set all Markers here
-		
-		
+	public void passDataToFragment(int position) {
+
+		String restaurant = new RestarauntLocationHolder().restaurant_list[position];
+		Log.d("Restaurant Clicked", restaurant);
+		Marker restaurant_location = myMap.addMarker(new MarkerOptions()
+        .position(UW)
+        .title(restaurant)
+        .snippet("Info Comes Here"));
+		restaurant_location.showInfoWindow();
 		
 	}
+
 }
