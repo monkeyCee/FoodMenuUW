@@ -15,32 +15,51 @@ public class RestarauntLocationHolder extends AsyncTask<Void, Void, Void>{
 			R.drawable.festivalfare, R.drawable.liquidassets, R.drawable.mls, R.drawable.mudies, R.drawable.pas, R.drawable.pastryplus,
 			R.drawable.revelation, R.drawable.subway, R.drawable.tims, R.drawable.universityclub, R.drawable.williams_0};
 	
-	public String[] restaurant_list = {"Bon Appetit", "Browsers Café", "Brubakers", "CEIT Café", "Eye-Opener", "Festival Fare",
-			"Liquid Assets", "MLS Café", "Mudie's", "PAS", "Pastry Plus", "REVelation", "Subway", "Tim Hortons", "University Club",
-			"Williams Café"};
+	public String[] restaurant_list = {"Bon Appetit", "Browsers Café", "Brubakers", "CEIT Café", "Eye-Opener Café", "Festival Fare",
+			"Liquid Assets Café", "ML's Coffee Shop", "Mudie's", "PAS Lounge", "Pastry Plus", "REVelation", "Subway", "Tim Hortons", "University Club",
+			"Williams Fresh Café"};
 
-	public String[] location_list = {"Davis Centre", "REV", "Davis Centre", "REV","Davis Centre", "REV","Davis Centre", "REV",
-			"Davis Centre", "REV","Davis Centre", "REV","Davis Centre", "REV","Davis Centre", "REV"};
+	public String[] location_list = {"Davis Centre", "Dana Porter Library", "Student Life Centre", "CEIT Building","Optometry Building",
+			"Above the Bookstore in SCH", "Hagey Hall", "Modern Languages", "Village 1", "PAS Building","Various", "Ron Eydt Village",
+			"Student Life Centre", "Various", " ", "Environment 3"};
 	
 	public Map<String, String> locationMap = new HashMap<String, String>();
 	public Map<String, Integer> imageMap = new HashMap<String, Integer>();
 	
-	for (int i = 0; i < restaurant_list.length(); i ++) {
-		locationMap.put(restaurant_list[i], location_list[i]);
-		imageMap.put(restaurant_list[i], image_list[i]);
-	}
-	
 	public ArrayList<ArrayList<String>> restaurant_menu_list = new ArrayList<ArrayList<String>>(); // List of restaurants with menus for week specified (FetchRestaurants)
 	public ArrayList<ArrayList<String>> restaurant_location_list = new ArrayList<ArrayList<String>>();  // List of restaurants with locations (FetchHours)
+	
+	public String checkName(String name) {
+		if (name.equals("Browsers Cafe")) { return "Browsers Café"; }
+		if (name.equals("CEIT Cafe")) { return "CEIT Café"; }
+		if (name.equals("Eye Opener Cafe")) { return "Eye-Opener Café"; }
+		if (name.equals("LA Cafe")) { return "Liquid Assets Café"; }
+		if (name.equals("Williams Fresh Cafe")) { return "Williams Fresh Café"; }
+		return name;
+	}
 	
 	@Override
     protected Void doInBackground(Void... params) {
         try {
+        	
+        	for (int i = 0; i < restaurant_list.length; i ++) {
+        		locationMap.put(restaurant_list[i], location_list[i]);
+        		imageMap.put(restaurant_list[i], image_list[i]);
+        	}
+        	
         	restaurant_menu_list.add(DataFetcher.FetchRestaurants(27, "98bbbd30b3e4f621d9cb544a790086d6"));
         	restaurant_menu_list.add(new ArrayList<String>());
+        	restaurant_menu_list.add(new ArrayList<String>());
         	for (int i = 0; i < restaurant_menu_list.get(0).size(); i ++) {
-        		//for ()
+        		restaurant_menu_list.get(0).set(i, checkName(restaurant_menu_list.get(0).get(i)));
+        		restaurant_menu_list.get(1).add(locationMap.get(restaurant_menu_list.get(0).get(i)));
+        		restaurant_menu_list.get(2).add(imageMap.get(restaurant_menu_list.get(0).get(i)).toString());
         	}
+        	
+        	Log.d(restaurant_menu_list + "", "restaurant menu list");
+        	
+        	restaurant_location_list = DataFetcher.FetchHours("98bbbd30b3e4f621d9cb544a790086d6");
+        	
         	
             ArrayList<ArrayList<String>> fetchMealTimes = DataFetcher.FetchMealTimes("98bbbd30b3e4f621d9cb544a790086d6");
             ArrayList<ArrayList<String>> fetchHours = DataFetcher.FetchHours("98bbbd30b3e4f621d9cb544a790086d6");
