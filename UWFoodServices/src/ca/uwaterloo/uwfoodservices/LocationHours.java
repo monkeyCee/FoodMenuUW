@@ -50,6 +50,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 		
 		actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setIcon(R.drawable.hours);
 		
 		actionBar.setDisplayUseLogoEnabled(false);
 
