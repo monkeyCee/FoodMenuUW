@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -477,6 +478,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         protected ArrayList<ArrayList<ArrayList<String>>> doInBackground(String... params) {
             try {
             	Log.d(Integer.toString(params.length), "length");
+            	publishProgress();
                 return ParseDay();
             } catch (IOException e) {
                 return null;
@@ -484,6 +486,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+            
 			return null;
 		}
         // onPostExecute displays the results of the AsyncTask.
