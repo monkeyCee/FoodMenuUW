@@ -81,14 +81,19 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		}
 			
 		else{
+<<<<<<< HEAD
 			
 			myMap.clear();
+=======
+	
+>>>>>>> Added show all restaurants and clear all for the map
 			restaurant = new RestarauntLocationHolder().restaurant_list[position];
 			Log.d("Restaurant Clicked", restaurant);
 			Marker restaurant_location = myMap.addMarker(new MarkerOptions()
 			.position(new Coordinates().points.get(position))
 			.title(restaurant)
 			.snippet("Info Comes Here"));
+<<<<<<< HEAD
 
 		String restaurant = new RestarauntLocationHolder().restaurant_list[position];
 		Log.d("Restaurant Clicked", restaurant);
@@ -97,6 +102,11 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
         .title(restaurant)
         .snippet("Info Comes Here"));
 		restaurant_location.showInfoWindow();
+=======
+		
+			restaurant_location.showInfoWindow();
+		}
+>>>>>>> Added show all restaurants and clear all for the map
 		
 			restaurant_location.showInfoWindow();
 		}
