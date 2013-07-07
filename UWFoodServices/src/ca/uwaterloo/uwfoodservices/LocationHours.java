@@ -247,7 +247,6 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 		}
 	}
 
-
 	@Override
 	public void passDataToActivity(int position) {
 		fragmentCommunicator.passDataToFragment(position);

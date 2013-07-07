@@ -18,6 +18,8 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="title_activity_menu_lists">MenuLists</string>
+    <string name="ShowAll">Show all on Map</string>
+    <string name="Clear">Clear Map</string>
 
     <!-- Menu List strings. -->
     <string name="menu_settings">Settings</string>
