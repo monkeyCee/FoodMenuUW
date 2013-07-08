@@ -77,7 +77,8 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		}
 			
 		else{
-	
+			
+			myMap.clear();
 			restaurant = new RestarauntLocationHolder().restaurant_list[position];
 			Log.d("Restaurant Clicked", restaurant);
 			Marker restaurant_location = myMap.addMarker(new MarkerOptions()
