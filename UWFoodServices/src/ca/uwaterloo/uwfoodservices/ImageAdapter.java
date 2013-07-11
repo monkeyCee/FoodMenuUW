@@ -43,20 +43,29 @@ public class ImageAdapter extends BaseAdapter{
 			Log.d(restaurantLocationHolder.restaurant_menu_list.get(0).size() + "", "restaurant menu list size");
 			return restaurantLocationHolder.restaurant_menu_list.get(0).size();
 			//return new RestarauntLocationHolder().image_list.length;
-		}
-		else {
-			return sliding_list.length;
+		} else {
+			if(id==-2) {
+				Log.d(restaurantLocationHolder.restaurant_location_list.size() + "", "restaurant menu list size");
+				return restaurantLocationHolder.restaurant_location_list.size();
+				//return new RestarauntLocationHolder().image_list.length;
+			} else {
+				return sliding_list.length;
+			}
 		}
 	}
 
 	@Override
 	public Object getItem(int position) {
 		if(id==-1){
-			return restaurantLocationHolder.restaurant_menu_list.get(position).get(0);
+			return restaurantLocationHolder.restaurant_menu_list.get(0).get(position);
 			//return new RestarauntLocationHolder().restaurant_list[position];
-		}
-		else {
-			return sliding_list[position];
+		} else {
+			if(id==-2){
+				return restaurantLocationHolder.restaurant_location_list.get(position).get(0);
+				//return new RestarauntLocationHolder().restaurant_list[position];
+			} else {
+				return sliding_list[position];
+			}
 		}
 	}
 
@@ -93,20 +102,42 @@ public class ImageAdapter extends BaseAdapter{
 			holder.location.setTypeface(tf);
 				
 			return convertView;
-		}
-		else{
-			if(convertView == null){
-				convertView = inflater.inflate(R.layout.sliding_row, null);
+		} else{
+			if (id == -2) {
+				if(convertView == null){
+					convertView = inflater.inflate(R.layout.list_row, null);
+					holder = new ViewHolder();
+					holder.restaraunt_name = (TextView) convertView.findViewById(R.id.restaurant_name);
+					holder.location = (TextView) convertView.findViewById(R.id.location);
+					holder.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
+					convertView.setTag(holder);
+				}
+				else{
+					holder = (ViewHolder) convertView.getTag();
+				}
+				
+				holder.restaraunt_name.setText(restaurantLocationHolder.restaurant_location_list.get(position).get(0));
+				holder.location.setText(restaurantLocationHolder.restaurant_location_list.get(position).get(2));
+				holder.thumbnail.setImageResource(Integer.parseInt(restaurantLocationHolder.restaurant_location_list.get(position).get(
+						restaurantLocationHolder.restaurant_location_list.get(position).size() - 1)));
+				holder.restaraunt_name.setTypeface(tf);
+				holder.location.setTypeface(tf);
+					
+				return convertView;
+				
+			} else {
+			
+				if(convertView == null){
+					convertView = inflater.inflate(R.layout.sliding_row, null);
+				}
+				
+				TextView slidingText = (TextView) convertView.findViewById(R.id.text);
+				slidingText.setTextSize(20);
+				slidingText.setTypeface(tf);
+				slidingText.setText(sliding_list[position]);
+				return convertView;
 			}
-			
-			TextView slidingText = (TextView) convertView.findViewById(R.id.text);
-			slidingText.setTextSize(20);
-			slidingText.setTypeface(tf);
-			slidingText.setText(sliding_list[position]);
-			return convertView;
-			
 		}
 	}
-
 }
 
