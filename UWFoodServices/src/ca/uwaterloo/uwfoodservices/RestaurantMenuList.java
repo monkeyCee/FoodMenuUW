@@ -24,7 +24,8 @@ public class RestaurantMenuList extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant_menu_list);
 		
-		new RestarauntLocationHolder().execute();
+		RestaurantLocationHolder restaurantLocationHolder = new RestaurantLocationHolder();
+		restaurantLocationHolder.execute();
 		/*
 		Thread trd = new Thread(new Runnable(){
 			  @Override
@@ -43,7 +44,7 @@ public class RestaurantMenuList extends Activity {
 		*/
 		
 		final Intent intent_menu = new Intent(this, MenuLists.class);
-		final ImageAdapter imageAdapter = new ImageAdapter(this, -1);
+		final ImageAdapter imageAdapter = new ImageAdapter(this, -1, restaurantLocationHolder);
 		
 		ListView listView = (ListView) findViewById(R.id.list_restaurant);
 		listView.setAdapter(imageAdapter);

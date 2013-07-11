@@ -15,6 +15,8 @@ public class SampleListFragment extends ListFragment {
 	Intent intent;
 	boolean main_sliding_menu = true;
 	
+	RestaurantLocationHolder restaurantLocationHolder;
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.sliding_list, null);
 		slidingList = (ListView) view.findViewById(android.R.id.list);
@@ -23,7 +25,11 @@ public class SampleListFragment extends ListFragment {
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		ImageAdapter sampleAdapter = new ImageAdapter(getActivity(), 0);
+		
+		restaurantLocationHolder = new RestaurantLocationHolder();
+		restaurantLocationHolder.execute();
+		
+		ImageAdapter sampleAdapter = new ImageAdapter(getActivity(), 0, restaurantLocationHolder);
 		main_sliding_menu = true;
 		slidingList.setAdapter(sampleAdapter);
 	}	
@@ -40,7 +46,7 @@ public class SampleListFragment extends ListFragment {
 			 		break;
 			 	
 			 	case 1:
-			 		ImageAdapter sampleAdapter = new ImageAdapter(getActivity(), -1);
+			 		ImageAdapter sampleAdapter = new ImageAdapter(getActivity(), 0, restaurantLocationHolder);
 			 		main_sliding_menu = false;
 					slidingList.setAdapter(sampleAdapter);
 			 		break;
@@ -59,7 +65,7 @@ public class SampleListFragment extends ListFragment {
 		 
 		 else{
 			 Intent intent = new Intent(getActivity(), MenuLists.class);
-			 intent.putExtra("Restaurant Name", (String) new ImageAdapter(getActivity(), -1).getItem(position));
+			 ImageAdapter sampleAdapter = new ImageAdapter(getActivity(), 0, restaurantLocationHolder);
 			 startActivity(intent);
 			 
 		 }

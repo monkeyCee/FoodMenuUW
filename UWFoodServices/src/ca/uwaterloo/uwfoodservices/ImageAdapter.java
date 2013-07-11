@@ -1,6 +1,7 @@
 package ca.uwaterloo.uwfoodservices;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,28 +21,43 @@ public class ImageAdapter extends BaseAdapter{
 	private String[] sliding_list = {"Home", "Restaurant List", "Location & Hours", "About Us"};
 	Typeface tf;
 	
-	public ImageAdapter(Context context, int id){
+	RestaurantLocationHolder restaurantLocationHolder;
+	
+	public ImageAdapter(Context context, int id, RestaurantLocationHolder restaurantLocationHolder){
 		this.context = context;
 		inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.id = id;
 		tf = Typeface.createFromAsset(context.getAssets(),
 	            "Roboto-Regular.ttf");
+		
+		// Terrible code here
+		this.restaurantLocationHolder = restaurantLocationHolder;
+		while (restaurantLocationHolder.running) {
+			this.restaurantLocationHolder = restaurantLocationHolder;
+		}
 	}
 	
 	@Override
 	public int getCount() {
-		if(id==-1)
-			return new RestarauntLocationHolder().image_list.length;
-		else
+		if(id==-1) {
+			Log.d(restaurantLocationHolder.restaurant_menu_list.get(0).size() + "", "restaurant menu list size");
+			return restaurantLocationHolder.restaurant_menu_list.get(0).size();
+			//return new RestarauntLocationHolder().image_list.length;
+		}
+		else {
 			return sliding_list.length;
+		}
 	}
 
 	@Override
 	public Object getItem(int position) {
-		if(id==-1)
-			return new RestarauntLocationHolder().restaurant_list[position];
-		else
+		if(id==-1){
+			return restaurantLocationHolder.restaurant_menu_list.get(position).get(0);
+			//return new RestarauntLocationHolder().restaurant_list[position];
+		}
+		else {
 			return sliding_list[position];
+		}
 	}
 
 	@Override
@@ -64,10 +80,15 @@ public class ImageAdapter extends BaseAdapter{
 				holder = (ViewHolder) convertView.getTag();
 			}
 			
-			
-			holder.restaraunt_name.setText(new RestarauntLocationHolder().restaurant_list[position]);
-			holder.location.setText(new RestarauntLocationHolder().location_list[position]);
-			holder.thumbnail.setImageResource(new RestarauntLocationHolder().image_list[position]);
+			//Log.d(restaurantLocationHolder.restaurant_menu_list.get(0).get(position) + "", "restaurant menu list get0");
+			//Log.d(restaurantLocationHolder.restaurant_menu_list.get(1).get(position) + "", "restaurant menu list get1");
+			//Log.d(restaurantLocationHolder.restaurant_menu_list.get(2).get(position) + "", "restaurant menu list get2");
+			holder.restaraunt_name.setText(restaurantLocationHolder.restaurant_menu_list.get(0).get(position));
+			holder.location.setText(restaurantLocationHolder.restaurant_menu_list.get(1).get(position));
+			holder.thumbnail.setImageResource(Integer.parseInt(restaurantLocationHolder.restaurant_menu_list.get(2).get(position)));
+			//holder.restaraunt_name.setText(new RestarauntLocationHolder().restaurant_list[position]);
+			//holder.location.setText(new RestarauntLocationHolder().location_list[position]);
+			//holder.thumbnail.setImageResource(new RestarauntLocationHolder().image_list[position]);
 			holder.restaraunt_name.setTypeface(tf);
 			holder.location.setTypeface(tf);
 				
@@ -82,7 +103,6 @@ public class ImageAdapter extends BaseAdapter{
 			slidingText.setTextSize(20);
 			slidingText.setTypeface(tf);
 			slidingText.setText(sliding_list[position]);
-			
 			return convertView;
 			
 		}

@@ -727,7 +727,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		    }
 		 
 		 public void init() {
-		     listView.setAdapter(new ImageAdapter(context, -1));
+			 RestaurantLocationHolder restaurantLocationHolder = new RestaurantLocationHolder();
+			 restaurantLocationHolder.execute();
+			 
+		     listView.setAdapter(new ImageAdapter(context, -1, restaurantLocationHolder));
 		   }
 		 
 		@Override

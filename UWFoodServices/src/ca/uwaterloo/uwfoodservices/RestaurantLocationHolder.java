@@ -9,7 +9,9 @@ import org.json.JSONException;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class RestarauntLocationHolder extends AsyncTask<Void, Void, Void>{
+public class RestaurantLocationHolder extends AsyncTask<Void, Void, Void>{
+	
+	public boolean running = true;
 	
 	public Integer[] image_list = {R.drawable.bonappetit, R.drawable.browsers, R.drawable.brubakers, R.drawable.ceit, R.drawable.eye_opener,
 			R.drawable.festivalfare, R.drawable.liquidassets, R.drawable.mls, R.drawable.mudies, R.drawable.pas, R.drawable.pastryplus,
@@ -36,7 +38,6 @@ public class RestarauntLocationHolder extends AsyncTask<Void, Void, Void>{
 		if (name.equals("LA Cafe")) { return "Liquid Assets Café"; }
 		if (name.equals("UW Food Services Administrative Office")) { return "UW Food Admin Office"; }
 		if (name.equals("Williams Fresh Cafe")) { return "Williams Fresh Café"; }
-		Log.d("YES", "restaurant YES3");
 		return name;
 	}
 	
@@ -48,7 +49,6 @@ public class RestarauntLocationHolder extends AsyncTask<Void, Void, Void>{
         		locationMap.put(restaurant_list[i], location_list[i]);
         		imageMap.put(restaurant_list[i], image_list[i]);
         	}
-        	
         	restaurant_menu_list.add(DataFetcher.FetchRestaurants(27, "98bbbd30b3e4f621d9cb544a790086d6"));
         	restaurant_menu_list.add(new ArrayList<String>());
         	restaurant_menu_list.add(new ArrayList<String>());
@@ -58,28 +58,16 @@ public class RestarauntLocationHolder extends AsyncTask<Void, Void, Void>{
         		restaurant_menu_list.get(2).add(imageMap.get(restaurant_menu_list.get(0).get(i)).toString());
         	}
         	
-        	Log.d(restaurant_menu_list + "", "restaurant menu list");
-        	
         	restaurant_location_list = DataFetcher.FetchHours("98bbbd30b3e4f621d9cb544a790086d6");
-        	
-        	Log.d(DataFetcher.FetchRestaurants(27, "98bbbd30b3e4f621d9cb544a790086d6") + "", "restaurants");
-            Log.d(DataFetcher.FetchMealTimes("98bbbd30b3e4f621d9cb544a790086d6") + "", "mealTimes");
-			Log.d(DataFetcher.FetchHours("98bbbd30b3e4f621d9cb544a790086d6") + "", "hours");
-        	
+        	//Log.d(DataFetcher.FetchRestaurants(27, "98bbbd30b3e4f621d9cb544a790086d6") + "", "restaurants");
+            //Log.d(DataFetcher.FetchMealTimes("98bbbd30b3e4f621d9cb544a790086d6") + "", "mealTimes");
+			//Log.d(DataFetcher.FetchHours("98bbbd30b3e4f621d9cb544a790086d6") + "", "hours");
         	for (int i = 0; i < restaurant_location_list.size(); i ++) {
-        		Log.d(restaurant_location_list.get(i) + "", "restaurant imageMap - get(i)");
-        		Log.d(restaurant_location_list.get(i).get(0) + "", "restaurant imageMap - get(i).get(0)");
         		restaurant_location_list.get(i).set(0, checkName(restaurant_location_list.get(i).get(0)));
-        		Log.d(imageMap.get(restaurant_location_list.get(i).get(0)).toString(), "restaurant imageMap");
-        		Log.d(i+ "", "restaurant imageMap - i1");
-        		restaurant_location_list.get(i).add(imageMap.get(restaurant_location_list.get(i).get(0)).toString()); // BUGGY?
-        		Log.d(i+ "", "restaurant imageMap - i2");
+        		restaurant_location_list.get(i).add(imageMap.get(restaurant_location_list.get(i).get(0)).toString());
         	}
-        	
-        	Log.d(restaurant_location_list + "", "restaurant location list");
-        	
-            ArrayList<ArrayList<String>> fetchMealTimes = DataFetcher.FetchMealTimes("98bbbd30b3e4f621d9cb544a790086d6");
-            ArrayList<ArrayList<String>> fetchHours = DataFetcher.FetchHours("98bbbd30b3e4f621d9cb544a790086d6");
+            
+            running = false;
             
         } catch (JSONException e) {
 			// TODO Auto-generated catch block
