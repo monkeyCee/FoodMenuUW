@@ -36,7 +36,6 @@ public class ListViewFragment extends Fragment {
 	    }
 	 
 	 public void init() {
-
 		 RestaurantLocationHolder restaurantLocationHolder = new RestaurantLocationHolder();
 		 restaurantLocationHolder.execute();
 	     listView.setAdapter(new ImageAdapter(context, -1, restaurantLocationHolder));

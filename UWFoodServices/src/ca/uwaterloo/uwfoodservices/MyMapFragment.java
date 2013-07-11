@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +13,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MyMapFragment extends Fragment implements FragmentCommunicator{
 	
@@ -107,6 +104,39 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 			restaurant_location.showInfoWindow();
 		}
 >>>>>>> Added show all restaurants and clear all for the map
+=======
+		
+		String restaurant;
+		
+		if(position == -1){
+			
+			for(int i = 0; i < new RestarauntLocationHolder().restaurant_list.length; i++){	
+				restaurant = new RestarauntLocationHolder().restaurant_list[i];
+				Marker restaurant_location = myMap.addMarker(new MarkerOptions()
+		        .position(new Coordinates().points.get(i))
+		        .title(restaurant)
+		        .snippet("Info Comes Here"));			
+			}
+			
+		}
+		
+		else if(position == -2){
+			myMap.clear();
+		}
+			
+		else{
+	
+			myMap.clear();
+			restaurant = new RestarauntLocationHolder().restaurant_list[position];
+			Log.d("Restaurant Clicked", restaurant);
+			Marker restaurant_location = myMap.addMarker(new MarkerOptions()
+			.position(new Coordinates().points.get(position))
+			.title(restaurant)
+			.snippet("Info Comes Here"));
+		
+			restaurant_location.showInfoWindow();
+		}
+>>>>>>> 48b7e019bed4e982e414004e5225e28cc0382132
 		
 			restaurant_location.showInfoWindow();
 		}
