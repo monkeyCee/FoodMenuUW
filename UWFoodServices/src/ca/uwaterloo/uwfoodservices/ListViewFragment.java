@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class ListViewFragment extends Fragment {
 	    }
 	 
 	 public void init() {
+		 Log.d("Making Image Adapter Object", "Inside LVF");
 	     listView.setAdapter(new ImageAdapter(context, -1));
 	     
 	     listView.setOnItemClickListener(new OnItemClickListener() {

@@ -22,6 +22,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 	private GoogleMap myMap = null;
 	static final LatLng UW = new LatLng(43.4722, -80.5472);
 	private Context context;
+	private RestarauntLocationHolder holder;
 	
 	public MyMapFragment(){
 	}
@@ -31,6 +32,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 	  super.onAttach(activity);
 	  context = getActivity();
 	  ((LocationHours)context).fragmentCommunicator = this;
+	  holder = RestarauntLocationHolder.getInstance(context);
 	}
 	
 	
@@ -62,13 +64,13 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		
 		if(position == -1){
 			
-			for(int i = 0; i < new RestarauntLocationHolder().restaurant_list.length; i++){	
-				restaurant = new RestarauntLocationHolder().restaurant_list[i];
+			for(int i = 0; i < holder.getCount(); i++){	
+				restaurant = holder.restaurant_list[i];
 				Marker restaurant_location = myMap.addMarker(new MarkerOptions()
 		        .position(new Coordinates().points.get(i))
 		        .title(restaurant)
 		        .snippet("Info Comes Here"));			
-			}
+		}
 			
 		}
 		
@@ -79,7 +81,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		else{
 	
 			myMap.clear();
-			restaurant = new RestarauntLocationHolder().restaurant_list[position];
+			restaurant = holder.restaurant_list[position];
 			Log.d("Restaurant Clicked", restaurant);
 			Marker restaurant_location = myMap.addMarker(new MarkerOptions()
 			.position(new Coordinates().points.get(position))

@@ -63,17 +63,14 @@
     <string name="title_child_preference">Title Child Preference</string>
     <string name="summary_child_preference">Summary Child Preference</string>
     <string name="title_activity_settings">Settings Activity</string>
-    
     <string name="network_preferences">Network</string>
-    
     <string name="title_connection_type_preference">Connection Type</string>
     <string name="summary_connection_type_preference">Network connection used to download data.</string>
     <string name="dialog_title_connection_type_preference">Connection Type</string>
-    
     <string name="title_store_data_preference">Store Data</string>
     <string name="summary_store_data_preference">Stores data for use offline.</string>
-    
     <string name="title_fetch_weekly_preference">Fetch Automatically</string>
     <string name="summary_fetch_weekly_preference">Weekly fetches new data.</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 
 </resources>

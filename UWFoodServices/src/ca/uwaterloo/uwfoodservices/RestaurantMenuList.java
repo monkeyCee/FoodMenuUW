@@ -24,24 +24,6 @@ public class RestaurantMenuList extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_restaurant_menu_list);
 		
-		new RestarauntLocationHolder().execute();
-		/*
-		Thread trd = new Thread(new Runnable(){
-			  @Override
-			  public void run(){
-				  try {
-					Log.d(DataFetcher.FetchRestaurants(27, "98bbbd30b3e4f621d9cb544a790086d6") + "", "restaurants");
-					Log.d(DataFetcher.FetchMealTimes("98bbbd30b3e4f621d9cb544a790086d6") + "", "mealTimes");
-					Log.d(DataFetcher.FetchHours("98bbbd30b3e4f621d9cb544a790086d6") + "", "hours");
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			  }
-		});
-		trd.start();
-		*/
-		
 		final Intent intent_menu = new Intent(this, MenuLists.class);
 		final ImageAdapter imageAdapter = new ImageAdapter(this, -1);
 		

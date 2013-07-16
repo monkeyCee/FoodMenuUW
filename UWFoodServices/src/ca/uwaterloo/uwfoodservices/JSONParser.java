@@ -26,14 +26,6 @@ public class JSONParser {
 
 	public JSONParser() {
 	}
-	
-	/* 
-	 * 
-	 * 
-	 * Method to get the JSON data from the API 
-	 * 
-	 * 
-	 */
 
 	public JSONObject getJSONFromUrl(String url) {
 		try {
@@ -55,10 +47,6 @@ public class JSONParser {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 			StringBuilder sb = new StringBuilder();
 			String line = null;
-			//Log.d(reader.readLine(), "read");
-			//Log.d(reader.readLine(), "read2");
-			//Log.d(reader.readLine(), "read3");
-			//Log.d(reader.readLine(), "read4");
 			while ((line = reader.readLine()) != null) {
 				Log.d(line,"line");
 				sb.append(line + "\n");
