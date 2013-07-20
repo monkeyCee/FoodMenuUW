@@ -30,7 +30,7 @@ public class ParseLocationData {
 			JSONObject response_object = json.getJSONObject(response);
 			JSONObject data_array = response_object.getJSONObject(data);
 			JSONArray result_array = data_array.getJSONArray(result);
-			db.truncate();
+			db.truncate("LocationTable");
 			
 			for(int i=0; i < result_array.length(); i++){
 				

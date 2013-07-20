@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -15,7 +14,7 @@ public class ImageAdapter extends BaseAdapter{
 	private static LayoutInflater inflater = null;
 	private ViewHolder holder;
 	private int id;
-	private RestarauntLocationHolder rholder;
+	private RestarauntMenuHolder menuHolder;
 	private Context context;
 	
 	private String[] sliding_list = {"Home", "Restaurant List", "Location & Hours", "About Us"};
@@ -28,13 +27,13 @@ public class ImageAdapter extends BaseAdapter{
 		tf = Typeface.createFromAsset(context.getAssets(),
 	            "Roboto-Regular.ttf");
 		Log.d("Created RLH Object", "Inside IA");
-		rholder = RestarauntLocationHolder.getInstance(context);
+		menuHolder = RestarauntMenuHolder.getInstance(null);
 	}
 	
 	@Override
 	public int getCount() {
 		if(id==-1){
-			return rholder.getCount();
+			return menuHolder.getCount();
 		}	
 		else
 			return sliding_list.length;
@@ -66,12 +65,12 @@ public class ImageAdapter extends BaseAdapter{
 			}
 			
 			
-			holder.restaraunt_name.setText(rholder.restaurant_list[position]);
-			holder.location.setText(rholder.location_list[position]);
+			holder.restaraunt_name.setText(menuHolder.menuObject.get(position).getRestaurant());
+			holder.location.setText(menuHolder.menuObject.get(position).getLocation());
 //			holder.thumbnail.setImageResource(new RestarauntLocationHolder().image_list[position]);
 			holder.restaraunt_name.setTypeface(tf);
 			holder.location.setTypeface(tf);
-				
+			
 			return convertView;
 		}
 		else{

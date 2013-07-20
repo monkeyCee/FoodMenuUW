@@ -14,11 +14,20 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 	
 	private static final int database_version = 1;
 	private static final String database_name = "RestaurantDB";
-	private static final String table_name = "RestaurantTable";
+	private static final String table_name = "LocationTable";
 	private static final String key_id = "ID";
 	private static final String restaurant_id = "Restaurant";
 	private static final String location_id = "Location";
 	private static final String timings_id = "Timings";
+	private static final String image_id = "Image";
+	private static final String monday_id = "Monday";
+	private static final String tuesday_id = "Tuesday";
+	private static final String wednesday_id = "Wednesday";
+	private static final String thursday_id = "Thursday";
+	private static final String friday_id = "Friday";
+	private static final String saturday_id = "Saturday";
+	private static final String sunday_id = "Sunday";
+	
 	private static DatabaseHandler mInstance = null;
 	int j = 0;
 	
@@ -33,11 +42,11 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		super(context, database_name, null, database_version);
 	}
 
-	public void truncate(){
+	public void truncate(String tableName){
 		SQLiteDatabase db;
 		Log.d("Dropping table", "Ok");
 		db = this.getWritableDatabase();
-		db.execSQL("DROP TABLE IF EXISTS " + table_name);
+		db.execSQL("DROP TABLE IF EXISTS " + tableName);
 		onCreate(db);
 		db.close();
 	}
@@ -51,6 +60,22 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 						location_id + " TEXT," +
 						timings_id + " TEXT" + ");";
 		db.execSQL(create_table);
+		
+		// Create MenuTable
+		create_table = "CREATE TABLE " + "MenuTable" + "(" + key_id + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+				restaurant_id + " TEXT," +
+				location_id + " TEXT," +
+				image_id + " TEXT" + 
+				monday_id + " TEXT" +
+				tuesday_id + " TEXT" +
+				wednesday_id + " TEXT" +
+				thursday_id + " TEXT" +
+				friday_id + " TEXT" +
+				saturday_id + " TEXT" +
+				sunday_id + " TEXT" +
+				");";
+		db.execSQL(create_table);
+		
 	}
 
 	@Override
