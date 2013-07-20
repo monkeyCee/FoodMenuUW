@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.util.Log;
 import ca.uwaterloo.uwfoodservicesutility.DailyMenu;
 import ca.uwaterloo.uwfoodservicesutility.MenuItem;
+import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuObject;
 
 public class ParseMenuData {
@@ -89,9 +90,10 @@ public class ParseMenuData {
 				
 				restaurant = outlets.getJSONObject(i);
 				outlet_id = Integer.parseInt(restaurant.getString(TAG_OUTLET_ID)); 
-				outlet_name = restaurant.getString(TAG_OUTLET_NAME); 
+				outlet_name = MenuUtilities.checkName(restaurant.getString(TAG_OUTLET_NAME)); 
+				
 				location_name = "location";
-				image = R.drawable.bonappetit;
+				image = MenuUtilities.getImageHash().get(outlet_name);
 				
 				menu = restaurant.getJSONArray(TAG_MENU);
 				

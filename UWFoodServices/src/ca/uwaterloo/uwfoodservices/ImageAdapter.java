@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -57,7 +58,7 @@ public class ImageAdapter extends BaseAdapter{
 				holder = new ViewHolder();
 				holder.restaraunt_name = (TextView) convertView.findViewById(R.id.restaurant_name);
 				holder.location = (TextView) convertView.findViewById(R.id.location);
-//				holder.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
+				holder.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
 				convertView.setTag(holder);
 			}
 			else{
@@ -67,7 +68,7 @@ public class ImageAdapter extends BaseAdapter{
 			
 			holder.restaraunt_name.setText(menuHolder.menuObject.get(position).getRestaurant());
 			holder.location.setText(menuHolder.menuObject.get(position).getLocation());
-//			holder.thumbnail.setImageResource(new RestarauntLocationHolder().image_list[position]);
+			holder.thumbnail.setImageResource(menuHolder.menuObject.get(position).getImage());
 			holder.restaraunt_name.setTypeface(tf);
 			holder.location.setTypeface(tf);
 			
