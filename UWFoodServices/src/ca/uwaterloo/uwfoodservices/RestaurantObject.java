@@ -5,9 +5,9 @@ public class RestaurantObject {
 	int id;
 	String restaurant_name;
 	String location;
-	String timings;
+	String[] timings;
 	
-	public RestaurantObject(int id, String restaurant_name, String location, String timings){
+	public RestaurantObject(int id, String restaurant_name, String location, String[] timings){
 		this.id = id;
 		this.restaurant_name = restaurant_name;
 		this.location = location;
@@ -26,7 +26,7 @@ public class RestaurantObject {
 		return this.location;
 	}
 	
-	public String getTimings(){
+	public String[] getTimings(){
 		return this.timings;
 	}
 	
@@ -42,7 +42,7 @@ public class RestaurantObject {
 		this.location = location;
 	}
 	
-	public void setTimings(String timings){
+	public void setTimings(String[] timings){
 		this.timings = timings;
 	}
 

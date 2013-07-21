@@ -18,6 +18,7 @@ public class ParseLocationData {
 	private Context context;
 	private RestarauntLocationHolder holder;
 	private RestaurantObject[] location_objects;
+	private String[] details;
 	
 	public ParseLocationData(Context context){
 		this.context = context;
@@ -37,13 +38,14 @@ public class ParseLocationData {
 				String restaurant_name = restaurant_details.getString(name);
 				String location_name = restaurant_details.getString(location);
 				JSONObject hour_details = restaurant_details.getJSONObject(hours);
-				result_array = hour_details.getJSONArray(result);
-				String details = result_array.getString(0);
-				result_array = data_array.getJSONArray(result);
+				JSONArray result_array1 = hour_details.getJSONArray(result);
+				details = new String[result_array1.length()];
 				
-//				Log.d(restaurant_name, location_name);
-//				Log.d(restaurant_name, details);
+				for(int j = 0; j < result_array1.length(); j++){
+					details[j] = result_array1.getString(j);
+				}
 				
+				result_array = data_array.getJSONArray(result);				
 				location_objects[i] = new RestaurantObject(i, restaurant_name, location_name, details);
 								
 			}
