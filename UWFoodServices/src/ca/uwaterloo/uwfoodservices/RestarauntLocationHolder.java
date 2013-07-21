@@ -5,8 +5,8 @@ import android.util.Log;
 
 public class RestarauntLocationHolder{
 	
-	private DatabaseHandler db;
 	private static RestarauntLocationHolder mInstance = null;
+	public RestaurantObject[] objects;
 	
 	public Integer[] image_list = {R.drawable.bonappetit, R.drawable.browsers, R.drawable.brubakers, R.drawable.ceit, R.drawable.eye_opener,
 			R.drawable.festivalfare, R.drawable.liquidassets, R.drawable.mls, R.drawable.mudies, R.drawable.pas, R.drawable.pastryplus,
@@ -16,30 +16,23 @@ public class RestarauntLocationHolder{
 
 	public String[] location_list;
 	
-	public static RestarauntLocationHolder getInstance(Context context){
+	public static RestarauntLocationHolder getInstance(Context context, RestaurantObject[] objects){
 		if(mInstance == null){
-			mInstance = new RestarauntLocationHolder(context.getApplicationContext());
+			mInstance = new RestarauntLocationHolder(context.getApplicationContext(), objects);
 		}
 		return mInstance;
 	}
 	
-	private RestarauntLocationHolder(Context context){
-		RestaurantObject object;
-		db = DatabaseHandler.getInstance(context);
-		int length = db.getCount();
-		restaurant_list = new String[length];
-		location_list = new String[length];
-		for(int i = 0; i < length; i++){
-			Log.d("Initialising lists", "Inside RLH");
-			object = db.getRestaurant(i+1);
-			restaurant_list[i] = object.getRestaurant();
-			location_list[i] = object.getLocation();
-		}
-		
+	public static RestarauntLocationHolder getInstance(Context context){
+		return mInstance;
+	}
+	
+	private RestarauntLocationHolder(Context context, RestaurantObject[] objects){
+		this.objects = objects;			
 	}
 	
 	public int getCount(){
-		return db.getCount();
+		return this.objects.length;
 	}
 	
 }

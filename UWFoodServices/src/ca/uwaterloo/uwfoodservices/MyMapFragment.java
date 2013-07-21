@@ -65,7 +65,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		if(position == -1){
 			
 			for(int i = 0; i < holder.getCount(); i++){	
-				restaurant = holder.restaurant_list[i];
+				restaurant = holder.objects[i].getRestaurant();
 				Marker restaurant_location = myMap.addMarker(new MarkerOptions()
 		        .position(new Coordinates().points.get(i))
 		        .title(restaurant)
@@ -81,7 +81,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		else{
 	
 			myMap.clear();
-			restaurant = holder.restaurant_list[position];
+			restaurant = holder.objects[position].getRestaurant();
 			Log.d("Restaurant Clicked", restaurant);
 			Marker restaurant_location = myMap.addMarker(new MarkerOptions()
 			.position(new Coordinates().points.get(position))

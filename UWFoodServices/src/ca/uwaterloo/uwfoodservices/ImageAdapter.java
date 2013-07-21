@@ -58,16 +58,15 @@ public class ImageAdapter extends BaseAdapter{
 				holder = new ViewHolder();
 				holder.restaraunt_name = (TextView) convertView.findViewById(R.id.restaurant_name);
 				holder.location = (TextView) convertView.findViewById(R.id.location);
-//				holder.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
+				holder.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
 				convertView.setTag(holder);
 			}
 			else{
 				holder = (ViewHolder) convertView.getTag();
 			}
 			
-			
-			holder.restaraunt_name.setText(rholder.restaurant_list[position]);
-			holder.location.setText(rholder.location_list[position]);
+			holder.restaraunt_name.setText(rholder.objects[position].getRestaurant());
+			holder.location.setText(rholder.objects[position].getLocation());
 //			holder.thumbnail.setImageResource(new RestarauntLocationHolder().image_list[position]);
 			holder.restaraunt_name.setTypeface(tf);
 			holder.location.setTypeface(tf);
