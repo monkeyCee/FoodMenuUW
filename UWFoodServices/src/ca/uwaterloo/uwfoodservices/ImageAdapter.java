@@ -41,7 +41,7 @@ public class ImageAdapter extends BaseAdapter{
 
 	@Override
 	public Object getItem(int position) {
-		return null;
+		return rholder.objects[position].getRestaurant();
 	}
 
 	@Override

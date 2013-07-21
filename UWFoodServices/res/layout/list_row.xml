@@ -33,7 +33,7 @@
         android:paddingBottom ="10dip"
         android:text="@string/hello_world"
         android:textColor="#FFFFFF"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
     
     <!-- Location-->
     <TextView
