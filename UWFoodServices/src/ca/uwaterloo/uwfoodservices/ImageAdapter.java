@@ -27,7 +27,6 @@ public class ImageAdapter extends BaseAdapter{
 		this.id = id;
 		tf = Typeface.createFromAsset(context.getAssets(),
 	            "Roboto-Regular.ttf");
-		Log.d("Created RLH Object", "Inside IA");
 		rholder = RestarauntLocationHolder.getInstance(context);
 	}
 	
@@ -67,7 +66,7 @@ public class ImageAdapter extends BaseAdapter{
 			
 			holder.restaraunt_name.setText(rholder.objects[position].getRestaurant());
 			holder.location.setText(rholder.objects[position].getLocation());
-//			holder.thumbnail.setImageResource(new RestarauntLocationHolder().image_list[position]);
+			holder.thumbnail.setImageResource(rholder.image_map.get(rholder.objects[position].getRestaurant()));
 			holder.restaraunt_name.setTypeface(tf);
 			holder.location.setTypeface(tf);
 				
