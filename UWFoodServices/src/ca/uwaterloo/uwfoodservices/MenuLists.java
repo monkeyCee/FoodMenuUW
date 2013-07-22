@@ -107,7 +107,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     static int weekDay;
     static Calendar calendar;
     static SimpleDateFormat simpleDateFormat;
-    RestarauntLocationHolder holder = RestarauntLocationHolder.getInstance(getBaseContext());
+    RestaurauntLocationHolder holder = RestaurauntLocationHolder.getInstance(getBaseContext());
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

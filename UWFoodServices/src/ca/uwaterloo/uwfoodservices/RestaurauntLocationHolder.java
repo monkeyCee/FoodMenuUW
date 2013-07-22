@@ -5,28 +5,24 @@ import java.util.HashMap;
 import android.content.Context;
 import android.util.Log;
 
-public class RestarauntLocationHolder{
+public class RestaurauntLocationHolder{
 	
-	private static RestarauntLocationHolder mInstance = null;
+	private static RestaurauntLocationHolder mInstance = null;
 	public RestaurantObject[] objects;
 	public HashMap<String, Integer> image_map;
-	
-	public Integer[] image_list = {R.drawable.bonappetit, R.drawable.browsers, R.drawable.brubakers, R.drawable.ceit, R.drawable.eye_opener,
-			R.drawable.festivalfare, R.drawable.liquidassets, R.drawable.mls, R.drawable.mudies, R.drawable.pas, R.drawable.pastryplus,
-			R.drawable.revelation, R.drawable.subway, R.drawable.tims, R.drawable.universityclub, R.drawable.foodservices, R.drawable.williams_0, R.drawable.williams_0, R.drawable.williams_0};
 		
-	public static RestarauntLocationHolder getInstance(Context context, RestaurantObject[] objects){
+	public static RestaurauntLocationHolder getInstance(Context context, RestaurantObject[] objects){
 		if(mInstance == null){
-			mInstance = new RestarauntLocationHolder(context.getApplicationContext(), objects);
+			mInstance = new RestaurauntLocationHolder(context.getApplicationContext(), objects);
 		}
 		return mInstance;
 	}
 	
-	public static RestarauntLocationHolder getInstance(Context context){
+	public static RestaurauntLocationHolder getInstance(Context context){
 		return mInstance;
 	}
 	
-	private RestarauntLocationHolder(Context context, RestaurantObject[] objects){
+	private RestaurauntLocationHolder(Context context, RestaurantObject[] objects){
 		this.objects = objects;			
 		image_map = new HashMap<String, Integer>();
 		

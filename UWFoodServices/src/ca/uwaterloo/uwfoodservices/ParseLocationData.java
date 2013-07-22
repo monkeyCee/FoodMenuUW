@@ -16,7 +16,7 @@ public class ParseLocationData {
 	private String hours = "Hours";
 	private String response = "response";
 	private Context context;
-	private RestarauntLocationHolder holder;
+	private RestaurauntLocationHolder holder;
 	private RestaurantObject[] location_objects;
 	private String[] details;
 	
@@ -50,7 +50,7 @@ public class ParseLocationData {
 								
 			}
 			
-			holder = RestarauntLocationHolder.getInstance(context, location_objects);
+			holder = RestaurauntLocationHolder.getInstance(context, location_objects);
 				
 		} catch (JSONException e) {
 			e.printStackTrace();

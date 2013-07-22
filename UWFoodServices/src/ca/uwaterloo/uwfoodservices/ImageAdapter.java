@@ -15,7 +15,7 @@ public class ImageAdapter extends BaseAdapter{
 	private static LayoutInflater inflater = null;
 	private ViewHolder holder;
 	private int id;
-	private RestarauntLocationHolder rholder;
+	private RestaurauntLocationHolder rholder;
 	private Context context;
 	
 	private String[] sliding_list = {"Home", "Restaurant List", "Location & Hours", "About Us"};
@@ -27,7 +27,7 @@ public class ImageAdapter extends BaseAdapter{
 		this.id = id;
 		tf = Typeface.createFromAsset(context.getAssets(),
 	            "Roboto-Regular.ttf");
-		rholder = RestarauntLocationHolder.getInstance(context);
+		rholder = RestaurauntLocationHolder.getInstance(context);
 	}
 	
 	@Override
