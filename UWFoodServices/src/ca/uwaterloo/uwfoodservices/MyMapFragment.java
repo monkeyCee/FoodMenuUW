@@ -91,6 +91,12 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		
 		else if(position == -2){
 			myMap.clear();
+			LatLng coordinate = new LatLng(43.469828,-80.546415);
+			CameraUpdate center=
+		            CameraUpdateFactory.newLatLng(coordinate);
+			CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+			myMap.moveCamera(center);
+			myMap.animateCamera(zoom);
 		}
 			
 		else{

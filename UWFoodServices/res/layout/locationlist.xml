@@ -1,31 +1,38 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    
+    <ListView
+        android:id="@+id/list_restaurant"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_all"
+        android:divider="#b5b5b5"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_selector" >
+
+    </ListView>
 
     <Button
         android:id="@+id/button_all"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#282828"
+        android:layout_width="190dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:text="@string/ShowAll"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:background="#000000" />
 
     <Button
         android:id="@+id/button_clear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#282828"
+        android:layout_width="190dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
         android:text="@string/Clear"
-        android:textColor="#FFFFFF" />
-
-    <ListView
-      android:id="@+id/list_restaurant"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:divider="#b5b5b5"
-      android:dividerHeight="1dp"
-      android:listSelector="@drawable/list_selector">
-    </ListView>
-</LinearLayout>
+        android:textColor="#FFFFFF"
+        android:background="#000000" />
+   
+</RelativeLayout>
