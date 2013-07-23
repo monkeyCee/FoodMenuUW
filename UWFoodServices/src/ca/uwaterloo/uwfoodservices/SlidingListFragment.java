@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class SampleListFragment extends ListFragment {
+public class SlidingListFragment extends ListFragment {
 	
 	ListView slidingList;
 	Intent intent;

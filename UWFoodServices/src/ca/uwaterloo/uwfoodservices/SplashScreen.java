@@ -21,7 +21,7 @@ public class SplashScreen extends Activity {
 		locationParser = new ParseLocationData(this);
 		
 		String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
-		String urlMenu = "http://api.uwaterloo.ca/public/v2/foodservices/2013/29/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
+		String urlMenu = "http://api.uwaterloo.ca/public/v2/foodservices/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
 		Intent intent = new Intent(this, MainScreen.class);
 		new LocationList().execute(urlMenu, urlLocations);
 		startActivity(intent);

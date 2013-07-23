@@ -116,8 +116,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		
 		Intent intent = getIntent();
 		restaurant_selection = intent.getStringExtra("Restaurant Name");
-
-		//Log.d("Restaurant Selected", restaurant_selection);
 		
 		// Date handling
 		calendar = Calendar.getInstance();
