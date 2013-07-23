@@ -23,7 +23,7 @@ public class SampleListFragment extends ListFragment {
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		ImageAdapter sampleAdapter = new ImageAdapter(getActivity(), 0);
+		ImageAdapter sampleAdapter = new ImageAdapter(getActivity(), "sliding");
 		main_sliding_menu = true;
 		slidingList.setAdapter(sampleAdapter);
 	}	
@@ -40,7 +40,7 @@ public class SampleListFragment extends ListFragment {
 			 		break;
 			 	
 			 	case 1:
-			 		ImageAdapter sampleAdapter = new ImageAdapter(getActivity(), -1);
+			 		ImageAdapter sampleAdapter = new ImageAdapter(getActivity(), "menu");
 			 		main_sliding_menu = false;
 					slidingList.setAdapter(sampleAdapter);
 			 		break;
@@ -59,7 +59,7 @@ public class SampleListFragment extends ListFragment {
 		 
 		 else{
 			 Intent intent = new Intent(getActivity(), MenuLists.class);
-			 intent.putExtra("Restaurant Name", (String) new ImageAdapter(getActivity(), -1).getItem(position));
+			 intent.putExtra("Restaurant Name", (String) new ImageAdapter(getActivity(), "menu").getItem(position));
 			 startActivity(intent);
 			 
 		 }

@@ -19,6 +19,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -33,7 +35,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBMWfOa8t5Rd5TBF42TMlndjSpuQG7T21E" />
+            android:value="AIzaSyAdguucnsG3Ga3ZyLGFGFGQxB6BsZ8whhk" />
 
         <activity
             android:name="ca.uwaterloo.uwfoodservices.MainScreen"

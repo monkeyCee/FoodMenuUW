@@ -25,7 +25,7 @@ public class RestaurantMenuList extends Activity {
 		setContentView(R.layout.activity_restaurant_menu_list);
 		
 		final Intent intent_menu = new Intent(this, MenuLists.class);
-		final ImageAdapter imageAdapter = new ImageAdapter(this, -1);
+		final ImageAdapter imageAdapter = new ImageAdapter(this, "menu");
 		
 		ListView listView = (ListView) findViewById(R.id.list_restaurant);
 		listView.setAdapter(imageAdapter);

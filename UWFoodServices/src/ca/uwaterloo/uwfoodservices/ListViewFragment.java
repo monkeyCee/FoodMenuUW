@@ -37,8 +37,7 @@ public class ListViewFragment extends Fragment {
 	    }
 	 
 	 public void init() {
-		 Log.d("Making Image Adapter Object", "Inside LVF");
-	     listView.setAdapter(new ImageAdapter(context, -1));
+	     listView.setAdapter(new ImageAdapter(context, "location"));
 	     
 	     listView.setOnItemClickListener(new OnItemClickListener() {
 

@@ -14,14 +14,15 @@ public class ImageAdapter extends BaseAdapter{
 	
 	private static LayoutInflater inflater = null;
 	private ViewHolder holder;
-	private int id;
+	private String id;
 	private RestarauntMenuHolder menuHolder;
+	private RestaurantLocationHolder locationHolder;
 	private Context context;
 	
-	private String[] sliding_list = {"Home", "Restaurant List", "Location & Hours", "About Us"};
+	private String[] sliding_list = {"Home", "Skip to Menu", "Location & Hours", "About Us"};
 	Typeface tf;
 	
-	public ImageAdapter(Context context, int id){
+	public ImageAdapter(Context context, String id){
 		this.context = context;
 		inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.id = id;
@@ -29,20 +30,23 @@ public class ImageAdapter extends BaseAdapter{
 	            "Roboto-Regular.ttf");
 		Log.d("Created RLH Object", "Inside IA");
 		menuHolder = RestarauntMenuHolder.getInstance(null);
+		locationHolder = RestaurantLocationHolder.getInstance(context);
 	}
 	
 	@Override
 	public int getCount() {
-		if(id==-1){
+		if(id == "menu"){
 			return menuHolder.getCount();
-		}	
-		else
+		} else if (id == "location") {
+			return locationHolder.getCount();
+		} else {
 			return sliding_list.length;
+		}
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return null;
+		return locationHolder.objects[position].getRestaurant();
 	}
 
 	@Override
@@ -52,19 +56,17 @@ public class ImageAdapter extends BaseAdapter{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if(id == -1){
-			if(convertView == null){
+		if(id == "menu"){
+			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.list_row, null);
 				holder = new ViewHolder();
 				holder.restaraunt_name = (TextView) convertView.findViewById(R.id.restaurant_name);
 				holder.location = (TextView) convertView.findViewById(R.id.location);
 				holder.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
 				convertView.setTag(holder);
-			}
-			else{
+			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			
 			
 			holder.restaraunt_name.setText(menuHolder.restaurantMenu.get(position).getRestaurant());
 			holder.location.setText(menuHolder.restaurantMenu.get(position).getLocation());
@@ -73,8 +75,27 @@ public class ImageAdapter extends BaseAdapter{
 			holder.location.setTypeface(tf);
 			
 			return convertView;
-		}
-		else{
+			
+		} else if (id == "location") {
+			if (convertView == null) {
+				convertView = inflater.inflate(R.layout.list_row, null);
+				holder = new ViewHolder();
+				holder.restaraunt_name = (TextView) convertView.findViewById(R.id.restaurant_name);
+				holder.location = (TextView) convertView.findViewById(R.id.location);
+				holder.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+			
+			holder.restaraunt_name.setText(locationHolder.objects[position].getRestaurant());
+			holder.location.setText(locationHolder.objects[position].getLocation());
+			holder.thumbnail.setImageResource(locationHolder.image_map.get(locationHolder.objects[position].getRestaurant()));
+			holder.restaraunt_name.setTypeface(tf);
+			holder.location.setTypeface(tf);
+			
+			return convertView;
+		} else {
 			if(convertView == null){
 				convertView = inflater.inflate(R.layout.sliding_row, null);
 			}

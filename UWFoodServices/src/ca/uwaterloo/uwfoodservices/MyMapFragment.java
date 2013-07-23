@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -22,7 +24,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 	private GoogleMap myMap = null;
 	static final LatLng UW = new LatLng(43.4722, -80.5472);
 	private Context context;
-	private RestarauntLocationHolder holder;
+	private RestaurantLocationHolder holder;
 	
 	public MyMapFragment(){
 	}
@@ -32,7 +34,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 	  super.onAttach(activity);
 	  context = getActivity();
 	  ((LocationHours)context).fragmentCommunicator = this;
-	  holder = RestarauntLocationHolder.getInstance(context);
+	  holder = RestaurantLocationHolder.getInstance(context);
 	}
 	
 	
@@ -64,31 +66,63 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		
 		if(position == -1){
 			
-			for(int i = 0; i < holder.getCount(); i++){	
-				restaurant = holder.restaurant_list[i];
-				Marker restaurant_location = myMap.addMarker(new MarkerOptions()
-		        .position(new Coordinates().points.get(i))
-		        .title(restaurant)
-		        .snippet("Info Comes Here"));			
-		}
+			myMap.clear();
+			LatLng coordinate = new LatLng(43.469828,-80.546415);
+			CameraUpdate center=
+		            CameraUpdateFactory.newLatLng(coordinate);
+			CameraUpdate zoom=CameraUpdateFactory.zoomTo(14);
+			myMap.moveCamera(center);
+			myMap.animateCamera(zoom);
 			
+			for(int i = 0; i < holder.getCount(); i++){	
+				String timings = "";
+				for(int j = 0; j < holder.objects[i].getTimings().length; j++){
+					timings += holder.objects[i].getTimings()[j] + "\n";
+				}
+				
+				restaurant = holder.objects[i].getRestaurant();
+				Marker restaurant_location = myMap.addMarker(new MarkerOptions()
+		        .position(new Coordinates().map.get(holder.objects[i].getRestaurant() + " " + holder.objects[i].getLocation()))
+		        .title(restaurant)
+		        .snippet(timings));			
+			}	
+			myMap.setInfoWindowAdapter(new CustomInfoView(context));
 		}
 		
 		else if(position == -2){
 			myMap.clear();
+			LatLng coordinate = new LatLng(43.469828,-80.546415);
+			CameraUpdate center=
+		            CameraUpdateFactory.newLatLng(coordinate);
+			CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+			myMap.moveCamera(center);
+			myMap.animateCamera(zoom);
 		}
 			
 		else{
-	
+			LatLng coordinate = new Coordinates().map.get(holder.objects[position].getRestaurant() + " " + holder.objects[position].getLocation());
 			myMap.clear();
-			restaurant = holder.restaurant_list[position];
+			CameraUpdate center=
+		            CameraUpdateFactory.newLatLng(coordinate);
+			CameraUpdate zoom=CameraUpdateFactory.zoomTo(17);
+			myMap.moveCamera(center);
+			myMap.animateCamera(zoom);
+			
+			String timings = "";
+			for(int i = 0; i < holder.objects[position].getTimings().length; i++){
+				timings += holder.objects[position].getTimings()[i] + "\n";
+			}
+			
+			restaurant = holder.objects[position].getRestaurant();
 			Log.d("Restaurant Clicked", restaurant);
 			Marker restaurant_location = myMap.addMarker(new MarkerOptions()
-			.position(new Coordinates().points.get(position))
+			.position(coordinate)
 			.title(restaurant)
-			.snippet("Info Comes Here"));
+			.snippet(timings));
 		
+			myMap.setInfoWindowAdapter(new CustomInfoView(context));
 			restaurant_location.showInfoWindow();
+			
 		}
 		
 	}

@@ -107,6 +107,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     static int weekDay;
     static Calendar calendar;
     static SimpleDateFormat simpleDateFormat;
+    RestaurantLocationHolder holder = RestaurantLocationHolder.getInstance(getBaseContext());
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		
 		Intent intent = getIntent();
 		restaurant_selection = intent.getStringExtra("Restaurant Name");
-		
+
 		//Log.d("Restaurant Selected", restaurant_selection);
 		
 		// Date handling
@@ -147,6 +148,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		
 		actionBar.setTitle(restaurant_selection);
 		actionBar.setDisplayUseLogoEnabled(false);
+		actionBar.setIcon(holder.image_map.get(restaurant_selection));
 
 		vp = (ViewPager) findViewById(R.id.pager);
 		vp.setAdapter(new MenuAdapter(getSupportFragmentManager()));
