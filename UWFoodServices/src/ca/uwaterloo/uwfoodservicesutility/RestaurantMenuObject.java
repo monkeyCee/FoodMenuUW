@@ -17,23 +17,23 @@ public class RestaurantMenuObject {
 	}
 	
 	public int getID(){
-		return this.id;
+		return id;
 	}
 	
 	public String getRestaurant(){
-		return this.restaurant_name;
+		return restaurant_name;
 	}
 	
 	public String getLocation(){
-		return this.location;
+		return location;
 	}
 	
 	public Integer getImage(){
-		return this.image;
+		return image;
 	}
 	
 	public DailyMenu[] getMenu(){
-		return this.menu;
+		return menu;
 	}
 	
 	public void setID(int id){

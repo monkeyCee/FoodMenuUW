@@ -1,12 +1,12 @@
 package ca.uwaterloo.uwfoodservicesutility;
 
-public class MenuItem {
+public class RestaurantMenuItem {
 	
 	String product_name;
 	int product_id;
 	String diet_type;
 	
-	public MenuItem(String product_name, int product_id, String diet_type) {
+	public RestaurantMenuItem(String product_name, int product_id, String diet_type) {
 		this.product_name = product_name;
 		this.product_id = product_id;
 		this.diet_type = diet_type;

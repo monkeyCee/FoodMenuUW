@@ -8,8 +8,8 @@ import org.json.JSONObject;
 
 import android.util.Log;
 import ca.uwaterloo.uwfoodservicesutility.DailyMenu;
-import ca.uwaterloo.uwfoodservicesutility.MenuItem;
 import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
+import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuItem;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuObject;
 
 public class ParseMenuData {
@@ -72,21 +72,21 @@ public class ParseMenuData {
 			String location_name;
 			Integer image;
 			
-			ArrayList<MenuItem> lunchList = new ArrayList<MenuItem>();
-			ArrayList<MenuItem> dinnerList = new ArrayList<MenuItem>();
-			MenuItem menuItem;
+			ArrayList<RestaurantMenuItem> lunchList = new ArrayList<RestaurantMenuItem>();
+			ArrayList<RestaurantMenuItem> dinnerList = new ArrayList<RestaurantMenuItem>();
 			
-			RestaurantMenuObject menuObject;
 			int position = 0;
 			DailyMenu[] menuArray = new DailyMenu[7];
-			DailyMenu dailyMenu;
 			
 			for (int i = 0; i < 7; i++) {
-				menuArray[i] = null;
+				menuArray[i] = new DailyMenu(null, null);
 			}
 			Log.d(outlets.length() + "", "outletsLength");
 			
 			for(int i = 0; i < outlets.length(); i++){
+				
+				lunchList = new ArrayList<RestaurantMenuItem>();
+				dinnerList = new ArrayList<RestaurantMenuItem>();
 				
 				restaurant = outlets.getJSONObject(i);
 				outlet_id = Integer.parseInt(restaurant.getString(TAG_OUTLET_ID)); 
@@ -98,6 +98,9 @@ public class ParseMenuData {
 				menu = restaurant.getJSONArray(TAG_MENU);
 				
 				for (int j = 0; j < menu.length(); j++) {
+					
+					lunchList = new ArrayList<RestaurantMenuItem>();
+					dinnerList = new ArrayList<RestaurantMenuItem>();
 					
 					day = menu.getJSONObject(j);
 					meals = day.getJSONObject(TAG_MEALS);
@@ -127,10 +130,8 @@ public class ParseMenuData {
 							
 							diet_type = lunch.getJSONObject(k).getString(TAG_DIET_TYPE);
 							
-							menuItem = new MenuItem(product_name, product_id, diet_type);
-							lunchList.add(menuItem);
-							
-							Log.d(product_name, "result product name");
+							lunchList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
+							Log.d(lunchList.get(k).getProductName(), "result product name - lunch list");
 						}
 					}
 					
@@ -148,28 +149,15 @@ public class ParseMenuData {
 							
 							diet_type = dinner.getJSONObject(k).getString(TAG_DIET_TYPE);
 							
-							menuItem = new MenuItem(product_name, product_id, diet_type);
-							dinnerList.add(menuItem);
-							
-							Log.d(product_name, "result product name");
+							dinnerList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
 						}
 					}
-					dailyMenu = new DailyMenu(lunchList, dinnerList);
-					menuArray[position] = dailyMenu;
-					
-					Log.d(menuArray[position].getLunch() + "", "menuArrayLUNCH");
+					menuArray[position] = new DailyMenu(lunchList, dinnerList);
 				}
 				
-				menuObject = new RestaurantMenuObject(outlet_id, outlet_name, location_name, image, menuArray);
-				Log.d(menuObject.getMenu()[0].getLunch() + "", "menuObjectMenu0");
-				Log.d(menuObject.getMenu()[1].getLunch() + "", "menuObjectMenu1");
-				Log.d(menuObject.getMenu()[2].getLunch() + "", "menuObjectMenu2");
-				Log.d(menuObject.getMenu()[3].getLunch() + "", "menuObjectMenu3");
-				Log.d(menuObject.getMenu()[4].getLunch() + "", "menuObjectMenu4");
-				restaurantMenu.add(menuObject);
-		
+				
+				restaurantMenu.add(new RestaurantMenuObject(outlet_id, outlet_name, location_name, image, menuArray));
 			}
-			
 			holder = RestarauntMenuHolder.getInstance(restaurantMenu);
 				
 		} catch (JSONException e) {

@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 public class DailyMenu {
 	
-	ArrayList<MenuItem> lunch;
-	ArrayList<MenuItem> dinner;
+	ArrayList<RestaurantMenuItem> lunch;
+	ArrayList<RestaurantMenuItem> dinner;
 	
-	public DailyMenu(ArrayList<MenuItem> lunch, ArrayList<MenuItem> dinner) {
+	public DailyMenu(ArrayList<RestaurantMenuItem> lunch, ArrayList<RestaurantMenuItem> dinner) {
 		this.lunch = lunch;
 		this.dinner = dinner;
 	}
 	
-	public ArrayList<MenuItem> getLunch() {
+	public ArrayList<RestaurantMenuItem> getLunch() {
 		return lunch;
 	}
 	
-	public ArrayList<MenuItem> getDinner() {
+	public ArrayList<RestaurantMenuItem> getDinner() {
 		return dinner;
 	}
 }

@@ -66,9 +66,9 @@ public class ImageAdapter extends BaseAdapter{
 			}
 			
 			
-			holder.restaraunt_name.setText(menuHolder.menuObject.get(position).getRestaurant());
-			holder.location.setText(menuHolder.menuObject.get(position).getLocation());
-			holder.thumbnail.setImageResource(menuHolder.menuObject.get(position).getImage());
+			holder.restaraunt_name.setText(menuHolder.restaurantMenu.get(position).getRestaurant());
+			holder.location.setText(menuHolder.restaurantMenu.get(position).getLocation());
+			holder.thumbnail.setImageResource(menuHolder.restaurantMenu.get(position).getImage());
 			holder.restaraunt_name.setTypeface(tf);
 			holder.location.setTypeface(tf);
 			

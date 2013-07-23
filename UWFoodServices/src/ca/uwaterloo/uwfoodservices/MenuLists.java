@@ -116,7 +116,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		Intent intent = getIntent();
 		restaurant_selection = intent.getStringExtra("Restaurant Name");
 		
-		Log.d("Restaurant Selected", restaurant_selection);
+		//Log.d("Restaurant Selected", restaurant_selection);
 		
 		// Date handling
 		calendar = Calendar.getInstance();
@@ -284,16 +284,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     	Log.d(mobileConnected + "", "network");
         if (((sPref.equals(BOTH)) && (wifiConnected || mobileConnected))
                 || ((sPref.equals(WIFI)) && (wifiConnected))) {
-            // AsyncTask subclass
-        	try {
-				dwt = new DownloadWebpageTask().execute().get();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	// Load Page
         } else {
             showErrorPage();
         }
@@ -307,195 +298,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         // Show: "Unable to load content. Check your network connection."
     }
     
-	private static final String TAG_META = "meta";
-	private static final String TAG_MESSAGE = "message";
-	
-	private static final String TAG_DATA = "data";
-	private static final String TAG_OUTLETS = "outlets";
-	//private static final String TAG_BONAPPETIT = "BonAppetit";
-	private static final String TAG_MENU = "menu";
-	
-	private static final String[] TAG_DAYS = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-	
-	private static final String TAG_MEALS = "meals";
-	private static final String TAG_LUNCH = "lunch";
-	private static final String TAG_DINNER = "dinner";
-	
-	private static final String TAG_PRODUCT_NAME = "product_name";
-	private static final String TAG_PRODUCT_ID = "product_id";
-	private static final String TAG_DIET_TYPE = "diet_type";
-	private static final String TAG_RESULT = "result";
-	
-	//public final static String ITEM_TITLE = "title";
-	//public final static String ITEM_CAPTION = "caption";
-
-	static ArrayList<ArrayList<ArrayList<String>>> dwt;
-	
-	private class DownloadWebpageTask extends AsyncTask<String, Void, ArrayList<ArrayList<ArrayList<String>>>> {
-		
-		public ArrayList<ArrayList<ArrayList<String>>> ParseDay() throws IOException, JSONException {
-			
-			// menuResult data structure:
-			// 
-			//             | mondayLunch      
-			//             | mondayDinner     | Item #1      | product_name
-			//             | tuesdayLunch ----| Item #2 -----| product_id
-			//             | tuesdayDinner    | Item #3      | diet_type
-			// menuResult -| wednesdayLunch
-			//             | wednesdayDinner
-			//             |     .
-			//             |     .
-			//             |     .
-			
-			ArrayList<ArrayList<ArrayList<String>>> menuResult = new ArrayList<ArrayList<ArrayList<String>>>();
-			ArrayList<ArrayList<String>> mondayLunch = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> mondayDinner = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> tuesdayLunch = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> tuesdayDinner = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> wednesdayLunch = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> wednesdayDinner = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> thursdayLunch = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> thursdayDinner = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> fridayLunch = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> fridayDinner = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> saturdayLunch = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> saturdayDinner = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> sundayLunch = new ArrayList<ArrayList<String>>();
-			ArrayList<ArrayList<String>> sundayDinner = new ArrayList<ArrayList<String>>();
-			
-			menuResult.add(mondayLunch);
-			menuResult.add(mondayDinner);
-			menuResult.add(tuesdayLunch);
-			menuResult.add(tuesdayDinner);
-			menuResult.add(wednesdayLunch);
-			menuResult.add(wednesdayDinner);
-			menuResult.add(thursdayLunch);
-			menuResult.add(thursdayDinner);
-			menuResult.add(fridayLunch);
-			menuResult.add(fridayDinner);
-			menuResult.add(saturdayLunch);
-			menuResult.add(saturdayDinner);
-			menuResult.add(sundayLunch);
-			menuResult.add(sundayDinner);
-			
-			String TAG_RESTAURANT = "BonAppetit";
-			
-			// Creating JSON Parser instance
-			JSONParser jParser = new JSONParser();
-					
-			// Getting JSON string from URL
-			JSONObject json = jParser.getJSONFromUrl(url);
-			
-			JSONObject meta = json.getJSONObject(TAG_META);
-			
-			//JSONObject message = meta.getJSONObject(TAG_MESSAGE);
-			Log.d(meta.getString("message"), "message");
-			
-			JSONObject data = json.getJSONObject(TAG_DATA);
-			JSONArray outlets = data.getJSONArray(TAG_OUTLETS);
-			
-			JSONObject Bon_Appetit = outlets.getJSONObject(0);
-			JSONArray menu = Bon_Appetit.getJSONArray(TAG_MENU);
-			
-			JSONObject day;
-			JSONObject meals;
-			JSONArray lunch;
-			JSONArray dinner;
-			String product_name;
-			String product_id;
-			String diet_type;
-			
-			for (int i = 0; i < menuResult.size(); i++) {
-				menuResult.get(i).add(new ArrayList<String>());
-				menuResult.get(i).get(0).add("");
-			}
-			
-			String weekDay;
-			int position;
-			Log.d("yes", "yes-2");
-			Log.d(menu.length() + "", "yes length");
-			for (int i = 0; i < menu.length(); i ++) {
-				Log.d("yes", "yes-1");
-				position = i;
-				
-				day = menu.getJSONObject(i);
-				meals = day.getJSONObject(TAG_MEALS);
-				weekDay = day.getString("day");
-				
-				if (weekDay == "Monday") { position = 0;}
-				if (weekDay == "Tuesday") { position = 1;}
-				if (weekDay == "Wednesday") { position = 2;}
-				if (weekDay == "Thursday") { position = 3;}
-				if (weekDay == "Friday") { position = 4;}
-				if (weekDay == "Saturday") { position = 5;}
-				if (weekDay == "Sunday") { position = 6;}
-				Log.d("yes", "yes0");
-				// Lunch
-				Log.d(meals.has(TAG_LUNCH) + "", "yes hasL");
-				if (meals.has(TAG_LUNCH) && meals.getJSONArray(TAG_LUNCH).length() > 0) {
-					Log.d("yes", "yes1");
-					lunch = meals.getJSONArray(TAG_LUNCH);
-					Log.d("yes", "yes2");
-					for (int j = 0; j < lunch.length(); j ++) {
-						Log.d("yes", "yes3");
-						product_name = lunch.getJSONObject(j).getString(TAG_PRODUCT_NAME);
-						product_id = lunch.getJSONObject(j).getString(TAG_PRODUCT_ID);
-						diet_type = lunch.getJSONObject(j).getString(TAG_DIET_TYPE);
-						
-						menuResult.get(2*position).add(new ArrayList<String>());
-						menuResult.get(2*position).get(j).clear();
-						menuResult.get(2*position).get(j).add(product_name);
-						menuResult.get(2*position).get(j).add(product_id);
-						menuResult.get(2*position).get(j).add(diet_type);
-						
-						Log.d(product_name, "result product name");
-					}
-				}
-				
-				// Dinner
-				if (meals.has(TAG_DINNER) && meals.getJSONArray(TAG_DINNER).length() > 0) {
-					Log.d("yes", "yes4");
-					dinner = meals.getJSONArray(TAG_DINNER);
-					for (int j = 0; j < dinner.length(); j ++) {
-						product_name = dinner.getJSONObject(j).getString(TAG_PRODUCT_NAME);
-						product_id = dinner.getJSONObject(j).getString(TAG_PRODUCT_ID);
-						diet_type = dinner.getJSONObject(j).getString(TAG_DIET_TYPE);
-					
-						menuResult.get(2*position + 1).add(new ArrayList<String>());
-						menuResult.get(2*position + 1).get(j).clear();
-						menuResult.get(2*position + 1).get(j).add(product_name);
-						menuResult.get(2*position + 1).get(j).add(product_id);
-						menuResult.get(2*position + 1).get(j).add(diet_type);
-						
-						Log.d(product_name, "result product name");
-					}
-				}
-			}
-			return menuResult;
-		}
-		
-		@Override
-        protected ArrayList<ArrayList<ArrayList<String>>> doInBackground(String... params) {
-            try {
-            	Log.d(Integer.toString(params.length), "length");
-            	publishProgress();
-                return ParseDay();
-            } catch (IOException e) {
-                return null;
-            } catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
-			return null;
-		}
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(ArrayList<ArrayList<ArrayList<String>>> result) {
-        	
-       }
-	}
-	
 	public static class MenuAdapter extends FragmentPagerAdapter {
 
 		private ArrayList<MenuFragment> mFragments;
@@ -577,7 +379,9 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 				}
 			}
 			
-			Log.d(formattedDate, "date text new");
+			RestarauntMenuHolder menuHolder = RestarauntMenuHolder.getInstance(null);
+			
+			Log.d(menuHolder.restaurantMenu.get(0).getMenu()[0].getLunch() + "", "getRestaurant");
 			
 			TextView textDay = (TextView) rootView.findViewById(R.id.textDay);
 			SpannableString content = new SpannableString(formattedDate);
@@ -590,31 +394,45 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			LIST.clear();
 			LIST.add("LUNCH");
 			
-			int positionLunch = getArguments().getInt(ARG_SECTION_NUMBER)*2;
-			int positionDinner = getArguments().getInt(ARG_SECTION_NUMBER)*2 + 1;
+			int day = getArguments().getInt(ARG_SECTION_NUMBER);
+			int positionRestaurant = 5;
 			
-			Log.d(dwt + "", "lunch 0");
-			Log.d(dwt.get(positionLunch).get(0) + "", "lunch 0");
+			for (int i = 0; i < menuHolder.restaurantMenu.size(); i++) {
+				if (menuHolder.restaurantMenu.get(i).getRestaurant().equals("Bon Appetit")) {
+					positionRestaurant = i;
+				}
+			}
 			
-			if (dwt.get(positionLunch).get(0).get(0) != "") {
+			//Log.d(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().size() + "", "getLunch");
+			
+			if (menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch() == null) {
+				LIST.add("There is nothing on the menu");
+			} else {
+				for (int i = 0; i < menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().size(); i++) {
+					LIST.add(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductName());
+				}
+			}
+			
+			/*
+			if (menuHolder.menuObject.get(positionRestaurant).getMenu().equals("null")) {
+				LIST.add("There is nothing on the menu");
+			} else {
 				for (int i = 0; i < dwt.get(positionLunch).size() - 1; i ++) {
 					Log.d(i+"", "size i");
 					LIST.add(dwt.get(positionLunch).get(i).get(0));
 					Log.d("yes", "size");
 				}
-			} else {
-				LIST.add("There is nothing on the menu");
-			}
+			}*/
 			
 			HDR_POS2 = LIST.size();
 			LIST.add("DINNER");
 			
-			if (dwt.get(positionDinner).get(0).get(0) != "") {
-				for (int i = 0; i < dwt.get(positionDinner).size() - 1; i ++) {
-					LIST.add(dwt.get(positionDinner).get(i).get(0));
-				}
-			} else {
+			if (menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getDinner() == null) {
 				LIST.add("There is nothing on the menu");
+			} else {
+				for (int i = 0; i < menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getDinner().size(); i++) {
+					LIST.add(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductName());
+				}
 			}
 			
 			return rootView;
