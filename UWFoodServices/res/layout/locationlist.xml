@@ -14,25 +14,5 @@
         android:listSelector="@drawable/list_selector" >
 
     </ListView>
-
-    <Button
-        android:id="@+id/button_all"
-        android:layout_width="190dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="@string/ShowAll"
-        android:textColor="#FFFFFF"
-        android:background="#000000" />
-
-    <Button
-        android:id="@+id/button_clear"
-        android:layout_width="190dp"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/Clear"
-        android:textColor="#FFFFFF"
-        android:background="#000000" />
    
 </RelativeLayout>

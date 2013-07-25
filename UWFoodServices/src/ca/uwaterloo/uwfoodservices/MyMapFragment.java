@@ -9,6 +9,9 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,6 +28,12 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 	static final LatLng UW = new LatLng(43.4722, -80.5472);
 	private Context context;
 	private RestaurantLocationHolder holder;
+	private CameraUpdate center;
+	private CameraUpdate zoom;
+	private String restaurant;
+	private String location;
+	private RadioButton showAll;
+	private RadioButton clear;
 	
 	public MyMapFragment(){
 	}
@@ -46,13 +55,66 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		        view = inflater.inflate(
 						R.layout.fragment_map, container, false);
 		        		        
-		          SupportMapFragment mySupportMapFragment 
+		        
+		        RadioGroup options_map = (RadioGroup) view.findViewById(R.id.radioGroup);
+		        showAll = (RadioButton) view.findViewById(R.id.ShowAll);
+		        clear = (RadioButton) view.findViewById(R.id.Clear);
+		       
+		        SupportMapFragment mySupportMapFragment 
 		           = (SupportMapFragment)getFragmentManager().findFragmentById(R.id.mapFragment);
 		          myMap = mySupportMapFragment.getMap();   
 		             
-		             if(myMap != null){
+		        if(myMap != null){
 		            	 myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+		            	 LatLng coordinate = new LatLng(43.469828,-80.546415);
+		            	 center=CameraUpdateFactory.newLatLng(coordinate);
+		     			 zoom=CameraUpdateFactory.zoomTo(14);
+		     			 myMap.moveCamera(center);
+		     			 myMap.animateCamera(zoom);
 		             }
+		        
+		        options_map.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
+					@Override
+					public void onCheckedChanged(RadioGroup group, int position) {
+						
+						if(position == R.id.ShowAll){
+							myMap.clear();
+							LatLng coordinate = new LatLng(43.469828,-80.546415);
+							CameraUpdate center=
+						            CameraUpdateFactory.newLatLng(coordinate);
+							CameraUpdate zoom=CameraUpdateFactory.zoomTo(14);
+							myMap.moveCamera(center);
+							myMap.animateCamera(zoom);
+							
+							for(int i = 0; i < holder.getCount(); i++){	
+								String timings = "";
+								for(int j = 0; j < holder.objects[i].getTimings().length; j++){
+									timings += holder.objects[i].getTimings()[j] + "\n";
+								}
+								
+								restaurant = holder.objects[i].getRestaurant();
+								Marker restaurant_location = myMap.addMarker(new MarkerOptions()
+						        .position(new Coordinates().map.get(holder.objects[i].getRestaurant() + " " + holder.objects[i].getLocation()))
+						        .title(restaurant)
+						        .snippet(timings));			
+							}	
+							myMap.setInfoWindowAdapter(new CustomInfoView(context));
+							
+						}
+						else{
+							myMap.clear();
+							LatLng coordinate = new LatLng(43.469828,-80.546415);
+							center=CameraUpdateFactory.newLatLng(coordinate);
+							zoom=CameraUpdateFactory.zoomTo(15);
+							myMap.moveCamera(center);
+							myMap.animateCamera(zoom);
+						}
+
+					}
+		        	
+		        });
+		        
 		             
 		    } catch (InflateException e) {}
 		 return view;
@@ -61,45 +123,9 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 
 	@Override
 	public void passDataToFragment(int position) {
-		
-		String restaurant;
-		
-		if(position == -1){
 			
-			myMap.clear();
-			LatLng coordinate = new LatLng(43.469828,-80.546415);
-			CameraUpdate center=
-		            CameraUpdateFactory.newLatLng(coordinate);
-			CameraUpdate zoom=CameraUpdateFactory.zoomTo(14);
-			myMap.moveCamera(center);
-			myMap.animateCamera(zoom);
-			
-			for(int i = 0; i < holder.getCount(); i++){	
-				String timings = "";
-				for(int j = 0; j < holder.objects[i].getTimings().length; j++){
-					timings += holder.objects[i].getTimings()[j] + "\n";
-				}
-				
-				restaurant = holder.objects[i].getRestaurant();
-				Marker restaurant_location = myMap.addMarker(new MarkerOptions()
-		        .position(new Coordinates().map.get(holder.objects[i].getRestaurant() + " " + holder.objects[i].getLocation()))
-		        .title(restaurant)
-		        .snippet(timings));			
-			}	
-			myMap.setInfoWindowAdapter(new CustomInfoView(context));
-		}
-		
-		else if(position == -2){
-			myMap.clear();
-			LatLng coordinate = new LatLng(43.469828,-80.546415);
-			CameraUpdate center=
-		            CameraUpdateFactory.newLatLng(coordinate);
-			CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
-			myMap.moveCamera(center);
-			myMap.animateCamera(zoom);
-		}
-			
-		else{
+			showAll.setChecked(false);
+			clear.setChecked(false);
 			LatLng coordinate = new Coordinates().map.get(holder.objects[position].getRestaurant() + " " + holder.objects[position].getLocation());
 			myMap.clear();
 			CameraUpdate center=
@@ -114,7 +140,6 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 			}
 			
 			restaurant = holder.objects[position].getRestaurant();
-			Log.d("Restaurant Clicked", restaurant);
 			Marker restaurant_location = myMap.addMarker(new MarkerOptions()
 			.position(coordinate)
 			.title(restaurant)
@@ -122,9 +147,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
 		
 			myMap.setInfoWindowAdapter(new CustomInfoView(context));
 			restaurant_location.showInfoWindow();
-			
-		}
-		
+
 	}
 
 }

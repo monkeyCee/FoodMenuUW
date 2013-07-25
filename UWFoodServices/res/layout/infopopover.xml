@@ -22,7 +22,7 @@
 			android:layout_height="wrap_content"
 			android:textSize="18sp"
 			android:textStyle="bold"/>
-
+		
 		<TextView
 			android:id="@+id/snippet"
 			android:layout_width="wrap_content"

@@ -3,7 +3,6 @@ package ca.uwaterloo.uwfoodservices;
 import java.util.HashMap;
 
 import android.content.Context;
-import android.util.Log;
 
 public class RestaurantLocationHolder{
 	

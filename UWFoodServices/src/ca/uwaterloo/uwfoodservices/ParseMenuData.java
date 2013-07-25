@@ -92,7 +92,7 @@ public class ParseMenuData {
 				outlet_id = Integer.parseInt(restaurant.getString(TAG_OUTLET_ID)); 
 				outlet_name = MenuUtilities.checkName(restaurant.getString(TAG_OUTLET_NAME)); 
 				
-				location_name = "location";
+				location_name = "";
 				image = MenuUtilities.getImageHash().get(outlet_name);
 				
 				menu = restaurant.getJSONArray(TAG_MENU);

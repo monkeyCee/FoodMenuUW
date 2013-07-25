@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -49,24 +47,6 @@ public class ListViewFragment extends Fragment {
 				}
 			});
 	        
-	     button_all.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					activityCommunicator.passDataToActivity(-1);
-					getActivity().getActionBar().setSelectedNavigationItem(1);
-				}
-			});
-	        
-	     button_clear.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				activityCommunicator.passDataToActivity(-2);
-				getActivity().getActionBar().setSelectedNavigationItem(1);
-			}
-	    	 
-	     });
 	   }
 	 
 	@Override
@@ -77,8 +57,6 @@ public class ListViewFragment extends Fragment {
 		        view = inflater.inflate(
 						R.layout.locationlist, container, false);
 		        listView = (ListView) view.findViewById(R.id.list_restaurant);
-		        button_all = (Button) view.findViewById(R.id.button_all);
-		        button_clear = (Button) view.findViewById(R.id.button_clear);
 		                
 		    } catch (InflateException e) {}
 		 return view;

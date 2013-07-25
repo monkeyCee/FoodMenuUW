@@ -28,7 +28,6 @@ public class ImageAdapter extends BaseAdapter{
 		this.id = id;
 		tf = Typeface.createFromAsset(context.getAssets(),
 	            "Roboto-Regular.ttf");
-		Log.d("Created RLH Object", "Inside IA");
 		menuHolder = RestarauntMenuHolder.getInstance(null);
 		locationHolder = RestaurantLocationHolder.getInstance(context);
 	}
