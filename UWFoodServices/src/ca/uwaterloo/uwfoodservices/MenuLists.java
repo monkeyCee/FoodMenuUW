@@ -42,6 +42,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ca.uwaterloo.uwfoodservicesutility.DailyMenu;
+import ca.uwaterloo.uwfoodservicesutility.RestarauntMenuHolder;
+import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuItem;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -103,6 +107,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     
     ViewPager vp;
     String restaurant_selection;
+    static int positionRestaurant;
     public static String formattedDate;
     static int weekDay;
     static Calendar calendar;
@@ -116,8 +121,9 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		
 		Intent intent = getIntent();
 		restaurant_selection = intent.getStringExtra("Restaurant Name");
-
-		//Log.d("Restaurant Selected", restaurant_selection);
+		positionRestaurant = intent.getIntExtra("Restaurant Position", 0);
+		
+		Log.d("Restaurant Selected", restaurant_selection);
 		
 		// Date handling
 		calendar = Calendar.getInstance();
@@ -383,7 +389,11 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			
 			RestarauntMenuHolder menuHolder = RestarauntMenuHolder.getInstance(null);
 			
-			Log.d(menuHolder.restaurantMenu.get(0).getMenu()[0].getLunch() + "", "getRestaurant");
+			Log.d((menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner() == null) + "", "REST1");
+			//Log.d(menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner().equals(null) + "", "REST12");
+			//Log.d(menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner().equals(new DailyMenu(null, null).getDinner()) + "", "REST13");
+			//Log.d(menuHolder.restaurantMenu.get(1).getMenu()[0].getLunch().get(0).getProductName(), "REST2");
+			//Log.d(menuHolder.restaurantMenu.get(0).getMenu()[6].getLunch() + "", "REST3");
 			
 			TextView textDay = (TextView) rootView.findViewById(R.id.textDay);
 			SpannableString content = new SpannableString(formattedDate);
@@ -397,13 +407,14 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			LIST.add("LUNCH");
 			
 			int day = getArguments().getInt(ARG_SECTION_NUMBER);
-			int positionRestaurant = 5;
 			
+			/*
 			for (int i = 0; i < menuHolder.restaurantMenu.size(); i++) {
 				if (menuHolder.restaurantMenu.get(i).getRestaurant().equals("Bon Appetit")) {
 					positionRestaurant = i;
 				}
 			}
+			*/
 			
 			//Log.d(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().size() + "", "getLunch");
 			
@@ -414,7 +425,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 					LIST.add(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductName());
 				}
 			}
-			
 			/*
 			if (menuHolder.menuObject.get(positionRestaurant).getMenu().equals("null")) {
 				LIST.add("There is nothing on the menu");
@@ -425,7 +435,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 					Log.d("yes", "size");
 				}
 			}*/
-			
 			HDR_POS2 = LIST.size();
 			LIST.add("DINNER");
 			
@@ -436,7 +445,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 					LIST.add(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductName());
 				}
 			}
-			
 			return rootView;
 		}
 		

@@ -1,8 +1,9 @@
-package ca.uwaterloo.uwfoodservices;
+package ca.uwaterloo.uwfoodservicesutility;
 
 import java.util.ArrayList;
 
-import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuObject;
+import ca.uwaterloo.uwfoodservices.R;
+import ca.uwaterloo.uwfoodservices.R.drawable;
 
 public class RestarauntMenuHolder{
 	

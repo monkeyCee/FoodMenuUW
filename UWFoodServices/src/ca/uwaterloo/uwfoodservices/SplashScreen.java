@@ -2,6 +2,8 @@ package ca.uwaterloo.uwfoodservices;
 
 import org.json.JSONObject;
 
+import ca.uwaterloo.uwfoodservicesutility.ParseMenuData;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,6 +20,7 @@ public class SplashScreen extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
+		menuParser = new ParseMenuData();
 		locationParser = new ParseLocationData(this);
 		
 		String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
@@ -51,7 +54,7 @@ public class SplashScreen extends Activity {
 		@Override
         protected void onPostExecute(JSONObject[] jObjArray) {
 			if(jObjArray != null){
-				ParseMenuData.Parse(jObjArray[0]);	
+				menuParser.Parse(jObjArray[0]);	
 				locationParser.Parse(jObjArray[1]);	
 			}
 			else{

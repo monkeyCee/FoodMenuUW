@@ -1,4 +1,5 @@
 package ca.uwaterloo.uwfoodservices;
+import ca.uwaterloo.uwfoodservicesutility.RestarauntMenuHolder;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;

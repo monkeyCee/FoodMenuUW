@@ -1,4 +1,4 @@
-package ca.uwaterloo.uwfoodservices;
+package ca.uwaterloo.uwfoodservicesutility;
 
 import java.util.ArrayList;
 
@@ -7,10 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
-import ca.uwaterloo.uwfoodservicesutility.DailyMenu;
-import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
-import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuItem;
-import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuObject;
 
 public class ParseMenuData {
 	
@@ -38,13 +34,12 @@ public class ParseMenuData {
 	private static final String TAG_DIET_TYPE = "diet_type";
 	
 	private static RestarauntMenuHolder holder;
-	private static ArrayList<RestaurantMenuObject> restaurantMenu;
+	private ArrayList<RestaurantMenuObject> restaurantMenu;
 	
 	public ParseMenuData(){
-		
 	}
 	
-	public static void Parse(JSONObject json){
+	public void Parse(JSONObject json){
 		
 		restaurantMenu = new ArrayList<RestaurantMenuObject>();
 		
@@ -78,12 +73,12 @@ public class ParseMenuData {
 			int position = 0;
 			DailyMenu[] menuArray = new DailyMenu[7];
 			
-			for (int i = 0; i < 7; i++) {
-				menuArray[i] = new DailyMenu(null, null);
-			}
-			Log.d(outlets.length() + "", "outletsLength");
-			
 			for(int i = 0; i < outlets.length(); i++){
+				
+				menuArray = new DailyMenu[7];
+				for (int j = 0; j < 7; j++) {
+					menuArray[j] = new DailyMenu(null, null);
+				}
 				
 				lunchList = new ArrayList<RestaurantMenuItem>();
 				dinnerList = new ArrayList<RestaurantMenuItem>();
@@ -113,7 +108,6 @@ public class ParseMenuData {
 					else if (weekDay.equals("Friday")) { position = 4; }
 					else if (weekDay.equals("Saturday")) { position = 5; }
 					else if (weekDay.equals("Sunday")) { position = 6; }
-					
 					// Lunch
 					if (meals.has(TAG_LUNCH) && meals.getJSONArray(TAG_LUNCH).length() > 0) {
 						lunch = meals.getJSONArray(TAG_LUNCH);
@@ -127,14 +121,13 @@ public class ParseMenuData {
 							} else {
 								product_id = Integer.parseInt(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
 							}
-							
 							diet_type = lunch.getJSONObject(k).getString(TAG_DIET_TYPE);
 							
 							lunchList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
+							
 							Log.d(lunchList.get(k).getProductName(), "result product name - lunch list");
 						}
 					}
-					
 					// Dinner
 					if (meals.has(TAG_DINNER) && meals.getJSONArray(TAG_DINNER).length() > 0) {
 						dinner = meals.getJSONArray(TAG_DINNER);
@@ -152,14 +145,15 @@ public class ParseMenuData {
 							dinnerList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
 						}
 					}
-					menuArray[position] = new DailyMenu(lunchList, dinnerList);
+					
+					if (lunchList.size() == 0) { lunchList = null; }
+					if (dinnerList.size() == 0) { dinnerList = null; }
+					menuArray[position] = new DailyMenu(lunchList, dinnerList); // THIS ONE
 				}
-				
-				
 				restaurantMenu.add(new RestaurantMenuObject(outlet_id, outlet_name, location_name, image, menuArray));
 			}
 			holder = RestarauntMenuHolder.getInstance(restaurantMenu);
-				
+			
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
