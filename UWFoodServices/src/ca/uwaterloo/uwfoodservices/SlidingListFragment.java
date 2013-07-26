@@ -59,7 +59,10 @@ public class SlidingListFragment extends ListFragment {
 		 
 		 else{
 			 Intent intent = new Intent(getActivity(), MenuLists.class);
+			 Log.d((String) new ImageAdapter(getActivity(), "menu").getItem(position), "STRING RESTAUARNT NAME");
+			 Log.d(position + "", "STRING RESTAUARNT POSITION");
 			 intent.putExtra("Restaurant Name", (String) new ImageAdapter(getActivity(), "menu").getItem(position));
+			 intent.putExtra("Restaurant Position", position);
 			 startActivity(intent);
 			 
 		 }
