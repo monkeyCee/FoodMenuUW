@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import android.content.BroadcastReceiver;
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -28,7 +27,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+import ca.uwaterloo.uwfoodservicesutility.RestarauntMenuHolder;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
@@ -39,63 +38,15 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	
 	public static String url = "http://api.uwaterloo.ca/public/v2/foodservices/2013/26/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
 	
-	// Network Verification
-	public static final String WIFI = "Wi-Fi Only";
-    public static final String BOTH = "Both Wi-Fi and Data";
-	
-    // Whether there is a Wi-Fi connection.
-    private static boolean wifiConnected = false;
-    // Whether there is a mobile connection.
-    private static boolean mobileConnected = false;
-    // Whether the display should be refreshed.
-    public static boolean refreshDisplay = true;
-
-    // The user's current network preference setting.
-    public static String sPref = null;
-    
-    // The BroadcastReceiver that tracks network connectivity changes.
-    private NetworkReceiver receiver = new NetworkReceiver();
-    
-    public class NetworkReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-
-            // Checks the user prefs and the network connection. Based on the result, decides
-            // whether to refresh the display or keep the current display.
-            // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
-            if (WIFI.equals(sPref) && networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                // If device has its Wi-Fi connection, sets refreshDisplay
-                // to true. This causes the display to be refreshed when the user
-                // returns to the app.
-                refreshDisplay = true;
-                Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
-
-                // If the setting is ANY network and there is a network connection
-                // (which by process of elimination would be mobile), sets refreshDisplay to true.
-            } else if (BOTH.equals(sPref) && networkInfo != null) {
-                refreshDisplay = true;
-
-                // Otherwise, the app can't download content--either because there is no network
-                // connection (mobile or Wi-Fi), or because the pref setting is WIFI, and there
-                // is no Wi-Fi connection.
-                // Sets refreshDisplay to false.
-            } else {
-                refreshDisplay = false;
-                Toast.makeText(context, R.string.lost_connection, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-    
     ViewPager vp;
     String restaurant_selection;
+    static int positionRestaurant;
+    RestaurantLocationHolder holder = RestaurantLocationHolder.getInstance(getBaseContext());
+    
     public static String formattedDate;
     static int weekDay;
     static Calendar calendar;
     static SimpleDateFormat simpleDateFormat;
-    RestaurantLocationHolder holder = RestaurantLocationHolder.getInstance(getBaseContext());
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,15 +55,18 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		
 		Intent intent = getIntent();
 		restaurant_selection = intent.getStringExtra("Restaurant Name");
+		positionRestaurant = intent.getIntExtra("Restaurant Position", 0);
+		
+		Log.d("Restaurant Selected", restaurant_selection);
 		
 		// Date handling
 		calendar = Calendar.getInstance();
 		Log.d(calendar.getTime() + "", "current time");
 		
-		simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd");
+		simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
 		formattedDate = simpleDateFormat.format(calendar.getTime());
 		
-		String weekInYear = (new SimpleDateFormat("w")).format(calendar.getTime());
+		String weekInYear = (new SimpleDateFormat("w", Locale.CANADA)).format(calendar.getTime());
 
 		Log.d(formattedDate + "", "current time - formmated");
 		
@@ -124,10 +78,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		if (calendar.getTime().toString().split(" ")[0].equals("Fri")) { weekDay = 4; }
 		if (calendar.getTime().toString().split(" ")[0].equals("Sat")) { weekDay = 5; }
 		if (calendar.getTime().toString().split(" ")[0].equals("Sun")) { weekDay = 6; }
-		
-		Log.d(Integer.parseInt(weekInYear) + "", "current time - weekInYear");
-		
-		url = "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + Integer.parseInt(weekInYear) + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
 		
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -175,53 +125,16 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 
 		vp.setCurrentItem(weekDay);
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-		
-		// Register BroadcastReceiver to track connection changes.
-		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-		receiver = new NetworkReceiver();
-		this.registerReceiver(receiver, filter);
 	}
 	
-	// Refreshes the display if the network connection and the
-    // pref settings allow it.
     @Override
     public void onStart() {
         super.onStart();
-
-        // Gets the user's network preference settings
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Retrieves a string value for the preferences. The second parameter
-        // is the default value to use if a preference value is not found.
-        sPref = sharedPrefs.getString("connection_type_preference", "Both Wi-Fi and Data");
-
-        updateConnectedFlags();
-
-        // Only loads the page if refreshDisplay is true. Otherwise, keeps previous
-        // display. For example, if the user has set "Wi-Fi only" in prefs and the
-        // device loses its Wi-Fi connection midway through the user using the app,
-        // you don't want to refresh the display--this would force the display of
-        // an error page instead of the menu content.
-        /*
-        if (refreshDisplay) {
-            loadPage();
-        }*/
     }
     
     @Override
     public void onResume() {
     	super.onResume();
-    	vp.getAdapter().notifyDataSetChanged();
-
-    	IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        receiver = new NetworkReceiver();
-        this.registerReceiver(receiver, filter);
-        
-        updateConnectedFlags();
-        Log.d(refreshDisplay + "", "network refresh resume");
-        if (refreshDisplay) {
-            loadPage();
-        }
     }
     
     @Override
@@ -232,58 +145,11 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     @Override
     public void onPause() {
     	super.onPause();
-        if (receiver != null) {
-            this.unregisterReceiver(receiver);
-        }
     }
     
     @Override
     public void onDestroy() {
         super.onDestroy();
-    }
-    
-    // Checks the network connection and sets the wifiConnected and mobileConnected
-    // variables accordingly.
-    private void updateConnectedFlags() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
-        if (activeInfo != null) {
-        	Log.d(activeInfo.isConnected() + "", "network connected");
-        } else {
-        	Log.d(null + "", "network connected");
-        }
-        if (activeInfo != null && activeInfo.isConnected()) {
-            wifiConnected = activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
-            mobileConnected = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
-        } else {
-            wifiConnected = false;
-            mobileConnected = false;
-        }
-    }
-    
-    // Uses AsyncTask subclass to download the JSON data. This avoids UI lock up. 
-    // To prevent network operations from causing a delay that results in a poor 
-    // user experience, always perform network operations on a separate thread from the UI.
-    private void loadPage() {
-    	Log.d(sPref, "network");
-    	Log.d(BOTH, "network");
-    	Log.d(wifiConnected + "", "network");
-    	Log.d(mobileConnected + "", "network");
-        if (((sPref.equals(BOTH)) && (wifiConnected || mobileConnected))
-                || ((sPref.equals(WIFI)) && (wifiConnected))) {
-        	// Load Page
-        } else {
-            showErrorPage();
-        }
-    }
-    
-    // Displays an error if the app is unable to load content.
-    private void showErrorPage() {
-        setContentView(R.layout.activity_menu_lists);
-
-        // The specified network connection is not available. Displays error message.
-        // Show: "Unable to load content. Check your network connection."
     }
     
 	public static class MenuAdapter extends FragmentPagerAdapter {
@@ -369,7 +235,11 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			
 			RestarauntMenuHolder menuHolder = RestarauntMenuHolder.getInstance(null);
 			
-			Log.d(menuHolder.restaurantMenu.get(0).getMenu()[0].getLunch() + "", "getRestaurant");
+			Log.d((menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner() == null) + "", "REST1");
+			//Log.d(menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner().equals(null) + "", "REST12");
+			//Log.d(menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner().equals(new DailyMenu(null, null).getDinner()) + "", "REST13");
+			//Log.d(menuHolder.restaurantMenu.get(1).getMenu()[0].getLunch().get(0).getProductName(), "REST2");
+			//Log.d(menuHolder.restaurantMenu.get(0).getMenu()[6].getLunch() + "", "REST3");
 			
 			TextView textDay = (TextView) rootView.findViewById(R.id.textDay);
 			SpannableString content = new SpannableString(formattedDate);
@@ -383,13 +253,14 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			LIST.add("LUNCH");
 			
 			int day = getArguments().getInt(ARG_SECTION_NUMBER);
-			int positionRestaurant = 5;
 			
+			/*
 			for (int i = 0; i < menuHolder.restaurantMenu.size(); i++) {
 				if (menuHolder.restaurantMenu.get(i).getRestaurant().equals("Bon Appetit")) {
 					positionRestaurant = i;
 				}
 			}
+			*/
 			
 			//Log.d(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().size() + "", "getLunch");
 			
@@ -400,7 +271,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 					LIST.add(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductName());
 				}
 			}
-			
 			/*
 			if (menuHolder.menuObject.get(positionRestaurant).getMenu().equals("null")) {
 				LIST.add("There is nothing on the menu");
@@ -411,7 +281,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 					Log.d("yes", "size");
 				}
 			}*/
-			
 			HDR_POS2 = LIST.size();
 			LIST.add("DINNER");
 			
@@ -422,7 +291,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 					LIST.add(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductName());
 				}
 			}
-			
 			return rootView;
 		}
 		
@@ -553,7 +421,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			return true;
 		} else if (item.getTitle() == "Refresh") {
 			Log.d("load", "load");
-			loadPage();
+			//loadPage();
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);

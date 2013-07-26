@@ -3,6 +3,7 @@ package ca.uwaterloo.uwfoodservices;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +13,6 @@ import android.widget.ListView;
 public class RestaurantMenuList extends Activity {
 	
 	private int requestCode = -1;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,10 @@ public class RestaurantMenuList extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				
+				Log.d((String) imageAdapter.getItem(position), "STRING RESTAUARNT NAME");
+				Log.d(position + "", "STRING RESTAUARNT POSITION");
 				intent_menu.putExtra("Restaurant Name", (String) imageAdapter.getItem(position));
+				intent_menu.putExtra("Restaurant Position", position);
 				startActivityForResult(intent_menu, requestCode);
 				
 			}
