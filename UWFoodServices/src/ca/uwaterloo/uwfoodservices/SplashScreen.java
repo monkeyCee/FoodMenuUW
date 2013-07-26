@@ -1,5 +1,8 @@
 package ca.uwaterloo.uwfoodservices;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.json.JSONObject;
 
 import ca.uwaterloo.uwfoodservicesutility.ParseMenuData;
@@ -99,7 +102,41 @@ public class SplashScreen extends Activity {
 		
 	}
 	
+	// Date Handling
+	//======================================================
+	public static String formattedDate;
+    static int weekDay;
+    static Calendar calendar;
+    static SimpleDateFormat simpleDateFormat;
+    
+    public String getDatedMenuUrl() {
+    	// Date handling
+		calendar = Calendar.getInstance();
+		Log.d(calendar.getTime() + "", "current time");
+		
+		simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd");
+		formattedDate = simpleDateFormat.format(calendar.getTime());
+		
+		String weekInYear = (new SimpleDateFormat("w")).format(calendar.getTime());
+
+		Log.d(formattedDate + "", "current time - formmated");
+		
+		weekDay = 0;
+		if (calendar.getTime().toString().split(" ")[0].equals("Mon")) { weekDay = 0; }
+		if (calendar.getTime().toString().split(" ")[0].equals("Tue")) { weekDay = 1; }
+		if (calendar.getTime().toString().split(" ")[0].equals("Wed")) { weekDay = 2; }
+		if (calendar.getTime().toString().split(" ")[0].equals("Thu")) { weekDay = 3; }
+		if (calendar.getTime().toString().split(" ")[0].equals("Fri")) { weekDay = 4; }
+		if (calendar.getTime().toString().split(" ")[0].equals("Sat")) { weekDay = 5; }
+		if (calendar.getTime().toString().split(" ")[0].equals("Sun")) { weekDay = 6; }
+		
+		Log.d(Integer.parseInt(weekInYear) + "", "current time - weekInYear");
+		
+		return "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + Integer.parseInt(weekInYear) + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
+    }
+	
 	// Network Verification
+	//======================================================
 	public static final String WIFI = "Wi-Fi Only";
     public static final String BOTH = "Both Wi-Fi and Data";
 	
@@ -185,7 +222,10 @@ public class SplashScreen extends Activity {
     		locationParser = new ParseLocationData(this);
     		
     		String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
-    		String urlMenu = "http://api.uwaterloo.ca/public/v2/foodservices/2013/29/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
+    		String urlMenu = getDatedMenuUrl();
+    		
+    		Log.d(urlMenu + "", "menuurl");
+    		
     		Intent intent = new Intent(this, MainScreen.class);
     		new LocationList().execute(urlMenu, urlLocations);
     		startActivity(intent);

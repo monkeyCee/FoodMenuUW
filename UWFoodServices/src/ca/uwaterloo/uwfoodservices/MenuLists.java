@@ -4,17 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -29,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.uwaterloo.uwfoodservicesutility.RestarauntMenuHolder;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -44,11 +38,12 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     ViewPager vp;
     String restaurant_selection;
     static int positionRestaurant;
+    RestaurantLocationHolder holder = RestaurantLocationHolder.getInstance(getBaseContext());
+    
     public static String formattedDate;
     static int weekDay;
     static Calendar calendar;
     static SimpleDateFormat simpleDateFormat;
-    RestaurantLocationHolder holder = RestaurantLocationHolder.getInstance(getBaseContext());
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,10 +60,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		calendar = Calendar.getInstance();
 		Log.d(calendar.getTime() + "", "current time");
 		
-		simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd");
+		simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
 		formattedDate = simpleDateFormat.format(calendar.getTime());
 		
-		String weekInYear = (new SimpleDateFormat("w")).format(calendar.getTime());
+		String weekInYear = (new SimpleDateFormat("w", Locale.CANADA)).format(calendar.getTime());
 
 		Log.d(formattedDate + "", "current time - formmated");
 		
@@ -80,10 +75,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		if (calendar.getTime().toString().split(" ")[0].equals("Fri")) { weekDay = 4; }
 		if (calendar.getTime().toString().split(" ")[0].equals("Sat")) { weekDay = 5; }
 		if (calendar.getTime().toString().split(" ")[0].equals("Sun")) { weekDay = 6; }
-		
-		Log.d(Integer.parseInt(weekInYear) + "", "current time - weekInYear");
-		
-		url = "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + Integer.parseInt(weekInYear) + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
 		
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
