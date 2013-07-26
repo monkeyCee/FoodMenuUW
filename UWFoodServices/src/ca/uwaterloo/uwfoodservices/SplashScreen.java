@@ -74,6 +74,20 @@ public class SplashScreen extends Activity {
     public void onStart() {
         super.onStart();
     }
+    
+    @Override
+    public void onPause() {
+    	super.onPause();
+    	
+    	if (receiver != null) {
+            this.unregisterReceiver(receiver);
+        }
+    }
+    
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
 	private static class LocationList extends AsyncTask<String, Void, JSONObject[]> {
 
