@@ -1,11 +1,12 @@
 package ca.uwaterloo.uwfoodservices;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import org.json.JSONObject;
-
-import ca.uwaterloo.uwfoodservicesutility.ParseMenuData;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -21,6 +22,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
+import ca.uwaterloo.uwfoodservicesutility.InternalStorage;
+import ca.uwaterloo.uwfoodservicesutility.ParseMenuData;
+import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
+import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuObject;
 
 public class SplashScreen extends Activity {
 	
@@ -89,9 +94,16 @@ public class SplashScreen extends Activity {
         super.onDestroy();
     }
 
-	private static class LocationList extends AsyncTask<String, Void, JSONObject[]> {
+    // Data Fetching
+    //======================================================
+	private static class AsyncDataFetcher extends AsyncTask<String, Void, JSONObject[]> {
 
-
+		Context context;
+		
+		public AsyncDataFetcher(Context context) {
+			this.context = context;
+		}
+		
 		@Override
 		protected JSONObject[] doInBackground(String... urls) {
 			Log.d("Url", urls[0]);
@@ -102,19 +114,36 @@ public class SplashScreen extends Activity {
 			return jsonObjectArray;
 		}
 		
+		@SuppressWarnings("unchecked")
 		@Override
         protected void onPostExecute(JSONObject[] jObjArray) {
 			if(jObjArray != null){
 				menuParser.Parse(jObjArray[0]);	
 				locationParser.Parse(jObjArray[1]);	
+				
+				try {
+					InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
+					List<RestaurantMenuObject> readObject = (List<RestaurantMenuObject>) InternalStorage.readObject(context, "menu");
+					
+					Log.d(readObject.get(0).getRestaurant(), "READ RESTAURANT");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			else{
 				Log.d("Object is null", "Null");
 			}
-			
        }
 		
 	}
+	
+	// Writing Data to Internal Storage
+    //======================================================
+	
 	
 	// Date Handling
 	//======================================================
@@ -241,7 +270,11 @@ public class SplashScreen extends Activity {
     		Log.d(urlMenu + "", "menuurl");
     		
     		Intent intent = new Intent(this, MainScreen.class);
-    		new LocationList().execute(urlMenu, urlLocations);
+    		new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);
+    		
+    		File cacheDir = getCacheDir();
+    		
+    		
     		startActivity(intent);
     		
         } else {

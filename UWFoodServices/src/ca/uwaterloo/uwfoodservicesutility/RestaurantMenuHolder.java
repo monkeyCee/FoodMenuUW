@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import ca.uwaterloo.uwfoodservices.R;
 
-public class RestarauntMenuHolder{
+public class RestaurantMenuHolder{
 	
-	private static RestarauntMenuHolder mInstance = null;
+	private static RestaurantMenuHolder mInstance = null;
 	public ArrayList<RestaurantMenuObject> restaurantMenu;
 	
 	public Integer[] image_list = {R.drawable.bonappetit, R.drawable.browsers, R.drawable.brubakers, R.drawable.ceit, R.drawable.eye_opener,
@@ -15,18 +15,18 @@ public class RestarauntMenuHolder{
 	
 	
 	
-	public static RestarauntMenuHolder getInstance(ArrayList<RestaurantMenuObject> restaurantMenu){
+	public static RestaurantMenuHolder getInstance(ArrayList<RestaurantMenuObject> restaurantMenu){
 		if(mInstance == null){
-			mInstance = new RestarauntMenuHolder(restaurantMenu);
+			mInstance = new RestaurantMenuHolder(restaurantMenu);
 		}
 		return mInstance;
 	}
 	
-	public static RestarauntMenuHolder getInstance(){
+	public static RestaurantMenuHolder getInstance(){
 		return mInstance;
 	}
 	
-	private RestarauntMenuHolder(ArrayList<RestaurantMenuObject> restaurantMenu){
+	private RestaurantMenuHolder(ArrayList<RestaurantMenuObject> restaurantMenu){
 		this.restaurantMenu = restaurantMenu;
 	}
 	

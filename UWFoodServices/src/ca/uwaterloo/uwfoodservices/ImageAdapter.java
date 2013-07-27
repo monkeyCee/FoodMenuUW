@@ -1,5 +1,5 @@
 package ca.uwaterloo.uwfoodservices;
-import ca.uwaterloo.uwfoodservicesutility.RestarauntMenuHolder;
+import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
@@ -16,7 +16,7 @@ public class ImageAdapter extends BaseAdapter{
 	private static LayoutInflater inflater = null;
 	private ViewHolder holder;
 	private String id;
-	private RestarauntMenuHolder menuHolder;
+	private RestaurantMenuHolder menuHolder;
 	private RestaurantLocationHolder locationHolder;
 	private Context context;
 	
@@ -29,7 +29,7 @@ public class ImageAdapter extends BaseAdapter{
 		this.id = id;
 		tf = Typeface.createFromAsset(context.getAssets(),
 	            "Roboto-Regular.ttf");
-		menuHolder = RestarauntMenuHolder.getInstance(null);
+		menuHolder = RestaurantMenuHolder.getInstance(null);
 		locationHolder = RestaurantLocationHolder.getInstance(context);
 	}
 	

@@ -1,5 +1,6 @@
 package ca.uwaterloo.uwfoodservicesutility;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -31,7 +32,7 @@ public class ParseMenuData {
 	private static final String TAG_DIET_TYPE = "diet_type";
 	
 	@SuppressWarnings("unused")
-	private static RestarauntMenuHolder holder;
+	private static RestaurantMenuHolder holder;
 	private ArrayList<RestaurantMenuObject> restaurantMenu;
 	
 	public ParseMenuData(){
@@ -150,7 +151,7 @@ public class ParseMenuData {
 				}
 				restaurantMenu.add(new RestaurantMenuObject(outlet_id, outlet_name, location_name, image, menuArray));
 			}
-			holder = RestarauntMenuHolder.getInstance(restaurantMenu);
+			holder = RestaurantMenuHolder.getInstance(restaurantMenu);
 			
 		} catch (JSONException e) {
 			e.printStackTrace();

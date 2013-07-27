@@ -24,7 +24,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import ca.uwaterloo.uwfoodservicesutility.RestarauntMenuHolder;
+import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
@@ -227,7 +227,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 				}
 			}
 			
-			RestarauntMenuHolder menuHolder = RestarauntMenuHolder.getInstance(null);
+			RestaurantMenuHolder menuHolder = RestaurantMenuHolder.getInstance(null);
 			
 			Log.d((menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner() == null) + "", "REST1");
 			
