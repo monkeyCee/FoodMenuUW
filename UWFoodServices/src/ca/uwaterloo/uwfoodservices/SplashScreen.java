@@ -3,6 +3,7 @@ package ca.uwaterloo.uwfoodservices;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -123,6 +124,7 @@ public class SplashScreen extends Activity {
 				
 				try {
 					InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
+					InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance().objects);
 					List<RestaurantMenuObject> readObject = (List<RestaurantMenuObject>) InternalStorage.readObject(context, "menu");
 					
 					Log.d(readObject.get(0).getRestaurant(), "READ RESTAURANT");
@@ -272,22 +274,43 @@ public class SplashScreen extends Activity {
     		Intent intent = new Intent(this, MainScreen.class);
     		new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);
     		
-    		File cacheDir = getCacheDir();
-    		
-    		
     		startActivity(intent);
     		
         } else {
-        	Log.d("yes" + "", "network");
-            showErrorPage();
-            Log.d("yes1" + "", "network");
+        	loadCachedData();
+            //showErrorPage();
         }
+    }
+    
+    @SuppressWarnings("unchecked")
+	private void loadCachedData() {
+    	ArrayList<RestaurantMenuObject> restaurantMenu = null;
+    	RestaurantObject[] restaurantLocations = null;
+    	try {
+			restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
+			restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Log.d(restaurantMenu.get(0).getRestaurant(), "READ RESTAURANT");
+		
+		RestaurantMenuHolder.getInstance(restaurantMenu);
+		RestaurantLocationHolder.getInstance(restaurantLocations);
+		
+		Log.d(RestaurantMenuHolder.getInstance().restaurantMenu.get(0).getRestaurant() + "", "READ RESTAURANT HOLDER");
+		
+		Intent intent = new Intent(this, MainScreen.class);
+		startActivity(intent);
     }
     
     // Displays an error if the app is unable to load content.
     private void showErrorPage() {
         //setContentView(R.layout.activity_menu_lists);
-    	Log.d("yes2" + "", "network");
+    	
         // The specified network connection is not available. Displays error message.
         // Show: "Unable to load content. Check your network connection."
     }
