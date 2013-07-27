@@ -3,7 +3,6 @@ package ca.uwaterloo.uwfoodservicesutility;
 import java.util.ArrayList;
 
 import ca.uwaterloo.uwfoodservices.R;
-import ca.uwaterloo.uwfoodservices.R.drawable;
 
 public class RestarauntMenuHolder{
 	

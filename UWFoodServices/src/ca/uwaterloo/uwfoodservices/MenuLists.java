@@ -4,14 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import android.content.BroadcastReceiver;
 import java.util.Locale;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -66,8 +63,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
 		formattedDate = simpleDateFormat.format(calendar.getTime());
 		
-		String weekInYear = (new SimpleDateFormat("w", Locale.CANADA)).format(calendar.getTime());
-
 		Log.d(formattedDate + "", "current time - formmated");
 		
 		weekDay = 0;
@@ -187,11 +182,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		 * fragment.
 		 */
 		public static final String ARG_SECTION_NUMBER = "section_number";
-		public String day;
-		private Context context;
+		public int day;
 
 		public static final int HDR_POS1 = 0;
-	    public static int HDR_POS2 = 2;
+	    public int[] HDR_POS2 = new int[7];
 	    
 	    List<String> LIST = new ArrayList<String>();
 
@@ -210,7 +204,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			calendar = Calendar.getInstance();
 			calendar.add(Calendar.DATE, getArguments().getInt(ARG_SECTION_NUMBER) - weekDay);
 			
-			simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd");
+			simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
 			
 			if (simpleDateFormat.format(calendar.getTime()).split(" ")[1].startsWith("0")) {
 				formattedDate = simpleDateFormat.format(calendar.getTime()).split(" ")[0] +
@@ -236,10 +230,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			RestarauntMenuHolder menuHolder = RestarauntMenuHolder.getInstance(null);
 			
 			Log.d((menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner() == null) + "", "REST1");
-			//Log.d(menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner().equals(null) + "", "REST12");
-			//Log.d(menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner().equals(new DailyMenu(null, null).getDinner()) + "", "REST13");
-			//Log.d(menuHolder.restaurantMenu.get(1).getMenu()[0].getLunch().get(0).getProductName(), "REST2");
-			//Log.d(menuHolder.restaurantMenu.get(0).getMenu()[6].getLunch() + "", "REST3");
 			
 			TextView textDay = (TextView) rootView.findViewById(R.id.textDay);
 			SpannableString content = new SpannableString(formattedDate);
@@ -247,22 +237,11 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			textDay.setText(content);
 			
 			ListView listView = (ListView) rootView.findViewById(R.id.list_menu);
-			listView.setAdapter(new MenuListAdapter(getActivity()));
 			
 			LIST.clear();
 			LIST.add("LUNCH");
 			
-			int day = getArguments().getInt(ARG_SECTION_NUMBER);
-			
-			/*
-			for (int i = 0; i < menuHolder.restaurantMenu.size(); i++) {
-				if (menuHolder.restaurantMenu.get(i).getRestaurant().equals("Bon Appetit")) {
-					positionRestaurant = i;
-				}
-			}
-			*/
-			
-			//Log.d(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().size() + "", "getLunch");
+			day = getArguments().getInt(ARG_SECTION_NUMBER);
 			
 			if (menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch() == null) {
 				LIST.add("There is nothing on the menu");
@@ -271,17 +250,8 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 					LIST.add(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductName());
 				}
 			}
-			/*
-			if (menuHolder.menuObject.get(positionRestaurant).getMenu().equals("null")) {
-				LIST.add("There is nothing on the menu");
-			} else {
-				for (int i = 0; i < dwt.get(positionLunch).size() - 1; i ++) {
-					Log.d(i+"", "size i");
-					LIST.add(dwt.get(positionLunch).get(i).get(0));
-					Log.d("yes", "size");
-				}
-			}*/
-			HDR_POS2 = LIST.size();
+			
+			HDR_POS2[day] = LIST.size();
 			LIST.add("DINNER");
 			
 			if (menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getDinner() == null) {
@@ -291,6 +261,11 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 					LIST.add(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductName());
 				}
 			}
+			
+			Log.d(HDR_POS2[day] + " " + day, "HEADERPOSITION2");
+			
+			listView.setAdapter(new MenuListAdapter(getActivity()));
+			
 			return rootView;
 		}
 		
@@ -335,6 +310,8 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 
 	            String headerText = getHeader(position);
 	            if(headerText != null) {
+	            	
+	            	Log.d(position + "", "HEADERPOSITION POSITION");
 
 	                View item = convertView;
 	                if(convertView == null || convertView.getTag() == LIST_ITEM) {
@@ -367,7 +344,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 
 	            //Set last divider in a sublist invisible
 	            View divider = item.findViewById(R.id.item_separator);
-	            if(position == HDR_POS2 -1 || position == LIST.size() - 1) {
+	            if(position == HDR_POS2[day] -1 || position == LIST.size() - 1) {
 	                divider.setVisibility(View.INVISIBLE);
 	            }
 	            
@@ -377,7 +354,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 
 	        private String getHeader(int position) {
 
-	            if(position == HDR_POS1  || position == HDR_POS2) {
+	            if(position == HDR_POS1  || position == HDR_POS2[day]) {
 	                return LIST.get(position);
 	            }
 

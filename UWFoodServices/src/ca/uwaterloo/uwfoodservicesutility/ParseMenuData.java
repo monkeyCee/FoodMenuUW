@@ -11,14 +11,11 @@ import android.util.Log;
 public class ParseMenuData {
 	
 	private static final String TAG_META = "meta";
-	private static final String TAG_MESSAGE = "message";
 	
 	private static final String TAG_DATA = "data";
 	private static final String TAG_OUTLETS = "outlets";
 	//private static final String TAG_BONAPPETIT = "BonAppetit";
 	private static final String TAG_MENU = "menu";
-	
-	private static final String[] TAG_DAYS = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 	
 	private static final String TAG_OUTLET_ID = "outlet_id";
 	private static final String TAG_OUTLET_NAME = "outlet_name";
@@ -33,6 +30,7 @@ public class ParseMenuData {
 	private static final String TAG_PRODUCT_ID = "product_id";
 	private static final String TAG_DIET_TYPE = "diet_type";
 	
+	@SuppressWarnings("unused")
 	private static RestarauntMenuHolder holder;
 	private ArrayList<RestaurantMenuObject> restaurantMenu;
 	
