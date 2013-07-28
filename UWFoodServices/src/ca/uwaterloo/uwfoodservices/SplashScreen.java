@@ -124,10 +124,12 @@ public class SplashScreen extends Activity {
 				
 				try {
 					InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
-					InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance().objects);
-					List<RestaurantMenuObject> readObject = (List<RestaurantMenuObject>) InternalStorage.readObject(context, "menu");
+					InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance(context).objects);
 					
-					Log.d(readObject.get(0).getRestaurant(), "READ RESTAURANT");
+					List<RestaurantMenuObject> readObject = (List<RestaurantMenuObject>) InternalStorage.readObject(context, "menu");
+					RestaurantObject[] restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(context, "location");
+					Log.d(restaurantLocations[0].getRestaurant(), "READ RESTAURANT LOCATION 1");
+					Log.d(readObject.get(0).getRestaurant(), "READ RESTAURANT 1 ");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -298,8 +300,11 @@ public class SplashScreen extends Activity {
 		}
 		Log.d(restaurantMenu.get(0).getRestaurant(), "READ RESTAURANT");
 		
+		RestaurantLocationHolder locationHolder = RestaurantLocationHolder.getInstance(SplashScreen.this);
+		Log.d(restaurantLocations[0] + "", "READ RESTAURANT LOCATION");
+		
 		RestaurantMenuHolder.getInstance(restaurantMenu);
-		RestaurantLocationHolder.getInstance(restaurantLocations);
+		RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
 		
 		Log.d(RestaurantMenuHolder.getInstance().restaurantMenu.get(0).getRestaurant() + "", "READ RESTAURANT HOLDER");
 		
