@@ -138,16 +138,11 @@ public class SplashScreen extends Activity {
 				menuParser.Parse(jObjArray[0]);	
 				locationParser.Parse(jObjArray[1]);	
 				
-				if (cachePref) {
-					try {
-						InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
-						InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance(context).objects);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				} else {
-					InternalStorage.deleteObject(context, "menu");
-					InternalStorage.deleteObject(context, "location");
+				try {
+					InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
+					InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance(context).objects);
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
 			else{
@@ -285,7 +280,13 @@ public class SplashScreen extends Activity {
     // To prevent network operations from causing a delay that results in a poor 
     // user experience, always perform network operations on a separate thread from the UI.
     private void loadData() {
-        if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
+        
+    	if (!cachePref) {
+    		InternalStorage.deleteObject(SplashScreen.this, "menu");
+			InternalStorage.deleteObject(SplashScreen.this, "location");
+		}
+    	
+    	if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
                 || ((networkPref.equals(WIFI)) && (wifiConnected))) {
         	
         	// Load Data
@@ -294,9 +295,6 @@ public class SplashScreen extends Activity {
     		
     		String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
     		String urlMenu = getDatedMenuUrl();
-    		
-    		Log.d(urlMenu + "", "menuurl");
-    		
     		
     		new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);
     		    		
