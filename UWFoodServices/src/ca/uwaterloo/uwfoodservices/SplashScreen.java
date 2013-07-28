@@ -220,11 +220,6 @@ public class SplashScreen extends Activity {
             ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-            Log.d(networkPref + " " + WIFI.equals(networkPref), "NETWORK PREF 1");
-            Log.d(networkInfo + " " + (networkInfo != null), "NETWORK PREF 2");
-            Log.d(networkInfo.getType() + " " + (networkInfo.getType() == ConnectivityManager.TYPE_WIFI), "NETWORK PREF 3");
-            Log.d(ConnectivityManager.TYPE_WIFI + "", "NETWORK PREF 4");
-            
             // Wifi or Data Connected
             if (BOTH.equals(networkPref) && networkInfo != null && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI
             		|| networkInfo.getType() == ConnectivityManager.TYPE_MOBILE)) {
