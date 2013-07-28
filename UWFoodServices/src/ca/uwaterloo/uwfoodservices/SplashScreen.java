@@ -9,6 +9,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,7 @@ public class SplashScreen extends Activity {
 	
 	static ParseLocationData locationParser;
 	static ParseMenuData menuParser;
+	static ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +68,7 @@ public class SplashScreen extends Activity {
             loadPage();
         }*/
 		
-		setContentView(R.layout.activity_splash_screen);
-		
+		setContentView(R.layout.activity_splash_screen);		
 		loadData();
 	}
 
@@ -103,10 +104,19 @@ public class SplashScreen extends Activity {
 
 		Context context;
 		
+		
 		public AsyncDataFetcher(Context context) {
 			this.context = context;
 		}
 		
+		 @Override
+		    protected void onPreExecute()
+		    {
+		        progressDialog= ProgressDialog.show(context, "Hang on...", "Fetching the data...", true);
+                
+		    }; 
+		    
+		    
 		@Override
 		protected JSONObject[] doInBackground(String... urls) {
 			Log.d("Url", urls[0]);
@@ -141,6 +151,8 @@ public class SplashScreen extends Activity {
 			else{
 				Log.d("Object is null", "Null");
 			}
+			
+			progressDialog.dismiss();
        }
 		
 	}
@@ -284,6 +296,7 @@ public class SplashScreen extends Activity {
 	private void loadCachedData() {
     	
     	Log.d("Getting cached data", "+");
+    	progressDialog= ProgressDialog.show(SplashScreen.this, "Hang on...", "Fetching the data..", true);
     	
     	ArrayList<RestaurantMenuObject> restaurantMenu = null;
     	RestaurantObject[] restaurantLocations = null;
@@ -300,12 +313,13 @@ public class SplashScreen extends Activity {
 			RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
 			RestaurantMenuHolder.getInstance(restaurantMenu);
 			Intent intent = new Intent(this, MainScreen.class);
+			progressDialog.dismiss();
 			startActivity(intent);
 		}
 		
 		else{
 			//Go to Error page
-			Log.d("Error", "MOTHERFUCKERS");
+			progressDialog.dismiss();
 			showErrorPage();
 		}
     }
