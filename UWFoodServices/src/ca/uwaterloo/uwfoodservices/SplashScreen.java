@@ -93,6 +93,10 @@ public class SplashScreen extends Activity {
     	if (receiver != null) {
             this.unregisterReceiver(receiver);
         }
+    	
+    	if(progressDialog != null)
+            progressDialog.dismiss();
+        progressDialog = null;
     }
     
     @Override
@@ -151,7 +155,10 @@ public class SplashScreen extends Activity {
 				Log.d("Object is null", "Null");
 			}
 			
-			progressDialog.dismiss();
+			if (progressDialog != null) { 
+				progressDialog.dismiss();
+		   }
+			
        }
 		
 	}
