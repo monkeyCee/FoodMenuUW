@@ -16,16 +16,18 @@
         <CheckBoxPreference
                 android:key="save_data_preference"
                 android:title="@string/title_store_data_preference"
+                android:defaultValue="true"
                 android:summary="@string/summary_store_data_preference" />
         
         <!-- The visual style of a child is defined by this styled theme attribute. -->
-        <CheckBoxPreference
+        <!-- <CheckBoxPreference
                 android:key="fetch_weekly_preference"
                 android:dependency="save_data_preference"
                 android:layout="?android:attr/preferenceLayoutChild"
                 android:title="@string/title_fetch_weekly_preference"
                 android:summary="@string/summary_fetch_weekly_preference" />
-
+        -->
+        
     </PreferenceCategory>
 
 </PreferenceScreen>

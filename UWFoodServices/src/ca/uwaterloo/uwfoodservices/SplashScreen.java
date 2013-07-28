@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONObject;
 
@@ -53,8 +53,9 @@ public class SplashScreen extends Activity {
         // Retrieves a string value for the preferences. The second parameter
         // is the default value to use if a preference value is not found.
         Log.d("yes4" + "", "network");
-        sPref = sharedPrefs.getString("connection_type_preference", "Both Wi-Fi and Data");
-    
+        networkPref = sharedPrefs.getString("connection_type_preference", "Both Wi-Fi and Data");
+        cachePref = sharedPrefs.getBoolean("save_data_preference", true);
+        
         Log.d("yes5" + "", "network");
         updateConnectedFlags();
 
@@ -124,28 +125,31 @@ public class SplashScreen extends Activity {
 			JSONObject[] jsonObjectArray = new JSONObject[2];
 			jsonObjectArray[0] = json_parse.getJSONFromUrl(urls[0]);
 			jsonObjectArray[1] = json_parse.getJSONFromUrl(urls[1]);
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return jsonObjectArray;
 		}
 		
-		@SuppressWarnings("unchecked")
 		@Override
         protected void onPostExecute(JSONObject[] jObjArray) {
 			if(jObjArray != null){
 				menuParser.Parse(jObjArray[0]);	
 				locationParser.Parse(jObjArray[1]);	
 				
-				try {
-					InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
-					InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance(context).objects);
-					
-					List<RestaurantMenuObject> readObject = (List<RestaurantMenuObject>) InternalStorage.readObject(context, "menu");
-					RestaurantObject[] restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(context, "location");
-					Log.d(restaurantLocations[0].getLocation(), "READ RESTAURANT LOCATION 1");
-					Log.d(readObject.get(0).getRestaurant(), "READ RESTAURANT 1 ");
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
+				if (cachePref) {
+					try {
+						InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
+						InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance(context).objects);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} else {
+					InternalStorage.deleteObject(context, "menu");
+					InternalStorage.deleteObject(context, "location");
 				}
 			}
 			else{
@@ -170,10 +174,10 @@ public class SplashScreen extends Activity {
 		calendar = Calendar.getInstance();
 		Log.d(calendar.getTime() + "", "current time");
 		
-		simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd");
+		simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
 		formattedDate = simpleDateFormat.format(calendar.getTime());
 		
-		String weekInYear = (new SimpleDateFormat("w")).format(calendar.getTime());
+		String weekInYear = (new SimpleDateFormat("w", Locale.CANADA)).format(calendar.getTime());
 
 		Log.d(formattedDate + "", "current time - formmated");
 		
@@ -204,7 +208,8 @@ public class SplashScreen extends Activity {
     public static boolean refreshDisplay = true;
 
     // The user's current network preference setting.
-    public static String sPref = null;
+    public static String networkPref = null;
+    public static boolean cachePref;
     
     // The BroadcastReceiver that tracks network connectivity changes.
     private NetworkReceiver receiver = new NetworkReceiver();
@@ -219,7 +224,7 @@ public class SplashScreen extends Activity {
             // Checks the user prefs and the network connection. Based on the result, decides
             // whether to refresh the display or keep the current display.
             // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
-            if (WIFI.equals(sPref) && networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            if (WIFI.equals(networkPref) && networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                 // If device has its Wi-Fi connection, sets refreshDisplay
                 // to true. This causes the display to be refreshed when the user
                 // returns to the app.
@@ -228,7 +233,7 @@ public class SplashScreen extends Activity {
 
                 // If the setting is ANY network and there is a network connection
                 // (which by process of elimination would be mobile), sets refreshDisplay to true.
-            } else if (BOTH.equals(sPref) && networkInfo != null) {
+            } else if (BOTH.equals(networkPref) && networkInfo != null) {
                 refreshDisplay = true;
 
                 // Otherwise, the app can't download content--either because there is no network
@@ -266,12 +271,12 @@ public class SplashScreen extends Activity {
     // To prevent network operations from causing a delay that results in a poor 
     // user experience, always perform network operations on a separate thread from the UI.
     private void loadData() {
-    	Log.d(sPref, "network");
+    	Log.d(networkPref, "network");
     	Log.d(BOTH, "network");
     	Log.d(wifiConnected + "", "network");
     	Log.d(mobileConnected + "", "network");
-        if (((sPref.equals(BOTH)) && (wifiConnected || mobileConnected))
-                || ((sPref.equals(WIFI)) && (wifiConnected))) {
+        if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
+                || ((networkPref.equals(WIFI)) && (wifiConnected))) {
         	// Load Data
         	Log.d("yes3" + "", "network");
         	menuParser = new ParseMenuData();
