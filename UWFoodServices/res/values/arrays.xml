@@ -27,8 +27,8 @@
     </string-array>
     <string-array name="entries_connection_type_preference">
         <item>Both Wi-Fi and Data</item>
-        <item>Data Only</item>
         <item>Wi-Fi Only</item>
+        <item>Data Only</item>
         <item>None</item>
     </string-array>
     <string-array name="entryvalues_connection_type_preference">

@@ -29,8 +29,9 @@
 
     <!-- Menu List Network strings. -->
     <string name="updated">Last updated:</string>
-    <string name="lost_connection">Lost connection.</string>
-    <string name="wifi_connected">Wi-Fi reconnected.</string>
+    <string name="lost_connection">No Connection.</string>
+    <string name="wifi_connected">Wi-Fi Connected.</string>
+    <string name="data_connected">Mobile Data Connected.</string>
     <string name="connection_error">Unable to load content. Check your network connection.</string>
     <string name="xml_error">Error parsing XML.</string>
 

@@ -47,16 +47,15 @@ public class SplashScreen extends Activity {
 		this.registerReceiver(receiver, filter);
 		
 		// Gets the user's network preference settings
-        Log.d("yes" + "", "network");
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Retrieves a string value for the preferences. The second parameter
         // is the default value to use if a preference value is not found.
-        Log.d("yes4" + "", "network");
         networkPref = sharedPrefs.getString("connection_type_preference", "Both Wi-Fi and Data");
         cachePref = sharedPrefs.getBoolean("save_data_preference", true);
         
-        Log.d("yes5" + "", "network");
+        Log.d(networkPref, "NETWORK PREF 1");
+        
         updateConnectedFlags();
 
         // Only loads the page if refreshDisplay is true. Otherwise, keeps previous
@@ -193,11 +192,14 @@ public class SplashScreen extends Activity {
 	//======================================================
 	public static final String WIFI = "Wi-Fi Only";
     public static final String BOTH = "Both Wi-Fi and Data";
+    public static final String DATA = "Data Only";
 	
     // Whether there is a Wi-Fi connection.
     private static boolean wifiConnected = false;
     // Whether there is a mobile connection.
     private static boolean mobileConnected = false;
+ // Whether there is a data connection.
+    private static boolean dataConnected = false;
     // Whether the display should be refreshed.
     public static boolean refreshDisplay = true;
 
@@ -215,25 +217,35 @@ public class SplashScreen extends Activity {
             ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-            // Checks the user prefs and the network connection. Based on the result, decides
-            // whether to refresh the display or keep the current display.
-            // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
-            if (WIFI.equals(networkPref) && networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                // If device has its Wi-Fi connection, sets refreshDisplay
-                // to true. This causes the display to be refreshed when the user
-                // returns to the app.
+            Log.d(networkPref + " " + WIFI.equals(networkPref), "NETWORK PREF 1");
+            Log.d(networkInfo + " " + (networkInfo != null), "NETWORK PREF 2");
+            Log.d(networkInfo.getType() + " " + (networkInfo.getType() == ConnectivityManager.TYPE_WIFI), "NETWORK PREF 3");
+            Log.d(ConnectivityManager.TYPE_WIFI + "", "NETWORK PREF 4");
+            
+            // Wifi or Data Connected
+            if (BOTH.equals(networkPref) && networkInfo != null && (networkInfo.getType() == ConnectivityManager.TYPE_WIFI
+            		|| networkInfo.getType() == ConnectivityManager.TYPE_MOBILE)) {
                 refreshDisplay = true;
+                if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                	Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
+                } else {
+                	Toast.makeText(context, R.string.data_connected, Toast.LENGTH_SHORT).show();
+                }
+                
+            // Wifi Connected
+            } else if (WIFI.equals(networkPref) && networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            	refreshDisplay = true;
                 Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
-
-                // If the setting is ANY network and there is a network connection
-                // (which by process of elimination would be mobile), sets refreshDisplay to true.
-            } else if (BOTH.equals(networkPref) && networkInfo != null) {
+                
+            // Data Connected
+            } else if (DATA.equals(networkPref) && networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
                 refreshDisplay = true;
-
-                // Otherwise, the app can't download content--either because there is no network
-                // connection (mobile or Wi-Fi), or because the pref setting is WIFI, and there
-                // is no Wi-Fi connection.
-                // Sets refreshDisplay to false.
+                Toast.makeText(context, R.string.data_connected, Toast.LENGTH_SHORT).show();
+                
+            // Otherwise, the app can't download content--either because there is no network
+            // connection (mobile or Wi-Fi), or because the pref setting is WIFI, and there
+            // is no Wi-Fi connection.
+            // Sets refreshDisplay to false.
             } else {
                 refreshDisplay = false;
                 Toast.makeText(context, R.string.lost_connection, Toast.LENGTH_SHORT).show();
@@ -265,14 +277,10 @@ public class SplashScreen extends Activity {
     // To prevent network operations from causing a delay that results in a poor 
     // user experience, always perform network operations on a separate thread from the UI.
     private void loadData() {
-    	Log.d(networkPref, "network");
-    	Log.d(BOTH, "network");
-    	Log.d(wifiConnected + "", "network");
-    	Log.d(mobileConnected + "", "network");
         if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
                 || ((networkPref.equals(WIFI)) && (wifiConnected))) {
+        	
         	// Load Data
-        	Log.d("yes3" + "", "network");
         	menuParser = new ParseMenuData();
     		locationParser = new ParseLocationData(this);
     		
