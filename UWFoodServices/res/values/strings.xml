@@ -20,6 +20,8 @@
     <string name="title_activity_menu_lists">MenuLists</string>
     <string name="ShowAll">Show All</string>
     <string name="Clear">Clear Map</string>
+    <string name="error">Seems like you are not connected to the network. When you are connected, hit the button below.</string>
+    <string name="ready">Ready!</string>
 
     <!-- Menu List strings. -->
     <string name="menu_settings">Settings</string>
@@ -72,5 +74,6 @@
     <string name="title_fetch_weekly_preference">Fetch Automatically</string>
     <string name="summary_fetch_weekly_preference">Weekly fetches new data.</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_connection_cache">ConnectionCache</string>
 
 </resources>

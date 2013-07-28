@@ -73,7 +73,9 @@
         <activity
             android:name="ca.uwaterloo.uwfoodservices.SplashScreen"
             android:label="@string/title_activity_splash_screen"
-            android:noHistory="true" >
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,6 +1,5 @@
 package ca.uwaterloo.uwfoodservices;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -22,6 +22,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import ca.uwaterloo.uwfoodservicesutility.InternalStorage;
 import ca.uwaterloo.uwfoodservicesutility.ParseMenuData;
@@ -303,12 +306,28 @@ public class SplashScreen extends Activity {
 		else{
 			//Go to Error page
 			Log.d("Error", "MOTHERFUCKERS");
+			showErrorPage();
 		}
     }
     
     // Displays an error if the app is unable to load content.
     private void showErrorPage() {
-        //setContentView(R.layout.activity_menu_lists);
+        setContentView(R.layout.activity_connection_cache);
+        Typeface tf = Typeface.createFromAsset(SplashScreen.this.getAssets(),
+	            "Roboto-Light.ttf");
+        TextView text = (TextView) findViewById(R.id.errortext);
+        text.setTypeface(tf);
+        
+        Button button = (Button) findViewById(R.id.ready);
+        button.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = getIntent();
+			    finish();
+			    startActivity(intent);
+			}
+		});
         // The specified network connection is not available. Displays error message.
         // Show: "Unable to load content. Check your network connection."
     }
