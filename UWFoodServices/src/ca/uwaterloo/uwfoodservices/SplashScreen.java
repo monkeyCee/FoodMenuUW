@@ -36,7 +36,6 @@ public class SplashScreen extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
 		// Register BroadcastReceiver to track connection changes.
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 		receiver = new NetworkReceiver();
@@ -50,7 +49,7 @@ public class SplashScreen extends Activity {
         // is the default value to use if a preference value is not found.
         Log.d("yes4" + "", "network");
         sPref = sharedPrefs.getString("connection_type_preference", "Both Wi-Fi and Data");
-        
+    
         Log.d("yes5" + "", "network");
         updateConnectedFlags();
 
@@ -95,7 +94,7 @@ public class SplashScreen extends Activity {
         super.onDestroy();
     }
 
-    // Data Fetching
+    // Writing to files
     //======================================================
 	private static class AsyncDataFetcher extends AsyncTask<String, Void, JSONObject[]> {
 
@@ -128,13 +127,11 @@ public class SplashScreen extends Activity {
 					
 					List<RestaurantMenuObject> readObject = (List<RestaurantMenuObject>) InternalStorage.readObject(context, "menu");
 					RestaurantObject[] restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(context, "location");
-					Log.d(restaurantLocations[0].getRestaurant(), "READ RESTAURANT LOCATION 1");
+					Log.d(restaurantLocations[0].getLocation(), "READ RESTAURANT LOCATION 1");
 					Log.d(readObject.get(0).getRestaurant(), "READ RESTAURANT 1 ");
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -145,10 +142,7 @@ public class SplashScreen extends Activity {
 		
 	}
 	
-	// Writing Data to Internal Storage
-    //======================================================
-	
-	
+
 	// Date Handling
 	//======================================================
 	public static String formattedDate;
@@ -280,42 +274,41 @@ public class SplashScreen extends Activity {
     		
         } else {
         	loadCachedData();
-            //showErrorPage();
         }
     }
     
     @SuppressWarnings("unchecked")
 	private void loadCachedData() {
+    	
+    	Log.d("Getting cached data", "+");
+    	
     	ArrayList<RestaurantMenuObject> restaurantMenu = null;
     	RestaurantObject[] restaurantLocations = null;
     	try {
 			restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
 			restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Log.d(restaurantMenu.get(0).getRestaurant(), "READ RESTAURANT");
+    			
+		if(restaurantMenu != null && restaurantLocations != null){
+			RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
+			RestaurantMenuHolder.getInstance(restaurantMenu);
+			Intent intent = new Intent(this, MainScreen.class);
+			startActivity(intent);
+		}
 		
-		RestaurantLocationHolder locationHolder = RestaurantLocationHolder.getInstance(SplashScreen.this);
-		Log.d(restaurantLocations[0] + "", "READ RESTAURANT LOCATION");
-		
-		RestaurantMenuHolder.getInstance(restaurantMenu);
-		RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
-		
-		Log.d(RestaurantMenuHolder.getInstance().restaurantMenu.get(0).getRestaurant() + "", "READ RESTAURANT HOLDER");
-		
-		Intent intent = new Intent(this, MainScreen.class);
-		startActivity(intent);
+		else{
+			//Go to Error page
+			Log.d("Error", "MOTHERFUCKERS");
+		}
     }
     
     // Displays an error if the app is unable to load content.
     private void showErrorPage() {
         //setContentView(R.layout.activity_menu_lists);
-    	
         // The specified network connection is not available. Displays error message.
         // Show: "Unable to load content. Check your network connection."
     }

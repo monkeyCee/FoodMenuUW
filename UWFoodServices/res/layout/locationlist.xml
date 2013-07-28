@@ -8,7 +8,6 @@
         android:id="@+id/list_restaurant"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button_all"
         android:divider="#b5b5b5"
         android:dividerHeight="1dp"
         android:listSelector="@drawable/list_selector" >

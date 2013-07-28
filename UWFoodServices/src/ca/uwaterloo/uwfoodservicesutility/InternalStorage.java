@@ -1,5 +1,6 @@
 package ca.uwaterloo.uwfoodservicesutility;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import android.content.Context;
+import android.util.Log;
 
 public class InternalStorage{
 	 
@@ -24,9 +26,17 @@ public class InternalStorage{
 	 
 	   public static Object readObject(Context context, String key) throws IOException,
 	         ClassNotFoundException {
-	      FileInputStream fileInputStream = context.openFileInput(key);
-	      ObjectInputStream objectInputSteam = new ObjectInputStream(fileInputStream);
-	      Object object = objectInputSteam.readObject();
-	      return object;
+		  File file = new File(context.getFilesDir(), key);
+	      if(!file.isFile() && !file.canRead()){
+	    	  Log.d("File", "No such File");
+	    	  return null; 
+	      }
+	      else{
+	    	  FileInputStream fileInputStream = context.openFileInput(key);
+		      ObjectInputStream objectInputSteam = new ObjectInputStream(fileInputStream);
+		      Object object = objectInputSteam.readObject();
+		      return object;
+	      }
+	      
 	   }
 	}
