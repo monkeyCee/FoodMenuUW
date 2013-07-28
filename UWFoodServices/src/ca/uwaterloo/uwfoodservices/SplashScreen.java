@@ -125,12 +125,6 @@ public class SplashScreen extends Activity {
 			JSONObject[] jsonObjectArray = new JSONObject[2];
 			jsonObjectArray[0] = json_parse.getJSONFromUrl(urls[0]);
 			jsonObjectArray[1] = json_parse.getJSONFromUrl(urls[1]);
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return jsonObjectArray;
 		}
 		
