@@ -31,7 +31,6 @@ public class SlidingListFragment extends ListFragment {
 	 @Override
 	    public void onListItemClick(ListView l, View v, int position, long id) {
 	       
-		 if(main_sliding_menu){
 			 switch(position){
 			 
 			 	case 0:
@@ -40,12 +39,10 @@ public class SlidingListFragment extends ListFragment {
 			 		break;
 			 	
 			 	case 1:
-			 		ImageAdapter sampleAdapter = new ImageAdapter(getActivity(), "menu");
-			 		main_sliding_menu = false;
-					slidingList.setAdapter(sampleAdapter);
+					intent = new Intent(getActivity(), RestaurantMenuList.class);
+			 		startActivity(intent);
 			 		break;
 		
-			 
 			 	case 2:
 			 		intent = new Intent(getActivity(), LocationHours.class);
 			 		startActivity(intent);
@@ -56,17 +53,5 @@ public class SlidingListFragment extends ListFragment {
 			 		
 			 }
 		 }
-		 
-		 else{
-			 Intent intent = new Intent(getActivity(), MenuLists.class);
-			 Log.d((String) new ImageAdapter(getActivity(), "menu").getItem(position), "STRING RESTAUARNT NAME");
-			 Log.d(position + "", "STRING RESTAUARNT POSITION");
-			 intent.putExtra("Restaurant Name", (String) new ImageAdapter(getActivity(), "menu").getItem(position));
-			 intent.putExtra("Restaurant Position", position);
-			 startActivity(intent);
-			 
-		 }
 		
-	    }
-	
 }

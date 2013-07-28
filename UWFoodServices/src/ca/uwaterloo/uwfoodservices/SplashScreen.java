@@ -20,6 +20,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -37,7 +38,7 @@ public class SplashScreen extends Activity {
 	static ParseLocationData locationParser;
 	static ParseMenuData menuParser;
 	static ProgressDialog progressDialog;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -200,7 +201,7 @@ public class SplashScreen extends Activity {
     private static boolean mobileConnected = false;
     // Whether the display should be refreshed.
     public static boolean refreshDisplay = true;
-
+    
     // The user's current network preference setting.
     public static String networkPref = null;
     public static boolean cachePref;
@@ -281,11 +282,25 @@ public class SplashScreen extends Activity {
     		
     		Log.d(urlMenu + "", "menuurl");
     		
-    		Intent intent = new Intent(this, MainScreen.class);
+    		
     		new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);
+    		    		
+    		final Handler handler = new Handler();
+    		final Runnable r = new Runnable()
+    		{
+    		    public void run() 
+    		    {
+    		    	if(RestaurantLocationHolder.getInstance(SplashScreen.this) == null || RestaurantMenuHolder.getInstance() == null){
+    		    		handler.postDelayed(this, 1000);
+    		    	}
+    		    }
+    		};
+
+    		handler.postDelayed(r, 1000);
     		
+    		Intent intent = new Intent(SplashScreen.this, MainScreen.class);
     		startActivity(intent);
-    		
+
         } else {
         	loadCachedData();
         }
@@ -317,7 +332,6 @@ public class SplashScreen extends Activity {
 		}
 		
 		else{
-			//Go to Error page
 			progressDialog.dismiss();
 			showErrorPage();
 		}
@@ -344,4 +358,8 @@ public class SplashScreen extends Activity {
         // The specified network connection is not available. Displays error message.
         // Show: "Unable to load content. Check your network connection."
     }
+    
+
+
+
 }
