@@ -9,7 +9,6 @@ import java.util.Locale;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -41,7 +40,6 @@ public class SplashScreen extends Activity {
 	
 	static ParseLocationData locationParser;
 	static ParseMenuData menuParser;
-	static ProgressDialog progressDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,14 +104,10 @@ public class SplashScreen extends Activity {
 			
 			@Override
 			public void onAnimationStart(Animation animation) {
-				
-				
 			}
 			
 			@Override
 			public void onAnimationRepeat(Animation animation) {
-				
-				
 			}
 			
 			@Override
@@ -130,7 +124,7 @@ public class SplashScreen extends Activity {
 	    		    }
 	    		};
 
-	    		handler.postDelayed(r, 1000);
+	    		handler.postDelayed(r, 2000);
 	    		
 	    		Intent intent = new Intent(SplashScreen.this, MainScreen.class);
 	    		startActivity(intent);
@@ -158,9 +152,6 @@ public class SplashScreen extends Activity {
             this.unregisterReceiver(receiver);
         }
     	
-    	if(progressDialog != null)
-            progressDialog.dismiss();
-        progressDialog = null;
     }
     
     @Override
@@ -181,9 +172,7 @@ public class SplashScreen extends Activity {
 		
 		 @Override
 		    protected void onPreExecute()
-		    {
-		        //progressDialog= ProgressDialog.show(context, "Hang on...", "Fetching the data...", true);
-                
+		    {             
 		    }; 
 		    
 		    
@@ -213,11 +202,7 @@ public class SplashScreen extends Activity {
 			else{
 				Log.d("Object is null", "Null");
 			}
-			
-			if (progressDialog != null) { 
-				progressDialog.dismiss();
-		   }
-						
+					
        }
 		
 	}
@@ -371,8 +356,7 @@ public class SplashScreen extends Activity {
 	private void loadCachedData() {
     	
     	Log.d("Getting cached data", "+");
-    	progressDialog= ProgressDialog.show(SplashScreen.this, "Hang on...", "Fetching the data..", true);
-    	
+    	    	
     	ArrayList<RestaurantMenuObject> restaurantMenu = null;
     	RestaurantObject[] restaurantLocations = null;
     	try {
@@ -388,12 +372,10 @@ public class SplashScreen extends Activity {
 			RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
 			RestaurantMenuHolder.getInstance(restaurantMenu);
 			Intent intent = new Intent(this, MainScreen.class);
-			progressDialog.dismiss();
 			startActivity(intent);
 		}
 		
 		else{
-			progressDialog.dismiss();
 			showErrorPage();
 		}
     }
