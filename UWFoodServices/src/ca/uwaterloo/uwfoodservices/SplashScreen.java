@@ -25,7 +25,11 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import ca.uwaterloo.uwfoodservicesutility.InternalStorage;
@@ -42,6 +46,10 @@ public class SplashScreen extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_splash_screen);
+		
+		StartSplashScreen();
+
 		// Register BroadcastReceiver to track connection changes.
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 		receiver = new NetworkReceiver();
@@ -68,10 +76,34 @@ public class SplashScreen extends Activity {
         if (refreshDisplay) {
             loadPage();
         }*/
+        
+        
 		
-		setContentView(R.layout.activity_splash_screen);		
 		loadData();
 	}
+	
+	private void StartSplashScreen()
+    {
+            Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
+            anim.reset();
+    	LinearLayout l=(LinearLayout) findViewById(R.id.lin_lay);
+    	l.clearAnimation();
+    	l.startAnimation(anim);
+
+    	anim = AnimationUtils.loadAnimation(this, R.anim.translate);
+    	anim.setFillAfter(true);
+    	anim.reset();
+    	ImageView iv = (ImageView) findViewById(R.id.uw_logo);
+    	iv.clearAnimation();
+    	iv.startAnimation(anim);
+    
+    	anim = AnimationUtils.loadAnimation(this, R.anim.translate2);
+    	anim.setFillAfter(true);
+    	anim.reset();
+    	ImageView iv2 = (ImageView) findViewById(R.id.foodmenu_logo);
+    	iv2.clearAnimation();
+    	iv2.startAnimation(anim);
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -117,7 +149,7 @@ public class SplashScreen extends Activity {
 		 @Override
 		    protected void onPreExecute()
 		    {
-		        progressDialog= ProgressDialog.show(context, "Hang on...", "Fetching the data...", true);
+		        //progressDialog= ProgressDialog.show(context, "Hang on...", "Fetching the data...", true);
                 
 		    }; 
 		    
@@ -306,6 +338,7 @@ public class SplashScreen extends Activity {
 
     		handler.postDelayed(r, 1000);
     		
+
     		Intent intent = new Intent(SplashScreen.this, MainScreen.class);
     		startActivity(intent);
 
