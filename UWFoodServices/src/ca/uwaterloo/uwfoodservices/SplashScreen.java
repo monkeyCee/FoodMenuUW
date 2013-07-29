@@ -48,7 +48,7 @@ public class SplashScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
 		
-		StartSplashScreen();
+		
 
 		// Register BroadcastReceiver to track connection changes.
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -77,18 +77,16 @@ public class SplashScreen extends Activity {
             loadPage();
         }*/
         
-        
-		
 		loadData();
 	}
 	
 	private void StartSplashScreen()
     {
-            Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
-            anim.reset();
-    	LinearLayout l=(LinearLayout) findViewById(R.id.lin_lay);
-    	l.clearAnimation();
-    	l.startAnimation(anim);
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        anim.reset();
+        LinearLayout l=(LinearLayout) findViewById(R.id.lin_lay);
+        l.clearAnimation();
+        l.startAnimation(anim);
 
     	anim = AnimationUtils.loadAnimation(this, R.anim.translate);
     	anim.setFillAfter(true);
@@ -97,12 +95,47 @@ public class SplashScreen extends Activity {
     	iv.clearAnimation();
     	iv.startAnimation(anim);
     
-    	anim = AnimationUtils.loadAnimation(this, R.anim.translate2);
-    	anim.setFillAfter(true);
-    	anim.reset();
+    	Animation finalAnim = AnimationUtils.loadAnimation(this, R.anim.translate2);
+    	finalAnim.setFillAfter(true);
+    	finalAnim.reset();
     	ImageView iv2 = (ImageView) findViewById(R.id.foodmenu_logo);
     	iv2.clearAnimation();
-    	iv2.startAnimation(anim);
+    	iv2.startAnimation(finalAnim);
+    	
+        finalAnim.setAnimationListener(new Animation.AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				
+				final Handler handler = new Handler();
+	    		final Runnable r = new Runnable()
+	    		{
+	    		    public void run() 
+	    		    {
+	    		    	if(RestaurantLocationHolder.getInstance(SplashScreen.this) == null || RestaurantMenuHolder.getInstance() == null){
+	    		    		handler.postDelayed(this, 1000);
+	    		    	}
+	    		    }
+	    		};
+
+	    		handler.postDelayed(r, 1000);
+	    		
+	    		Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+	    		startActivity(intent);
+			}
+		});
     }
 
 	@Override
@@ -184,7 +217,7 @@ public class SplashScreen extends Activity {
 			if (progressDialog != null) { 
 				progressDialog.dismiss();
 		   }
-			
+						
        }
 		
 	}
@@ -324,23 +357,10 @@ public class SplashScreen extends Activity {
     		String urlMenu = getDatedMenuUrl();
     		
     		new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);
+    		StartSplashScreen();
     		    		
-    		final Handler handler = new Handler();
-    		final Runnable r = new Runnable()
-    		{
-    		    public void run() 
-    		    {
-    		    	if(RestaurantLocationHolder.getInstance(SplashScreen.this) == null || RestaurantMenuHolder.getInstance() == null){
-    		    		handler.postDelayed(this, 1000);
-    		    	}
-    		    }
-    		};
-
-    		handler.postDelayed(r, 1000);
     		
-
-    		Intent intent = new Intent(SplashScreen.this, MainScreen.class);
-    		startActivity(intent);
+    	
 
         } else {
         	loadCachedData();
@@ -400,7 +420,4 @@ public class SplashScreen extends Activity {
         // Show: "Unable to load content. Check your network connection."
     }
     
-
-
-
 }
