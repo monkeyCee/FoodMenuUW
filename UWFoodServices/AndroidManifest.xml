@@ -34,7 +34,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCy7CfYYclRgpnVpaCBFYxgOHToku5d-80" />
+            android:value="AIzaSyCQgPReUADFnaBTF5tCXk00MJMTkGUdk6g" />
 
         <activity
             android:name="ca.uwaterloo.uwfoodservices.MainScreen"
