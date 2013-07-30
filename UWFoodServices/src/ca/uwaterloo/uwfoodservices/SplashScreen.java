@@ -238,6 +238,7 @@ public class SplashScreen extends Activity {
     public static final String WIFI = "Wi-Fi Only";
     public static final String BOTH = "Both Wi-Fi and Data";
     public static final String DATA = "Data Only";
+    public static final String NONE = "None";
 	
     private static boolean wifiConnected = false;
     private static boolean mobileConnected = false;
@@ -319,10 +320,16 @@ public class SplashScreen extends Activity {
 			
 			//If network, get new data else error page
 			
+			if(networkPref.equals(NONE)){
+				Toast.makeText(getApplicationContext(), "You have chosen to not store the data and you have chosen no network connection to fetch data. Changing " +
+						"your network preferences to Both WiFi and Data by default", Toast.LENGTH_LONG);
+				networkPref = BOTH;
+			}
+			
 			if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
-	                || ((networkPref.equals(WIFI)) && (wifiConnected))) {
+	                || ((networkPref.equals(WIFI)) && (wifiConnected)) || ((networkPref.equals(DATA)) && (mobileConnected))) {
 				
-					Log.d("Cache Pref off", "Loading from network");
+					Toast.makeText(getApplicationContext(), "Cache Pref off, Loading from network", Toast.LENGTH_SHORT).show();
 	        
 	    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
 	    			String urlMenu = getDatedMenuUrl();
@@ -331,7 +338,7 @@ public class SplashScreen extends Activity {
 	        }
 			
 			else{ 
-				Log.d("Cache Pref off", "No network");
+				Toast.makeText(getApplicationContext(), "Cache Pref off, No network", Toast.LENGTH_SHORT).show();
 				showErrorPage(); }			
 		}
     	
@@ -348,18 +355,16 @@ public class SplashScreen extends Activity {
 				if(!(InternalStorage.cacheExists(SplashScreen.this, "menu")) || !(InternalStorage.cacheExists(SplashScreen.this, "location"))){
 					
 					if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
-			                || ((networkPref.equals(WIFI)) && (wifiConnected))) {
-						
-							Log.d("Cache Pref On", "No Cache");
-							Log.d("Data from", "network");
+			                || ((networkPref.equals(WIFI)) && (wifiConnected)) || ((networkPref.equals(DATA)) && (mobileConnected))) {
+													
+							Toast.makeText(getApplicationContext(), "Cache Pref On. No Cached data. Getting data from network", Toast.LENGTH_SHORT).show();
 			        
 			    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
 			    			String urlMenu = getDatedMenuUrl();
 			    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);			
 			        }
 					else{ 
-						Log.d("Cache Pref On", "No Cache");
-						Log.d("No", "network");
+						Toast.makeText(getApplicationContext(), "Cache Pref On. No Cache. No Network", Toast.LENGTH_SHORT).show();
 						showErrorPage(); }
 				}
 				
@@ -367,10 +372,10 @@ public class SplashScreen extends Activity {
 					
 					Log.d("Week stored", Integer.toString(weekStored));
 					if( getCurrentWeek() != weekStored){
-						Toast.makeText(getApplicationContext(), "The data you are viewing is old", Toast.LENGTH_LONG).show();
+						Toast.makeText(getApplicationContext(), "The data you are viewing is old", Toast.LENGTH_SHORT).show();
 					}
 					
-					Log.d("Cache Pref On", "Cache Available");
+					Toast.makeText(getApplicationContext(), "Cache Pref On. Cache available", Toast.LENGTH_SHORT).show();
 					
 					ArrayList<RestaurantMenuObject> restaurantMenu = null;
 			    	RestaurantObject[] restaurantLocations = null;
