@@ -19,8 +19,6 @@ public class ListViewFragment extends Fragment {
 	private ListView listView;
 	private Context context;
 	private ActivityCommunicator activityCommunicator;
-	private Button button_all;
-	private Button button_clear;
 	
 	public void onAttach(Activity activity){
         super.onAttach(activity);
