@@ -46,7 +46,7 @@ public class SplashScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
 		
-		
+		StartSplashScreen();		
 
 		// Register BroadcastReceiver to track connection changes.
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -342,19 +342,19 @@ public class SplashScreen extends Activity {
     		String urlMenu = getDatedMenuUrl();
     		
     		new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);
-    		StartSplashScreen();
+    		
     		    		
     		
     	
 
         } else {
+
         	loadCachedData();
         }
     }
     
     @SuppressWarnings("unchecked")
 	private void loadCachedData() {
-    	
     	Log.d("Getting cached data", "+");
     	    	
     	ArrayList<RestaurantMenuObject> restaurantMenu = null;
@@ -371,8 +371,6 @@ public class SplashScreen extends Activity {
 		if(restaurantMenu != null && restaurantLocations != null){
 			RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
 			RestaurantMenuHolder.getInstance(restaurantMenu);
-			Intent intent = new Intent(this, MainScreen.class);
-			startActivity(intent);
 		}
 		
 		else{
