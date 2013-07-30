@@ -40,6 +40,8 @@ public class SplashScreen extends Activity {
 	
 	static ParseLocationData locationParser;
 	static ParseMenuData menuParser;
+	SharedPreferences sharedPrefs;
+	SharedPreferences.Editor prefEditor;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,32 +50,18 @@ public class SplashScreen extends Activity {
 		
 		StartSplashScreen();		
 
-		// Register BroadcastReceiver to track connection changes.
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 		receiver = new NetworkReceiver();
 		this.registerReceiver(receiver, filter);
 		
-		// Gets the user's network preference settings
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Retrieves a string value for the preferences. The second parameter
-        // is the default value to use if a preference value is not found.
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+       
         networkPref = sharedPrefs.getString("connection_type_preference", "Both Wi-Fi and Data");
         cachePref = sharedPrefs.getBoolean("save_data_preference", true);
-        
+        weekStored = sharedPrefs.getInt("storedWeek", -1);
         Log.d(networkPref, "NETWORK PREF 1");
         
         updateConnectedFlags();
-
-        // Only loads the page if refreshDisplay is true. Otherwise, keeps previous
-        // display. For example, if the user has set "Wi-Fi only" in prefs and the
-        // device loses its Wi-Fi connection midway through the user using the app,
-        // you don't want to refresh the display--this would force the display of
-        // an error page instead of the menu content.
-        /*
-        if (refreshDisplay) {
-            loadPage();
-        }*/
         
 		loadData();
 	}
@@ -159,23 +147,19 @@ public class SplashScreen extends Activity {
         super.onDestroy();
     }
 
-    // Writing to files
-    //======================================================
 	private static class AsyncDataFetcher extends AsyncTask<String, Void, JSONObject[]> {
 
 		Context context;
-		
 		
 		public AsyncDataFetcher(Context context) {
 			this.context = context;
 		}
 		
 		 @Override
-		    protected void onPreExecute()
+		protected void onPreExecute()
 		    {             
 		    }; 
-		    
-		    
+		        
 		@Override
 		protected JSONObject[] doInBackground(String... urls) {
 			Log.d("Url", urls[0]);
@@ -207,9 +191,6 @@ public class SplashScreen extends Activity {
 		
 	}
 	
-
-	// Date Handling
-	//======================================================
 	public static String formattedDate;
     static int weekDay;
     static Calendar calendar;
@@ -217,6 +198,7 @@ public class SplashScreen extends Activity {
     
     public String getDatedMenuUrl() {
     	// Date handling
+    	prefEditor = sharedPrefs.edit();
 		calendar = Calendar.getInstance();
 		Log.d(calendar.getTime() + "", "current time");
 		
@@ -236,31 +218,36 @@ public class SplashScreen extends Activity {
 		if (calendar.getTime().toString().split(" ")[0].equals("Sat")) { weekDay = 5; }
 		if (calendar.getTime().toString().split(" ")[0].equals("Sun")) { weekDay = 6; }
 		
+		prefEditor.putInt("storedWeek", Integer.parseInt(weekInYear));
+		prefEditor.commit();
+		
 		Log.d(Integer.parseInt(weekInYear) + "", "current time - weekInYear");
 		
 		return "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + Integer.parseInt(weekInYear) + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
     }
 	
-	// Network Verification
-	//======================================================
-	public static final String WIFI = "Wi-Fi Only";
+    public int getCurrentWeek(){
+    	
+    	calendar = Calendar.getInstance();
+    	String weekInYear = (new SimpleDateFormat("w", Locale.CANADA)).format(calendar.getTime());
+    	Log.d("Current week - Called from getCurrentWeek", weekInYear);
+    	return Integer.parseInt(weekInYear);
+    	
+    }
+	
+    public static final String WIFI = "Wi-Fi Only";
     public static final String BOTH = "Both Wi-Fi and Data";
     public static final String DATA = "Data Only";
 	
-    // Whether there is a Wi-Fi connection.
     private static boolean wifiConnected = false;
-    // Whether there is a mobile connection.
     private static boolean mobileConnected = false;
- // Whether there is a data connection.
     private static boolean dataConnected = false;
-    // Whether the display should be refreshed.
     public static boolean refreshDisplay = true;
     
-    // The user's current network preference setting.
     public static String networkPref = null;
     public static boolean cachePref;
+    public static int weekStored;
     
-    // The BroadcastReceiver that tracks network connectivity changes.
     private NetworkReceiver receiver = new NetworkReceiver();
     
     public class NetworkReceiver extends BroadcastReceiver {
@@ -301,8 +288,6 @@ public class SplashScreen extends Activity {
         }
     }
     
-    // Checks the network connection and sets the wifiConnected and mobileConnected
-    // variables accordingly.
     private void updateConnectedFlags() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -321,64 +306,100 @@ public class SplashScreen extends Activity {
         }
     }
     
-    // Uses AsyncTask subclass to download the JSON data. This avoids UI lock up. 
-    // To prevent network operations from causing a delay that results in a poor 
-    // user experience, always perform network operations on a separate thread from the UI.
-    private void loadData() {
+    @SuppressWarnings("unchecked")
+	private void loadData() {
+    	
+    	menuParser = new ParseMenuData();
+		locationParser = new ParseLocationData(this);
         
     	if (!cachePref) {
+    		    		
     		InternalStorage.deleteObject(SplashScreen.this, "menu");
 			InternalStorage.deleteObject(SplashScreen.this, "location");
+			
+			//If network, get new data else error page
+			
+			if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
+	                || ((networkPref.equals(WIFI)) && (wifiConnected))) {
+				
+					Log.d("Cache Pref off", "Loading from network");
+	        
+	    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
+	    			String urlMenu = getDatedMenuUrl();
+	    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);	
+	    			
+	        }
+			
+			else{ 
+				Log.d("Cache Pref off", "No network");
+				showErrorPage(); }			
 		}
     	
-    	if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
-                || ((networkPref.equals(WIFI)) && (wifiConnected))) {
-        	
-        	// Load Data
-        	menuParser = new ParseMenuData();
-    		locationParser = new ParseLocationData(this);
-    		
-    		String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
-    		String urlMenu = getDatedMenuUrl();
-    		
-    		new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);
-    		
-    		    		
-    		
+    	//Else use cache to get data 
+    		//Within here, check if cache has data
+    			//if yes, load it... before loading cached data, check if it is old
+    			//else, check if network exists
+    				//if yes, load data
+    				// else error page
     	
+    	else{
 
-        } else {
+    		try {
+				if(!(InternalStorage.cacheExists(SplashScreen.this, "menu")) || !(InternalStorage.cacheExists(SplashScreen.this, "location"))){
+					
+					if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
+			                || ((networkPref.equals(WIFI)) && (wifiConnected))) {
+						
+							Log.d("Cache Pref On", "No Cache");
+							Log.d("Data from", "network");
+			        
+			    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
+			    			String urlMenu = getDatedMenuUrl();
+			    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);			
+			        }
+					else{ 
+						Log.d("Cache Pref On", "No Cache");
+						Log.d("No", "network");
+						showErrorPage(); }
+				}
+				
+				else{
+					
+					Log.d("Week stored", Integer.toString(weekStored));
+					if( getCurrentWeek() != weekStored){
+						Toast.makeText(getApplicationContext(), "The data you are viewing is old", Toast.LENGTH_LONG).show();
+					}
+					
+					Log.d("Cache Pref On", "Cache Available");
+					
+					ArrayList<RestaurantMenuObject> restaurantMenu = null;
+			    	RestaurantObject[] restaurantLocations = null;
+			    	try {
+						restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
+						restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+			    			
+					if(restaurantMenu != null && restaurantLocations != null){
+						RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
+						RestaurantMenuHolder.getInstance(restaurantMenu);
+					}
+					
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+    		
+    	}
+    	
+    }
 
-        	loadCachedData();
-        }
-    }
-    
-    @SuppressWarnings("unchecked")
-	private void loadCachedData() {
-    	Log.d("Getting cached data", "+");
-    	    	
-    	ArrayList<RestaurantMenuObject> restaurantMenu = null;
-    	RestaurantObject[] restaurantLocations = null;
-    	try {
-			restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
-			restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-    			
-		if(restaurantMenu != null && restaurantLocations != null){
-			RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
-			RestaurantMenuHolder.getInstance(restaurantMenu);
-		}
-		
-		else{
-			showErrorPage();
-		}
-    }
-    
-    // Displays an error if the app is unable to load content.
     private void showErrorPage() {
         setContentView(R.layout.activity_connection_cache);
         Typeface tf = Typeface.createFromAsset(SplashScreen.this.getAssets(),

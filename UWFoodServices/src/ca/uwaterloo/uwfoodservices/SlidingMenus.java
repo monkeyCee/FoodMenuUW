@@ -38,25 +38,7 @@ public class SlidingMenus extends SlidingFragmentActivity{
 
 	}
 
-	/*@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int itemId = item.getItemId();
-		Log.d(item.getTitle() + "", "itemtostring");
-		if (item.getTitle() == "Settings") {
-			Intent settingsActivity = new Intent(getBaseContext(), SettingsActivity.class);
-			startActivity(settingsActivity);
-			return true;
-		} else if (itemId == android.R.id.home) {
-			toggle();
-			return true;
-		} else if (item.getTitle() == "Refresh") {
-			
-			return true;
-		} else {
-			return super.onOptionsItemSelected(item);
-		}
-	}*/
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
