@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -276,6 +277,8 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		}
 		
 		private class MenuListAdapter extends BaseAdapter {
+			public int textWidth;
+			
 	        public MenuListAdapter(Context context) {
 	            mContext = context;
 	        }
@@ -342,6 +345,22 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	            header.setText(LIST.get(position % LIST.size()));
 	            header.setTypeface(tf);
 
+	            // Measures the width of the text in the textView.
+	            textWidth = MenuUtilities.getTextWidth(LIST.get(position % LIST.size()), header.getPaint());
+	            // The text size is decreased until the text is under the specified width or the textSize
+	            // is under a certain size, inc which case the text will wrap to the next line.
+	            while (textWidth > MenuUtilities.menuItemTextWidth && header.getTextSize() > 33) {
+	            	header.setTextSize((header.getTextSize() - 1)/2); // Black magic happening here.
+	            	Log.d(textWidth + " " + LIST.get(position), "GETWIDTH DIFF FONT SIZE: " + header.getTextSize());
+	            	textWidth = MenuUtilities.getTextWidth(LIST.get(position % LIST.size()), header.getPaint());
+	            }
+	            // The textView is recentered if the textView wraps to a second line.
+	            if (header.getTextSize() == 33.0) {
+	            	Log.d("padding yes", "GETWIDTH PADDING");
+	            	header.setPadding(header.getPaddingLeft(), 0, header.getPaddingRight(), 0);
+	            }
+	            Log.d(textWidth + " " + LIST.get(position), "GETWIDTH");
+	            
 	            //Set last divider in a sublist invisible
 	            View divider = item.findViewById(R.id.item_separator);
 	            if(position == HDR_POS2[day] -1 || position == LIST.size() - 1) {

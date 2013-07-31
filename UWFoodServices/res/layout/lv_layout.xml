@@ -24,18 +24,17 @@
         android:clickable="true"
         android:contentDescription="@string/cd"
         />
-	
+
     <TextView
         android:id="@+id/lv_item_header"
         style="@style/listViewPrimaryDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_toLeftOf="@id/button"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/button"
         android:ellipsize="marquee"
-        android:singleLine="true"
+        android:singleLine="false"
         android:textIsSelectable="false" />
 
 </RelativeLayout>

@@ -3,6 +3,9 @@ package ca.uwaterloo.uwfoodservicesutility;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.text.TextPaint;
 import ca.uwaterloo.uwfoodservices.R;
 
 public class MenuUtilities {
@@ -42,4 +45,22 @@ public class MenuUtilities {
 		else if (name.equals("Williams Fresh Cafe")) { return "Williams Fresh Café"; }
 		return name;
 	}
+	
+	public static int menuItemTextWidth = 550; // 579? Number that works reasonably well.
+	
+	public static int getTextWidth(String text, TextPaint textpaint) {
+	    Rect bounds = new Rect();
+	    textpaint.getTextBounds(text, 0, text.length(), bounds);
+	    int width = bounds.left + bounds.width();
+	    return width;
+	}
+
+	public static int getTextHeight(String text, TextPaint textpaint) {
+	    Rect bounds = new Rect();
+	    textpaint.getTextBounds(text, 0, text.length(), bounds);
+	    int height = bounds.bottom + bounds.height();
+	    return height;
+	}
+	
+	
 }
