@@ -20,8 +20,9 @@
     <string name="title_activity_menu_lists">MenuLists</string>
     <string name="ShowAll">Show All</string>
     <string name="Clear">Clear Map</string>
-    <string name="error">Network connection required. When you are connected, hit the button below.</string>
+    <string name="error">Network connection required. Click the settings button to go to your phone settings. When you are connected, hit the refresh button.</string>
     <string name="ready">Refresh!</string>
+    <string name="settingsPhone">Phone Settings</string>
 
     <!-- Menu List strings. -->
     <string name="menu_settings">Settings</string>

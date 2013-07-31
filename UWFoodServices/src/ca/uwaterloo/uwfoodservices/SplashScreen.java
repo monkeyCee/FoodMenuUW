@@ -412,8 +412,8 @@ public class SplashScreen extends Activity {
         TextView text = (TextView) findViewById(R.id.errortext);
         text.setTypeface(tf);
         
-        Button button = (Button) findViewById(R.id.ready);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button refresh = (Button) findViewById(R.id.ready);
+        refresh.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
@@ -422,8 +422,18 @@ public class SplashScreen extends Activity {
 			    startActivity(intent);
 			}
 		});
-        // The specified network connection is not available. Displays error message.
-        // Show: "Unable to load content. Check your network connection."
+        
+        Button settings = (Button) findViewById(R.id.settingsPhone);
+        settings.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+		        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+		        startActivity(intent);	
+			}
+		});
+        
     }
     
 }

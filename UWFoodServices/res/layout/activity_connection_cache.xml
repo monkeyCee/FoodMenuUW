@@ -22,9 +22,19 @@
         android:id="@+id/ready"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/errortext"
         android:layout_below="@+id/errortext"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="28dp"
         android:text="@string/ready" />
+
+    <Button
+        android:id="@+id/settingsPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ready"
+        android:layout_alignBottom="@+id/ready"
+        android:layout_alignRight="@+id/errortext"
+        android:layout_marginRight="20dp"
+        android:text="@string/settingsPhone" />
 
 </RelativeLayout>
