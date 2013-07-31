@@ -43,6 +43,27 @@ public class SplashScreen extends Activity {
 	SharedPreferences sharedPrefs;
 	SharedPreferences.Editor prefEditor;
 	
+    public static final String WIFI = "Wi-Fi Only";
+    public static final String BOTH = "Both Wi-Fi and Data";
+    public static final String DATA = "Data Only";
+    public static final String NONE = "None";
+	
+    private static boolean wifiConnected = false;
+    private static boolean mobileConnected = false;
+    private static boolean dataConnected = false;
+    public static boolean refreshDisplay = true;
+    
+    public static String networkPref = null;
+    public static boolean cachePref;
+    public static int weekStored;
+    
+    public static String formattedDate;
+    static int weekDay;
+    static Calendar calendar;
+    static SimpleDateFormat simpleDateFormat;
+    
+    private NetworkReceiver receiver = new NetworkReceiver();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -191,11 +212,6 @@ public class SplashScreen extends Activity {
 		
 	}
 	
-	public static String formattedDate;
-    static int weekDay;
-    static Calendar calendar;
-    static SimpleDateFormat simpleDateFormat;
-    
     public String getDatedMenuUrl() {
     	// Date handling
     	prefEditor = sharedPrefs.edit();
@@ -234,23 +250,7 @@ public class SplashScreen extends Activity {
     	return Integer.parseInt(weekInYear);
     	
     }
-	
-    public static final String WIFI = "Wi-Fi Only";
-    public static final String BOTH = "Both Wi-Fi and Data";
-    public static final String DATA = "Data Only";
-    public static final String NONE = "None";
-	
-    private static boolean wifiConnected = false;
-    private static boolean mobileConnected = false;
-    private static boolean dataConnected = false;
-    public static boolean refreshDisplay = true;
-    
-    public static String networkPref = null;
-    public static boolean cachePref;
-    public static int weekStored;
-    
-    private NetworkReceiver receiver = new NetworkReceiver();
-    
+
     public class NetworkReceiver extends BroadcastReceiver {
 
         @Override
