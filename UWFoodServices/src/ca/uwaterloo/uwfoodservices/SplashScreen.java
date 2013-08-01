@@ -46,7 +46,6 @@ public class SplashScreen extends Activity {
     public static final String WIFI = "Wi-Fi Only";
     public static final String BOTH = "Both Wi-Fi and Data";
     public static final String DATA = "Data Only";
-    public static final String NONE = "None";
 	
     private static boolean wifiConnected = false;
     private static boolean mobileConnected = false;
@@ -319,12 +318,6 @@ public class SplashScreen extends Activity {
 			InternalStorage.deleteObject(SplashScreen.this, "location");
 			
 			//If network, get new data else error page
-			
-			if(networkPref.equals(NONE)){
-				Toast.makeText(getApplicationContext(), "You have chosen to not store the data and you have chosen no network connection to fetch data. Changing " +
-						"your network preferences to Both WiFi and Data by default", Toast.LENGTH_LONG);
-				networkPref = BOTH;
-			}
 			
 			if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
 	                || ((networkPref.equals(WIFI)) && (wifiConnected)) || ((networkPref.equals(DATA)) && (mobileConnected))) {
