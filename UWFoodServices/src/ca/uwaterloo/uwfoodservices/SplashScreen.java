@@ -345,7 +345,7 @@ public class SplashScreen extends Activity {
 		    		handler.postDelayed(r, 2000);
 	    			if(refreshPref.equals("locations")){
 	    				Intent intent = new Intent(this, LocationHours.class);
-	    				prefEditor.putString("refresh", "locations");
+	    				prefEditor.putString("refresh", "");
 	    	            prefEditor.commit();
 	    				startActivity(intent);
 	    			}
