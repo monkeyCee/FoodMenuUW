@@ -56,29 +56,30 @@ public class SplashScreen extends Activity {
     public static boolean cachePref;
     public static int weekStored;
 
+    public static String refreshPref = null;
+    
     public static String formattedDate;
     static int weekDay;
     static Calendar calendar;
     static SimpleDateFormat simpleDateFormat;
 
     private NetworkReceiver receiver = new NetworkReceiver();
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_splash_screen);	
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
-
-        StartSplashScreen();		
-
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        receiver = new NetworkReceiver();
-        this.registerReceiver(receiver, filter);
+		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+		receiver = new NetworkReceiver();
+		this.registerReceiver(receiver, filter);
 
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         networkPref = sharedPrefs.getString("connection_type_preference", "Both Wi-Fi and Data");
         cachePref = sharedPrefs.getBoolean("save_data_preference", true);
         weekStored = sharedPrefs.getInt("storedWeek", -1);
+        refreshPref = sharedPrefs.getString("refresh", "");
         Log.d(networkPref, "NETWORK PREF 1");
 
         updateConnectedFlags();
@@ -307,94 +308,153 @@ public class SplashScreen extends Activity {
         }
     }
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     private void loadData() {
+    	
+    	menuParser = new ParseMenuData();
+		locationParser = new ParseLocationData(this);
+        
+		// If the refreshPref comes from locations, menu, you load from network, then open either menu, locations
+		//		If there is no network, show error page
+		// Else it means it is a start up call and you can resume normally
+		
+		
+		if(refreshPref.equals("locations") || refreshPref.equals("menu")){
+			
+			if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
+	                || ((networkPref.equals(WIFI)) && (wifiConnected)) || ((networkPref.equals(DATA)) && (mobileConnected))) {
+				
+					Toast.makeText(getApplicationContext(), "Refreshing using network", Toast.LENGTH_SHORT).show();
+	        
+	    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
+	    			String urlMenu = getDatedMenuUrl();
+	    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);	
+	    			
+	    			
+	    			final Handler handler = new Handler();
+		    		final Runnable r = new Runnable()
+		    		{
+		    		    public void run() 
+		    		    {
+		    		    	if(RestaurantLocationHolder.getInstance(SplashScreen.this) == null || RestaurantMenuHolder.getInstance() == null){
+		    		    		handler.postDelayed(this, 1000);
+		    		    	}
+		    		    }
+		    		};
 
-        menuParser = new ParseMenuData();
-        locationParser = new ParseLocationData(this);
+		    		handler.postDelayed(r, 2000);
+	    			if(refreshPref.equals("locations")){
+	    				Intent intent = new Intent(this, LocationHours.class);
+	    				startActivity(intent);
+	    			}
+	    			else{
+	    				if(refreshPref.equals("menu")){
+	    					String restaurant = sharedPrefs.getString("restaurant", "");
+	    					int position = sharedPrefs.getInt("position", -1);
+		    				Intent intent = new Intent(this, MenuLists.class);
+		    				intent.putExtra("Restaurant Name", restaurant);
+		    				intent.putExtra("Restaurant Position", position);
+		    				startActivity(intent);
+		    			}
+	    			}
+	        }
+			
+			else{ 
+				Toast.makeText(getApplicationContext(), "Cannot refresh because there is no network", Toast.LENGTH_SHORT).show();
+				showErrorPage(); }	
+			
+		}
+		
+		else{
+			
+			StartSplashScreen();
+			
+	    	if (!cachePref) {
+	    		
+	    		InternalStorage.deleteObject(SplashScreen.this, "menu");
+				InternalStorage.deleteObject(SplashScreen.this, "location");
+				
+				//If network, get new data else error page				
+				if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
+		                || ((networkPref.equals(WIFI)) && (wifiConnected)) || ((networkPref.equals(DATA)) && (mobileConnected))) {
+					
+						Toast.makeText(getApplicationContext(), "Cache Pref off, Loading from network", Toast.LENGTH_SHORT).show();
+		        
+		    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
+		    			String urlMenu = getDatedMenuUrl();
+		    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);	
+		    			
+		        }
+				
+				else{ 
+					Toast.makeText(getApplicationContext(), "Cache Pref off, No network", Toast.LENGTH_SHORT).show();
+					showErrorPage(); }			
+			}
+	    	
+	    	//Else use cache to get data 
+	    		//Within here, check if cache has data
+	    			//if yes, load it... before loading cached data, check if it is old
+	    			//else, check if network exists
+	    				//if yes, load data
+	    				// else error page
+	    	
+	    	else{
 
-        if (!cachePref) {
-
-            InternalStorage.deleteObject(SplashScreen.this, "menu");
-            InternalStorage.deleteObject(SplashScreen.this, "location");
-
-            //If network, get new data else error page
-
-            if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
-                    || ((networkPref.equals(WIFI)) && (wifiConnected)) || ((networkPref.equals(DATA)) && (mobileConnected))) {
-
-                Toast.makeText(getApplicationContext(), "Cache Pref off, Loading from network", Toast.LENGTH_SHORT).show();
-
-                String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
-                String urlMenu = getDatedMenuUrl();
-                new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);	
-
-            }
-
-            else{ 
-                Toast.makeText(getApplicationContext(), "Cache Pref off, No network", Toast.LENGTH_SHORT).show();
-                showErrorPage(); }			
-        }
-
-        //Else use cache to get data 
-            //Within here, check if cache has data
-                //if yes, load it... before loading cached data, check if it is old
-                //else, check if network exists
-                    //if yes, load data
-                    // else error page
-
-        else{
-            try {
-                if(!(InternalStorage.cacheExists(SplashScreen.this, "menu")) || !(InternalStorage.cacheExists(SplashScreen.this, "location"))){
-                    if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
-                            || ((networkPref.equals(WIFI)) && (wifiConnected)) || ((networkPref.equals(DATA)) && (mobileConnected))) {
-
-                        Toast.makeText(getApplicationContext(), "Cache Pref On. No Cached data. Getting data from network", Toast.LENGTH_SHORT).show();
-
-                        String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
-                        String urlMenu = getDatedMenuUrl();
-                        new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);			
-                    }
-                    else{ 
-                        Toast.makeText(getApplicationContext(), "Cache Pref On. No Cache. No Network", Toast.LENGTH_SHORT).show();
-                        showErrorPage(); }
-                }
-
-                else{
-
-                    Log.d("Week stored", Integer.toString(weekStored));
-                    if( getCurrentWeek() != weekStored){
-                        Toast.makeText(getApplicationContext(), "The data you are viewing is old", Toast.LENGTH_SHORT).show();
-                    }
-
-                    Toast.makeText(getApplicationContext(), "Cache Pref On. Cache available", Toast.LENGTH_SHORT).show();
-
-                    ArrayList<RestaurantMenuObject> restaurantMenu = null;
-                    RestaurantObject[] restaurantLocations = null;
-                    try {
-                        restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
-                        restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                    if((restaurantMenu != null) && (restaurantLocations != null)){
-                        RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
-                        RestaurantMenuHolder.getInstance(restaurantMenu);
-                    }
-
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-        }
-
+	    		try {
+					if(!(InternalStorage.cacheExists(SplashScreen.this, "menu")) || !(InternalStorage.cacheExists(SplashScreen.this, "location"))){
+						
+						if (((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
+				                || ((networkPref.equals(WIFI)) && (wifiConnected)) || ((networkPref.equals(DATA)) && (mobileConnected))) {
+														
+								Toast.makeText(getApplicationContext(), "Cache Pref On. No Cached data. Getting data from network", Toast.LENGTH_SHORT).show();
+				        
+				    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
+				    			String urlMenu = getDatedMenuUrl();
+				    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);			
+				        }
+						else{ 
+							Toast.makeText(getApplicationContext(), "Cache Pref On. No Cache. No Network", Toast.LENGTH_SHORT).show();
+							showErrorPage(); }
+					}
+					
+					else{
+						
+						Log.d("Week stored", Integer.toString(weekStored));
+						if( getCurrentWeek() != weekStored){
+							Toast.makeText(getApplicationContext(), "The data you are viewing is old", Toast.LENGTH_SHORT).show();
+						}
+						
+						Toast.makeText(getApplicationContext(), "Cache Pref On. Cache available", Toast.LENGTH_SHORT).show();
+						
+						ArrayList<RestaurantMenuObject> restaurantMenu = null;
+				    	RestaurantObject[] restaurantLocations = null;
+				    	try {
+							restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
+							restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
+						} catch (IOException e) {
+							e.printStackTrace();
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}
+				    			
+						if(restaurantMenu != null && restaurantLocations != null){
+							RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
+							RestaurantMenuHolder.getInstance(restaurantMenu);
+						}
+						
+					}
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+	    		
+	    	}
+			
+		}
+		
+	    
     }
 
     private void showErrorPage() {

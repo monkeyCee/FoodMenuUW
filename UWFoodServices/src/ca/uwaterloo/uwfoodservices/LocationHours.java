@@ -4,7 +4,9 @@ package ca.uwaterloo.uwfoodservices;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -21,145 +23,147 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class LocationHours extends SlidingMenus implements ActionBar.TabListener, ActivityCommunicator{
 
-    ViewPager vp;
-    ActionBar actionBar;
-    public FragmentCommunicator fragmentCommunicator;
+	ViewPager vp;
+	ActionBar actionBar;
+	public FragmentCommunicator fragmentCommunicator;
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_location_hours);
+		
+		actionBar = getSupportActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setIcon(R.drawable.hours);
+		
+		actionBar.setDisplayUseLogoEnabled(false);
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location_hours);
+		vp = (ViewPager) findViewById(R.id.pager);
+		vp.setAdapter(new MenuAdapter(getSupportFragmentManager()));
 
-        actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setIcon(R.drawable.hours);
+		vp.setOnPageChangeListener(new OnPageChangeListener() {
+			@Override
+			public void onPageScrollStateChanged(int arg0) { }
 
-        actionBar.setDisplayUseLogoEnabled(false);
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) { }
 
-        vp = (ViewPager) findViewById(R.id.pager);
-        vp.setAdapter(new MenuAdapter(getSupportFragmentManager()));
+			@Override
+			public void onPageSelected(int position) {
+				switch (position) {
+				case 0:
+					getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+					break;
+				default:
+					getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+					break;
+				}
+			}
 
-        vp.setOnPageChangeListener(new OnPageChangeListener() {
-            @Override
-            public void onPageScrollStateChanged(int arg0) { }
+		});
+		
+		vp.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+			@Override
+			public void onPageSelected(int position) {
+				actionBar.setSelectedNavigationItem(position);
+			}
+		});
+		
+		for (int i = 0; i < 2; i++) {
+			actionBar.addTab(actionBar.newTab()
+					.setText(MenuAdapter.location_tabs[i])
+					.setTabListener(this));
+		}
 
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) { }
+		vp.setCurrentItem(0);
+		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		
+	}
 
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-                case 0:
-                    getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-                    break;
-                default:
-                    getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-                    break;
-                }
-            }
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		vp.setCurrentItem(tab.getPosition());
+	}
 
-        });
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		
+	}
 
-        vp.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		
+	}
+	
+	public static class MenuAdapter extends FragmentPagerAdapter {
 
-        for (int i = 0; i < 2; i++) {
-            actionBar.addTab(actionBar.newTab()
-                    .setText(MenuAdapter.location_tabs[i])
-                    .setTabListener(this));
-        }
+		private ArrayList<MenuFragment> mFragments;
 
-        vp.setCurrentItem(0);
-        getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+		public final static String[] location_tabs = new String[] {"ListView", "MapView"};
 
-    }
+		public MenuAdapter(FragmentManager fm) {
+			super(fm);
+			mFragments = new ArrayList<MenuFragment>();
+			for (int i = 0; i < location_tabs.length; i++)
+				mFragments.add(new MenuFragment());
+		}
 
+		@Override
+		public int getCount() {
+			return location_tabs.length;
+		}
 
-    @Override
-    public void onTabSelected(Tab tab, FragmentTransaction ft) {
-        vp.setCurrentItem(tab.getPosition());
-    }
+		@Override
+		public Fragment getItem(int position) {
+			if(position == 0){
+				Fragment fragment = new ListViewFragment();
+				Bundle args = new Bundle();
+				args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
+				fragment.setArguments(args);
+				return fragment;		
+			}
+			else{
+				Fragment fragment = new MyMapFragment();
+				Bundle args = new Bundle();
+				args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
+				fragment.setArguments(args);
+				return fragment;
+			}
+			
+		}
 
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int itemId = item.getItemId();
+		Log.d(item.getTitle() + "", "itemtostring");
+		if (item.getTitle() == "Settings") {
+			Intent settingsActivity = new Intent(getBaseContext(), SettingsActivity.class);
+			startActivity(settingsActivity);
+			return true;
+		} else if (itemId == android.R.id.home) {
+			toggle();
+			return true;
+		} else if (item.getTitle() == "Refresh") {
+			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+			SharedPreferences.Editor editor = pref.edit();
+			editor.putString("refresh", "locations");
+			editor.commit();
+			Intent intent = new Intent(this, SplashScreen.class);
+			startActivity(intent);
+			
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
-    @Override
-    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+	@Override
+	public void passDataToActivity(int position) {
+		fragmentCommunicator.passDataToFragment(position);
+		
+	}
 
-    }
-
-
-    @Override
-    public void onTabReselected(Tab tab, FragmentTransaction ft) {
-
-    }
-
-    public static class MenuAdapter extends FragmentPagerAdapter {
-
-        private ArrayList<MenuFragment> mFragments;
-
-        public final static String[] location_tabs = new String[] {"ListView", "MapView"};
-
-        public MenuAdapter(FragmentManager fm) {
-            super(fm);
-            mFragments = new ArrayList<MenuFragment>();
-            for (int i = 0; i < location_tabs.length; i++) {
-                mFragments.add(new MenuFragment());
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return location_tabs.length;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if(position == 0){
-                Fragment fragment = new ListViewFragment();
-                Bundle args = new Bundle();
-                args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                fragment.setArguments(args);
-                return fragment;		
-            }
-            else{
-                Fragment fragment = new MyMapFragment();
-                Bundle args = new Bundle();
-                args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                fragment.setArguments(args);
-                return fragment;
-            }
-
-        }
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        Log.d(item.getTitle() + "", "itemtostring");
-        if (item.getTitle() == "Settings") {
-            Intent settingsActivity = new Intent(getBaseContext(), SettingsActivity.class);
-            startActivity(settingsActivity);
-            return true;
-        } else if (itemId == android.R.id.home) {
-            toggle();
-            return true;
-        } else if (item.getTitle() == "Refresh") {
-            Log.d("load", "load");
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void passDataToActivity(int position) {
-        fragmentCommunicator.passDataToFragment(position);
-
-    }
 
 }
