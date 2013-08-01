@@ -1,5 +1,5 @@
 package ca.uwaterloo.uwfoodservices;
 
 public interface FragmentCommunicator {
-	public void passDataToFragment(int position);
+    public void passDataToFragment(int position);
 }

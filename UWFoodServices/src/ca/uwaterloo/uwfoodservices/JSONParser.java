@@ -14,53 +14,53 @@ import android.util.Log;
 
 public class JSONParser {
 
-	static InputStream is = null;
-	static JSONObject jObj = null;
-	static String json = "";
+    static InputStream is = null;
+    static JSONObject jObj = null;
+    static String json = "";
 
-	public JSONParser() {
-	}
+    public JSONParser() {
+    }
 
-	public JSONObject getJSONFromUrl(String url) {
-		try {
-			
-			//StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-			//StrictMode.setThreadPolicy(policy);
-			
-			// Setting up a default client to get the data
-			DefaultHttpClient httpClient = new DefaultHttpClient();
-			// HttpPost is a request to the web server
-			HttpGet httpGet = new HttpGet(url);
-			
-			// Client executes the request
-			HttpResponse httpResponse = httpClient.execute(httpGet);
-			// The 'response' from the server feeds back data stored in the httpEntity
-			HttpEntity httpEntity = httpResponse.getEntity();
-			is = httpEntity.getContent();			
+    public JSONObject getJSONFromUrl(String url) {
+        try {
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				Log.d(line,"line");
-				sb.append(line + "\n");
-			}
-			is.close();
-			json = sb.toString();
-			Log.d(json, "JSON");
-		} catch (Exception e) {
-			Log.e("Buffer Error", "Error converting result " + e.toString());
-		}
-		
-		// Assigning that string to the JSON Object
-		try {
-			jObj = new JSONObject(json);
-		} catch (JSONException e) {
-			Log.e("JSON Parser", "Error parsing data " + e.toString());
-		}
+            //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            //StrictMode.setThreadPolicy(policy);
 
-		// return JSON object which carries the JSON data
-		return jObj;
+            // Setting up a default client to get the data
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            // HttpPost is a request to the web server
+            HttpGet httpGet = new HttpGet(url);
 
-	}
+            // Client executes the request
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            // The 'response' from the server feeds back data stored in the httpEntity
+            HttpEntity httpEntity = httpResponse.getEntity();
+            is = httpEntity.getContent();			
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                Log.d(line,"line");
+                sb.append(line + "\n");
+            }
+            is.close();
+            json = sb.toString();
+            Log.d(json, "JSON");
+        } catch (Exception e) {
+            Log.e("Buffer Error", "Error converting result " + e.toString());
+        }
+
+        // Assigning that string to the JSON Object
+        try {
+            jObj = new JSONObject(json);
+        } catch (JSONException e) {
+            Log.e("JSON Parser", "Error parsing data " + e.toString());
+        }
+
+        // return JSON object which carries the JSON data
+        return jObj;
+
+    }
 }
