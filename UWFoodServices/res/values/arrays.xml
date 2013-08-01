@@ -43,4 +43,16 @@
         <item>Entry Value 1</item>
         <item>Entry Value 2</item>
     </string-array>
+    <array name="entries">
+		<item>@drawable/menu_icon</item>		
+		<item>@drawable/clock_icon</item> 		
+		<item>@drawable/settings_icon</item>		
+		<item>@drawable/aboutus_icon</item>					
+	</array>	
+	<array name="names">
+	    <item>Menu</item>
+	    <item>Locations and Hours</item>
+	    <item>Settings</item>
+	    <item>About Us</item>
+	</array>
 </resources>

@@ -135,7 +135,7 @@ public class SplashScreen extends Activity {
 
                 handler.postDelayed(r, 2000);
 
-                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+                Intent intent = new Intent(SplashScreen.this, MainScreen2.class);
                 startActivity(intent);
             }
         });
