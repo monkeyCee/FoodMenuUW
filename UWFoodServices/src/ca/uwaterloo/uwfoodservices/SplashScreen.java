@@ -345,6 +345,8 @@ public class SplashScreen extends Activity {
 		    		handler.postDelayed(r, 2000);
 	    			if(refreshPref.equals("locations")){
 	    				Intent intent = new Intent(this, LocationHours.class);
+	    				prefEditor.putString("refresh", "locations");
+	    	            prefEditor.commit();
 	    				startActivity(intent);
 	    			}
 	    			else{
@@ -352,6 +354,10 @@ public class SplashScreen extends Activity {
 	    					String restaurant = sharedPrefs.getString("restaurant", "");
 	    					int position = sharedPrefs.getInt("position", -1);
 		    				Intent intent = new Intent(this, MenuLists.class);
+		    		        prefEditor.putString("refresh", "");
+		    		        prefEditor.putString("restaurant", "");
+		    		        prefEditor.putInt("position", -1);
+		    		        prefEditor.commit();
 		    				intent.putExtra("Restaurant Name", restaurant);
 		    				intent.putExtra("Restaurant Position", position);
 		    				startActivity(intent);
