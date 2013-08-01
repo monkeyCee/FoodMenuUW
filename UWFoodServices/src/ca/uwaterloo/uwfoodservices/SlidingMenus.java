@@ -46,7 +46,7 @@ public class SlidingMenus extends SlidingFragmentActivity{
         .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         menu.add("Refresh")
-        .setIcon(R.drawable.refresh)
+        .setIcon(R.drawable.ic_action_refresh)
         .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         return true;
