@@ -83,10 +83,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ca.uwaterloo.uwfoodservices.NutritionInfo"
-            android:label="@string/title_activity_nutrition_info" >
-        </activity>
-        <activity
             android:name="ca.uwaterloo.uwfoodservices.MainScreen2"
             android:label="@string/title_activity_main_screen2" >
         </activity>
