@@ -36,12 +36,6 @@
             android:value="AIzaSyCy7CfYYclRgpnVpaCBFYxgOHToku5d-80" />
 
         <activity
-            android:name="ca.uwaterloo.uwfoodservices.MainScreen"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.NoActionBar" >
-        </activity>
-        <activity
             android:name="ca.uwaterloo.uwfoodservices.RestaurantMenuList"
             android:label="@string/title_activity_restaurant_menu_list"
             android:screenOrientation="portrait"
@@ -83,7 +77,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ca.uwaterloo.uwfoodservices.MainScreen2"
+            android:name="ca.uwaterloo.uwfoodservices.MainScreen"
             android:label="@string/title_activity_main_screen2"
             android:screenOrientation="portrait" >
         </activity>
