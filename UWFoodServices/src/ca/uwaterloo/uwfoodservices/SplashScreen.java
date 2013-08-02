@@ -63,6 +63,7 @@ public class SplashScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);	
 
+		Log.d("In On Create", "+");
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 		receiver = new NetworkReceiver(this);
 		this.registerReceiver(receiver, filter);
@@ -81,6 +82,7 @@ public class SplashScreen extends Activity {
 
     private void StartSplashScreen()
     {
+        Log.d("In startSplashScreen", "+");
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
         anim.reset();
         LinearLayout l=(LinearLayout) findViewById(R.id.lin_lay);
@@ -128,7 +130,7 @@ public class SplashScreen extends Activity {
 
                 handler.postDelayed(r, 2000);
 
-                Intent intent = new Intent(SplashScreen.this, MainScreen2.class);
+                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
                 startActivity(intent);
             }
         });
@@ -144,12 +146,20 @@ public class SplashScreen extends Activity {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d("In on start", "+");
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("In on resume", "+");
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
+        Log.d("In onpause", "+");
         if (receiver != null) {
             this.unregisterReceiver(receiver);
         }
@@ -159,6 +169,12 @@ public class SplashScreen extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+    
+    @Override
+    public void onStop() {	
+        super.onStop();
+        Log.d("In on stop", "+");
     }
 
     private static class AsyncDataFetcher extends AsyncTask<String, Void, JSONObject[]> {
@@ -398,33 +414,9 @@ public class SplashScreen extends Activity {
     }
 
     private void showErrorPage() {
-        setContentView(R.layout.activity_connection_cache);
-        Typeface tf = Typeface.createFromAsset(SplashScreen.this.getAssets(),
-                "Roboto-Light.ttf");
-        TextView text = (TextView) findViewById(R.id.errortext);
-        text.setTypeface(tf);
 
-        Button refresh = (Button) findViewById(R.id.ready);
-        refresh.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
-            }
-        });
-
-        Button settings = (Button) findViewById(R.id.settingsPhone);
-        settings.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(intent);	
-            }
-        });
+        Intent intent = new Intent(this, ErrorPage.class);
+        startActivity(intent);
 
     }
 
