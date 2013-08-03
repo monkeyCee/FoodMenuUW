@@ -93,7 +93,8 @@
         <activity
             android:name="ca.uwaterloo.uwfoodservices.MainScreen"
             android:label="@string/title_activity_main_screen"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.NoActionBar" >
         </activity>
         <activity
             android:name="ca.uwaterloo.uwfoodservices.AboutPage"
