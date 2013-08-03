@@ -160,6 +160,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 	                editor.putString("refresh", "locations");
 	                editor.commit();
 	                startActivity(intent);
+	                finish();
 	            }
 	            else{
 	                Toast.makeText(getApplicationContext(), "Cannot refresh because either there is no network or the network does not match your preferences", Toast.LENGTH_SHORT).show();

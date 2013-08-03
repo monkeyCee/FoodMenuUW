@@ -433,6 +433,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		        editor.putInt("position", positionRestaurant);
 		        editor.commit();
 		        startActivity(intent);
+		        finish();
 		    }
 		    else{
 		        Toast.makeText(getApplicationContext(), "Cannot refresh because either there is no network or the network does not match your preferences", Toast.LENGTH_SHORT).show();
