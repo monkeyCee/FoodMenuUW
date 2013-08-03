@@ -10,4 +10,5 @@
     <color name="goblinGreen">#3992B5</color>
     <color name="lvHeaderDividerColor">#3992B5</color>
     <color name="lvDividerColor">#A0A0A0</color>
+    <drawable name="black">#aa000000</drawable>
 </resources>

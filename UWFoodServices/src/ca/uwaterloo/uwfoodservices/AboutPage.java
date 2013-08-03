@@ -4,27 +4,27 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Menu;
+import android.view.Window;
 import android.widget.TextView;
 
 public class AboutPage extends SlidingMenus {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_page);
-        
+                
         final ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(getResources().getDrawable(R.drawable.black));
         actionBar.setIcon(R.drawable.aboutus_icon);
         
         Typeface robotoBold = Typeface.createFromAsset(this.getAssets(),
@@ -44,7 +44,6 @@ public class AboutPage extends SlidingMenus {
             version.setText("Version Code: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionCode
                     + "     Version Name: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
         } catch (NameNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         version.setTypeface(robotoLight);
