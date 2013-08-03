@@ -50,6 +50,11 @@ public class SlidingListFragment extends ListFragment {
             startActivity(intent);
             break;
 
+        case 3:
+            intent = new Intent(getActivity(), AboutPage.class);
+            startActivity(intent);
+            break;    
+            
         default:
             Log.d("Clicked", Integer.toString(position+1));
 

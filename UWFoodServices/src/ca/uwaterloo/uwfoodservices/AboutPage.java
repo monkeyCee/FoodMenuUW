@@ -1,9 +1,6 @@
 package ca.uwaterloo.uwfoodservices;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.MenuItem;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Typeface;
@@ -11,8 +8,13 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class AboutPage extends SlidingMenus {
 
@@ -41,8 +43,7 @@ public class AboutPage extends SlidingMenus {
         
         TextView version = (TextView) findViewById(R.id.TextViewVersion);
         try {
-            version.setText("Version Code: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionCode
-                    + "     Version Name: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+            version.setText("Version: " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -81,9 +82,23 @@ public class AboutPage extends SlidingMenus {
         googlePlayServices.setMovementMethod(LinkMovementMethod.getInstance());
         googlePlayServices.setTypeface(robotoLight);
         
-        TextView googlePlaylicense = (TextView) findViewById(R.id.textViewGooglePlayLicense);
-        googlePlaylicense.setText(GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(this));
-        googlePlaylicense.setTypeface(robotoLight);
+        TextView googlePlayLicense = (TextView) findViewById(R.id.textViewGooglePlayLicense);
+        googlePlayLicense.setTypeface(robotoLight);
+        
+        TextView googlePlayLegalNotice = (TextView) findViewById(R.id.TextViewGooglePlayLegalNotice);
+        googlePlayLegalNotice.setTypeface(robotoLight);
+        googlePlayLegalNotice.setText(Html.fromHtml("<font color='#33B5E5'><u>Click here to view Legal Notice</u></font>"));
+        
+        googlePlayLegalNotice.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder LicenseDialog = new AlertDialog.Builder(AboutPage.this);
+                LicenseDialog.setTitle("Legal Notices");
+                LicenseDialog.setMessage(GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(AboutPage.this));
+                LicenseDialog.show();
+            }
+        });
     }
     
     @Override

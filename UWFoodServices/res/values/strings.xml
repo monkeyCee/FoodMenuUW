@@ -90,5 +90,7 @@
     <string name="uw_food_menu">UW Food Menu</string>
     <string name="this_is_an_open_source_application_available_on_github_">This is an open source application available on GitHub.</string>
     <string name="licenses">LICENSES</string>
+    <string name="click_here_to_view_legal_notice">Click here to view Legal Notice</string>
+    <string name="contains_information_provided_by_the_university_of_waterloo_under_license_on_an_as_is_basis_">Contains information provided by the University of Waterloo under license on an \'as is\' basis.</string>
 
 </resources>

@@ -90,7 +90,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingBottom="10dp"
-            android:text="Contains information provided by the University of Waterloo under license on an 'as is' basis."
+            android:text="@string/contains_information_provided_by_the_university_of_waterloo_under_license_on_an_as_is_basis_"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="16sp" />
 
@@ -115,9 +115,10 @@
             android:id="@+id/TextViewSlidingMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingTop="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
             android:text="@string/slidingmenu_by_jeremy_feinstein"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="16sp" />
@@ -126,10 +127,10 @@
             android:id="@+id/TextViewSlidingMenuLicense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
+            android:gravity="center"
             android:paddingBottom="3dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
             android:text="@string/used_under_the_apache_license"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="15sp" />
@@ -144,9 +145,10 @@
             android:id="@+id/TextViewGooglePlay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingTop="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
             android:text="@string/google_play_services_google_inc_"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="16sp" />
@@ -155,11 +157,22 @@
             android:id="@+id/textViewGooglePlayLicense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
+            android:gravity="center"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:text="@string/used_under_the_apache_license"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/TextViewGooglePlayLegalNotice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingBottom="3dp"
-           android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:text="@string/used_under_the_creative_commons_license"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:text="@string/click_here_to_view_legal_notice"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="15sp" />
 
