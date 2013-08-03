@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.uwaterloo.uwfoodservices"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.1" >
 
     <uses-sdk
         android:minSdkVersion="13"
@@ -94,6 +94,12 @@
             android:name="ca.uwaterloo.uwfoodservices.MainScreen"
             android:label="@string/title_activity_main_screen"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.AboutPage"
+            android:label="@string/title_activity_about_page" 
+            android:screenOrientation="portrait" 
+            android:theme="@android:style/Theme.Holo">
         </activity>
     </application>
 

@@ -29,6 +29,7 @@ public class MainScreen extends Activity {
 		final Intent intent_restaurant = new Intent(this, RestaurantMenuList.class);
 		final Intent intent_location = new Intent(this, LocationHours.class);
 		final Intent intent_settings = new Intent(this, SettingsActivity.class);
+		final Intent intent_about = new Intent(this, AboutPage.class);
 		
 		SpinningMenu SpinningMenu = (SpinningMenu)findViewById(R.id.SpinningMenu);
         SpinningMenu.setOnItemClickListener(new OnItemClickListener(){
@@ -36,7 +37,6 @@ public class MainScreen extends Activity {
 			public void onItemClick(SpinningMenuAdapter<?> parent, View view,
 					int position, long id) {	
 				String temp = (String)((SpinningMenuItem) parent.getChildAt(position)).getName();
-
 
 					if (temp.equals("Menu")&&selectedTab.equals("Menu"))
 					{
@@ -52,7 +52,7 @@ public class MainScreen extends Activity {
 					}
 					else if (temp.equals("About Us")&&selectedTab.equals("About Us"))
 					{
-						
+					    startActivityForResult(intent_about, requestCode);
 					}
 				
 				}
@@ -77,7 +77,7 @@ public class MainScreen extends Activity {
 					selectedTab = "Settings";
 					break;
 				case 3:
-					selectedTab = "Abouts Us";
+					selectedTab = "About Us";
 					break;
 				}
 				

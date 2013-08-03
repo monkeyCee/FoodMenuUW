@@ -79,5 +79,16 @@
     <string name="title_activity_connection_cache">ConnectionCache</string>
     <string name="title_activity_main_screen">MainScreen2</string>
     <string name="title_activity_error_page">ErrorPage</string>
+    <string name="title_activity_nutrition_info">NutritionInfo</string>
+    <string name="title_activity_main_screen2">MainScreen2</string>
+    <string name="title_activity_about_page">About Us</string>
+    <string name="slidingmenu_by_jeremy_feinstein">SlidingMenu - by Jeremy Feinstein</string>
+    <string name="google_play_services_google_inc_">Google Play Services - Google Inc.</string>
+    <string name="used_under_the_apache_license">Used under the Apache License</string>
+    <string name="used_under_the_creative_commons_license">Used under the Creative Commons License</string>
+    <string name="created_by_">"Created by "</string>
+    <string name="uw_food_menu">UW Food Menu</string>
+    <string name="this_is_an_open_source_application_available_on_github_">This is an open source application available on GitHub.</string>
+    <string name="licenses">LICENSES</string>
 
 </resources>
