@@ -33,7 +33,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCy7CfYYclRgpnVpaCBFYxgOHToku5d-80" />
+            android:value="AIzaSyCQgPReUADFnaBTF5tCXk00MJMTkGUdk6g" />
 
         <activity
             android:name="ca.uwaterloo.uwfoodservices.RestaurantMenuList"
@@ -41,29 +41,34 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar" >
         </activity>
+        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.LocationHours"
             android:label="@string/title_activity_location_hours"
             android:screenOrientation="portrait" >
         </activity>
+        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.MenuLists"
             android:label="@string/title_activity_menu_lists"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo" >
         </activity>
+        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo" >
         </activity>
+        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.SettingsActivityTest"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo" >
         </activity>
+        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.SplashScreen"
             android:label="@string/title_activity_splash_screen"
@@ -76,9 +81,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.ErrorPage"
+            android:label="@string/title_activity_error_page"
+            android:screenOrientation="portrait"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Holo.NoActionBar" >
+        </activity>
+        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.MainScreen"
-            android:label="@string/title_activity_main_screen2"
+            android:label="@string/title_activity_main_screen"
             android:screenOrientation="portrait" >
         </activity>
     </application>

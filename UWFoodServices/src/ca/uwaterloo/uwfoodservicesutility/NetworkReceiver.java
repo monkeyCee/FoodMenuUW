@@ -86,4 +86,17 @@ public class NetworkReceiver extends BroadcastReceiver {
             mobileConnected = false;
         }
     }
+    
+    public boolean isNetwork(){
+        
+        updateConnectedFlags();
+        networkPref = sharedPrefs.getString("connection_type_preference", "Both Wi-Fi and Data");
+        if(((networkPref.equals(BOTH)) && (wifiConnected || mobileConnected))
+                || ((networkPref.equals(WIFI)) && (wifiConnected)) || ((networkPref.equals(DATA)) && (mobileConnected))){
+            return true;
+        }
+        else
+            return false;
+    }
+
 }

@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,13 +20,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import ca.uwaterloo.uwfoodservicesutility.InternalStorage;
 import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
@@ -74,7 +70,7 @@ public class SplashScreen extends Activity {
         weekStored = sharedPrefs.getInt("storedWeek", -1);
         refreshPref = sharedPrefs.getString("refresh", "");
         Log.d(networkPref, "NETWORK PREF 1");
-
+        Log.d(refreshPref, "refresh came from");
         receiver.updateConnectedFlags();
 
         loadData();
@@ -129,7 +125,7 @@ public class SplashScreen extends Activity {
                 };
 
                 handler.postDelayed(r, 2000);
-
+                
                 Intent intent = new Intent(SplashScreen.this, MainScreen.class);
                 startActivity(intent);
             }
@@ -268,11 +264,9 @@ public class SplashScreen extends Activity {
 		//		If there is no network, show error page
 		// Else it means it is a start up call and you can resume normally
 		
-		
 		if(refreshPref.equals("locations") || refreshPref.equals("menu")){
-			
-			if (((networkPref.equals(BOTH)) && (receiver.wifiConnected || receiver.mobileConnected))
-	                || ((networkPref.equals(WIFI)) && (receiver.wifiConnected)) || ((networkPref.equals(DATA)) && (receiver.mobileConnected))) {
+		    
+			if (receiver.isNetwork()) {
 				
 					Toast.makeText(getApplicationContext(), "Refreshing using network", Toast.LENGTH_SHORT).show();
 	        
@@ -293,6 +287,7 @@ public class SplashScreen extends Activity {
 		    		};
 
 		    		handler.postDelayed(r, 2000);
+		    		
 	    			if(refreshPref.equals("locations")){
 	    				Intent intent = new Intent(this, LocationHours.class);
 	    				prefEditor.remove("refresh");
@@ -315,10 +310,6 @@ public class SplashScreen extends Activity {
 	    			}
 	        }
 			
-			else{ 
-				Toast.makeText(getApplicationContext(), "Cannot refresh because there is no network", Toast.LENGTH_SHORT).show();
-				showErrorPage(); 
-			}	
 		}
 		
 		else{
@@ -331,8 +322,7 @@ public class SplashScreen extends Activity {
 				InternalStorage.deleteObject(SplashScreen.this, "location");
 				
 				//If network, get new data else error page				
-				if (((networkPref.equals(BOTH)) && (receiver.wifiConnected || receiver.mobileConnected))
-		                || ((networkPref.equals(WIFI)) && (receiver.wifiConnected)) || ((networkPref.equals(DATA)) && (receiver.mobileConnected))) {
+				if (receiver.isNetwork()) {
 					
 						Toast.makeText(getApplicationContext(), "Cache Pref off, Loading from network", Toast.LENGTH_SHORT).show();
 		        
@@ -359,8 +349,7 @@ public class SplashScreen extends Activity {
 	    		try {
 					if(!(InternalStorage.cacheExists(SplashScreen.this, "menu")) || !(InternalStorage.cacheExists(SplashScreen.this, "location"))){
 						
-						if (((networkPref.equals(BOTH)) && (receiver.wifiConnected || receiver.mobileConnected))
-				                || ((networkPref.equals(WIFI)) && (receiver.wifiConnected)) || ((networkPref.equals(DATA)) && (receiver.mobileConnected))) {
+						if (receiver.isNetwork()) {
 														
 								Toast.makeText(getApplicationContext(), "Cache Pref On. No Cached data. Getting data from network", Toast.LENGTH_SHORT).show();
 				        

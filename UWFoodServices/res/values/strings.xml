@@ -77,7 +77,7 @@
     <string name="summary_fetch_weekly_preference">Weekly fetches new data.</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="title_activity_connection_cache">ConnectionCache</string>
-    <string name="title_activity_nutrition_info">NutritionInfo</string>
-    <string name="title_activity_main_screen2">MainScreen2</string>
+    <string name="title_activity_main_screen">MainScreen2</string>
+    <string name="title_activity_error_page">ErrorPage</string>
 
 </resources>

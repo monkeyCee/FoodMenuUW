@@ -14,7 +14,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.widget.Toast;
 import ca.uwaterloo.uwfoodservices.MenuLists.MenuFragment;
+import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -26,12 +28,17 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 	ViewPager vp;
 	ActionBar actionBar;
 	public FragmentCommunicator fragmentCommunicator;
+    SharedPreferences.Editor editor;
+    SharedPreferences pref;
+    NetworkReceiver receiver;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_location_hours);
+		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		
+		receiver = new NetworkReceiver(this);
 		actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setIcon(R.drawable.hours);
@@ -146,19 +153,29 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 			toggle();
 			return true;
 		} else if (item.getTitle() == "Refresh") {
-			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putString("refresh", "locations");
-			editor.commit();
-			Intent intent = new Intent(this, SplashScreen.class);
-			startActivity(intent);
-			
+		    
+	          if(receiver.isNetwork()){
+	                Intent intent = new Intent(LocationHours.this, SplashScreen.class);
+	                editor = pref.edit();
+	                editor.putString("refresh", "locations");
+	                editor.commit();
+	                startActivity(intent);
+	            }
+	            else{
+	                Toast.makeText(getApplicationContext(), "Cannot refresh because either there is no network or the network does not match your preferences", Toast.LENGTH_SHORT).show();
+	            }
+	          
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+    
 	@Override
 	public void passDataToActivity(int position) {
 		fragmentCommunicator.passDataToFragment(position);

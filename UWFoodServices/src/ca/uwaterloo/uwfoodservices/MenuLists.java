@@ -26,7 +26,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
+import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -40,6 +42,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     String restaurant_selection;
     static int positionRestaurant;
     RestaurantLocationHolder holder = RestaurantLocationHolder.getInstance(getBaseContext());
+    
+    SharedPreferences.Editor editor;
+    SharedPreferences pref;
+    NetworkReceiver receiver;
 
     public static String formattedDate;
     static int weekDay;
@@ -50,6 +56,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_lists);
+        
+        receiver = new NetworkReceiver(this);
+        
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         Intent intent = getIntent();
         restaurant_selection = intent.getStringExtra("Restaurant Name");
@@ -406,7 +416,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
-		Log.d(item.getTitle() + "", "itemtostring");
 		if (item.getTitle() == "Settings") {
 			Intent settingsActivity = new Intent(getBaseContext(), SettingsActivity.class);
 			startActivity(settingsActivity);
@@ -415,15 +424,19 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			toggle();
 			return true;
 		} else if (item.getTitle() == "Refresh") {
-			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putString("refresh", "menu");
-			editor.putString("restaurant", restaurant_selection);
-			editor.putInt("position", positionRestaurant);
-			editor.commit();
-			Intent intent = new Intent(this, SplashScreen.class);
-			startActivity(intent);
-			
+		    
+		    if(receiver.isNetwork()){
+		        Intent intent = new Intent(MenuLists.this, SplashScreen.class);
+		        editor = pref.edit();
+		        editor.putString("refresh", "menu");
+		        editor.putString("restaurant", restaurant_selection);
+		        editor.putInt("position", positionRestaurant);
+		        editor.commit();
+		        startActivity(intent);
+		    }
+		    else{
+		        Toast.makeText(getApplicationContext(), "Cannot refresh because either there is no network or the network does not match your preferences", Toast.LENGTH_SHORT).show();
+		    }
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
