@@ -826,7 +826,13 @@ public class SpinningMenu extends SpinningMenuSpinner implements GestureDetector
 				item.setIndex(i);
 				item.setImageBitmap(originalImage);
 				if(names != null)
-					item.setText(names.getString(i));
+				{
+				    item.setText(names.getString(i)); 
+				}
+				if (names.getString(i).equals("Locations and Hours"))
+				{
+				    item.setText("Locations and\n        Hours");
+				}
 				mImages[i] = item;
 				
 				
@@ -981,7 +987,7 @@ public class SpinningMenu extends SpinningMenuSpinner implements GestureDetector
 
     	float x = - (float)(diameter/2  * android.util.FloatMath.sin(angleOffset)) + diameter/2 - child.getWidth()/2;
     	float z = diameter/2 * (1.0f - (float)android.util.FloatMath.cos(angleOffset));
-    	float y = - getHeight()/2 + (float) (z * android.util.FloatMath.sin(mTheta));
+    	float y = (- getHeight()/2+154) + (float) (z * android.util.FloatMath.sin(mTheta));
 
     	child.setItemX(x);
     	child.setItemZ(z);
