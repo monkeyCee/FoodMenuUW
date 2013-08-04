@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -318,9 +319,22 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	            return position;
 	        }
 
+	        public void getMaxTextWidth(View convertView, ViewGroup parent) {
+	            View item = convertView;
+	            item = LayoutInflater.from(mContext).inflate(
+                        R.layout.lv_layout, parent, false);
+	            TextView header = (TextView)item.findViewById(R.id.lv_item_header);
+	            header.setText("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+	            int textHeight = header.getHeight();
+	            //int textHeight = MenuUtilities.getTextHeight("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW", header.getPaint());
+                Log.d(textHeight + " ", "GETHEIGHT");
+	        }
+	        
 	        @Override
 	        public View getView(int position, View convertView, ViewGroup parent) {
-
+	            
+	            getMaxTextWidth(convertView, parent);
+	            
 	            String headerText = getHeader(position);
 	            if(headerText != null) {
 	            	

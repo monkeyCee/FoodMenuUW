@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import org.json.JSONObject;
@@ -248,10 +249,17 @@ public class SplashScreen extends Activity {
     public int getCurrentWeek(){
 
         calendar = Calendar.getInstance();
-        String weekInYear = (new SimpleDateFormat("w", Locale.CANADA)).format(calendar.getTime());
-        Log.d("Current week - Called from getCurrentWeek", weekInYear);
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setMinimalDaysInFirstWeek(1);
+        if (new SimpleDateFormat("EEE", Locale.CANADA).format(calendar.getTime()).equals("Sun")) {
+            calendar.add(Calendar.DATE, -1);
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("w", Locale.CANADA);
+        simpleDateFormat.setCalendar(calendar);
+        String weekInYear = simpleDateFormat.format(calendar.getTime());
+        Log.d(weekInYear, "week stored - weekInYear");
+        
         return Integer.parseInt(weekInYear);
-
     }
 
 	@SuppressWarnings("unchecked")
@@ -364,7 +372,8 @@ public class SplashScreen extends Activity {
 					
 					else{
 						
-						Log.d("Week stored", Integer.toString(weekStored));
+						Log.d(Integer.toString(weekStored), "Week stored");
+						Log.d(getCurrentWeek() + "", "Week Stored current week");
 						if( getCurrentWeek() != weekStored){
 							Toast.makeText(getApplicationContext(), "The data you are viewing is old", Toast.LENGTH_SHORT).show();
 						}
