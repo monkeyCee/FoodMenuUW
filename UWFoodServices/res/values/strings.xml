@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">UW Food Services</string>
+    <string name="app_name" translatable="false">UW Food Menu</string>
     <string name="hello_world" translatable="false">Hello world!</string>
     <string name="mainScreenText" translatable="false">What would you like to view?</string>
     <string name="mainscreen" translatable="false">Images for the main screen!</string>
