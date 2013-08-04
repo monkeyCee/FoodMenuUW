@@ -3,8 +3,11 @@ package ca.uwaterloo.uwfoodservicesutility;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.text.TextPaint;
+import android.view.Display;
 import ca.uwaterloo.uwfoodservices.R;
 
 public class MenuUtilities {
@@ -47,6 +50,14 @@ public class MenuUtilities {
 
     public static int menuItemTextWidth = 550; // 579? Number that works reasonably well.
 
+    public static void setMenuItemTextWidth(int width) {
+        menuItemTextWidth = width;
+    }
+    
+    public static int getMenuItemTextWidth() {
+        return menuItemTextWidth;
+    }
+    
     public static int getTextWidth(String text, TextPaint textpaint) {
         Rect bounds = new Rect();
         textpaint.getTextBounds(text, 0, text.length(), bounds);
@@ -61,5 +72,17 @@ public class MenuUtilities {
         return height;
     }
 
-
+    public static int getScreenWidth(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
+    }
+    
+    public static int getScreenHeight(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.y;
+    }
 }
