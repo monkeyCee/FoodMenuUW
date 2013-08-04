@@ -90,9 +90,9 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         actionBar.setTitle(restaurant_selection);
+        actionBar.setIcon(R.drawable.menuicon);
         actionBar.setDisplayUseLogoEnabled(false);
-        actionBar.setIcon(holder.image_map.get(restaurant_selection));
-
+        
         vp = (ViewPager) findViewById(R.id.pager);
         vp.setAdapter(new MenuAdapter(getSupportFragmentManager()));
 

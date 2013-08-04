@@ -22,8 +22,6 @@ public class MainScreen extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-	    //getActionBar().hide();
 		setContentView(R.layout.activity_main_screen);
 		
 		final Intent intent_restaurant = new Intent(this, RestaurantMenuList.class);
@@ -42,7 +40,7 @@ public class MainScreen extends Activity {
 					{
 						startActivityForResult(intent_restaurant, requestCode);
 					}
-					else if (temp.equals("Locations and Hours")&&selectedTab.equals("Locations and Hours"))
+					else if (temp.equals("Locations and\n        Hours")&&selectedTab.equals("Locations and Hours"))
 					{
 						startActivityForResult(intent_location, requestCode);
 					}
@@ -64,7 +62,6 @@ public class MainScreen extends Activity {
 			public void onItemSelected(SpinningMenuAdapter<?> parent, View view,
 					int position, long id) {
 				
-
 		        
 				switch(position){
 				case 0:

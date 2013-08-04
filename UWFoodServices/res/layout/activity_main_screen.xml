@@ -4,7 +4,6 @@
     xmlns:bm="ca.uwaterloo.uwfoodservices"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/radialback2"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -17,8 +16,7 @@
         <ca.uwaterloo.mainscreencontrols.SpinningMenu
             android:id="@+id/SpinningMenu"
             android:layout_width="fill_parent"
-            android:layout_height="424dp"
-            android:layout_weight="0.93"
+            android:layout_height="match_parent"
             android:animationDuration="200"
             pj:Items="@array/entries"
             pj:Names="@array/names"

@@ -45,7 +45,6 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
         holder = RestaurantLocationHolder.getInstance(context);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -70,6 +69,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
                 zoom=CameraUpdateFactory.zoomTo(14);
                 myMap.moveCamera(center);
                 myMap.animateCamera(zoom);
+                myMap.setMyLocationEnabled(true);
             }
 
             options_map.setOnCheckedChangeListener(new OnCheckedChangeListener(){
@@ -118,7 +118,6 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
         } catch (InflateException e) {}
         return view;
     }
-
 
     @Override
     public void passDataToFragment(int position) {

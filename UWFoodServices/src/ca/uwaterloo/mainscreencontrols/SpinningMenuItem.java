@@ -18,7 +18,7 @@ import ca.uwaterloo.uwfoodservices.R;
 public class SpinningMenuItem extends FrameLayout 
 	implements Comparable<SpinningMenuItem> {
 	
-	private ImageView mImage;
+	protected ImageView mImage;
 	private TextView mText;
 	
 	private int index;
@@ -53,7 +53,12 @@ public class SpinningMenuItem extends FrameLayout
 		mText.setTextColor(Color.WHITE);
 		mText.setTypeface(tf);
 				
-	}	
+	}
+	
+	public ImageView getImageItem()
+	{
+	    return mImage;
+	}
 	
 	public String getName(){
 		return mText.getText().toString();

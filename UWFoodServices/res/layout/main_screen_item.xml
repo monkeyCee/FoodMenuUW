@@ -11,8 +11,7 @@
         android:id="@+id/item_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="0px"
-        android:layout_gravity="center_horizontal|bottom"
-        android:text="" />
+        android:textSize="10pt"
+        android:layout_gravity="center_horizontal|bottom" />
 
 </merge>
