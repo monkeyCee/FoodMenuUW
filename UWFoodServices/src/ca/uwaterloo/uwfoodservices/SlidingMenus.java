@@ -34,7 +34,8 @@ public class SlidingMenus extends SlidingFragmentActivity{
         sm.setFadeDegree(0.35f);
         sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
     }
 
@@ -46,7 +47,7 @@ public class SlidingMenus extends SlidingFragmentActivity{
         .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         menu.add("Refresh")
-        .setIcon(R.drawable.ic_action_refresh)
+        .setIcon(R.drawable.refresh)
         .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         return true;

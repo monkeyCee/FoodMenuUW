@@ -27,7 +27,7 @@ public class ImageAdapter extends BaseAdapter{
         inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.id = id;
         tf = Typeface.createFromAsset(context.getAssets(),
-                "Roboto-Regular.ttf");
+                "Roboto-Light.ttf");
         menuHolder = RestaurantMenuHolder.getInstance();
         locationHolder = RestaurantLocationHolder.getInstance(context);
     }
