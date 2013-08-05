@@ -13,12 +13,12 @@ public class Coordinates {
         map = new HashMap<String,LatLng>();
 
         map.put("Bon Appetit Davis Centre", new LatLng(43.472883, -80.543051));
-        map.put("Browsers Cafe Dana Porter Library", new LatLng(43.469681,-80.541998));
+        map.put("Browsers Café Dana Porter Library", new LatLng(43.469681,-80.541998));
         map.put("Brubakers Student Life Centre", new LatLng(43.472051,-80.545284));
-        map.put("CEIT Cafe CEIT Building", new LatLng(43.471814,-80.542223));
-        map.put("Eye Opener Cafe Optometry Building", new LatLng(43.475454,-80.54565));
+        map.put("CEIT Café CEIT Building", new LatLng(43.471814,-80.542223));
+        map.put("Eye-Opener Café Optometry Building", new LatLng(43.475454,-80.54565));
         map.put("Festival Fare Above the Bookstore in SCH", new LatLng(43.469202,-80.540234));
-        map.put("LA Cafe Hagey Hall", new LatLng(43.467317,-80.542421));
+        map.put("Liquid Assets Café Hagey Hall", new LatLng(43.467317,-80.542421));
         map.put("ML's Coffee Shop Modern Languages", new LatLng(43.468851,-80.542705));
         map.put("Mudie's Village 1", new LatLng(43.471799,-80.550034));
         map.put("PAS Lounge PAS Building", new LatLng(43.467187,-80.542481));
@@ -32,8 +32,8 @@ public class Coordinates {
         map.put("Tim Hortons South Campus Hall", new LatLng(43.469202,-80.540008));
         map.put("Tim Hortons Student Life Centre", new LatLng(43.471344,-80.54532));
         map.put("University Club ", new LatLng(43.472284,-80.547364));
-        map.put("UW Food Services Administrative Office ", new LatLng(43.469591,-80.543349));
-        map.put("Williams Fresh Cafe Environment 3", new LatLng(43.46824,-80.543573));
+        map.put("UW Food Services Admin Office ", new LatLng(43.469591,-80.543349));
+        map.put("Williams Fresh Café Environment 3", new LatLng(43.46824,-80.543573));
 
     }
 

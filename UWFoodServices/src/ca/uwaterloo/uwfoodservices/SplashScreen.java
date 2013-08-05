@@ -381,34 +381,38 @@ public class SplashScreen extends Activity {
 						
 						Log.d(Integer.toString(weekStored), "Week stored");
 						Log.d(getCurrentWeek() + "", "Week Stored current week");
-						if( getCurrentWeek() != weekStored && receiver.isNetwork()){
-						    Toast.makeText(getApplicationContext(), "Fetching the new data for the new week!", Toast.LENGTH_SHORT).show();
-						    String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
-                            String urlMenu = getDatedMenuUrl();
-                            new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations); 
-						}
 						
-						else{
+						if(getCurrentWeek() != weekStored && !receiver.isNetwork()){
 						    Toast.makeText(getApplicationContext(), "The data you are viewing is old. We recommend you switch on your network to get the new data", Toast.LENGTH_SHORT).show();
 						}
 						
-						Toast.makeText(getApplicationContext(), "Cache Preference On. Cache data available", Toast.LENGTH_SHORT).show();
+						if( getCurrentWeek() != weekStored && receiver.isNetwork()){
+                            Toast.makeText(getApplicationContext(), "Fetching the new data for the new week!", Toast.LENGTH_SHORT).show();
+                            String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
+                            String urlMenu = getDatedMenuUrl();
+                            new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations); 
+                        }
 						
-						ArrayList<RestaurantMenuObject> restaurantMenu = null;
-				    	RestaurantObject[] restaurantLocations = null;
-				    	try {
-							restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
-							restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
-						} catch (IOException e) {
-							e.printStackTrace();
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
+						else{
+					          Toast.makeText(getApplicationContext(), "Cache Preference On. Cache data available", Toast.LENGTH_SHORT).show();
+		                        
+		                        ArrayList<RestaurantMenuObject> restaurantMenu = null;
+		                        RestaurantObject[] restaurantLocations = null;
+		                        try {
+		                            restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
+		                            restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
+		                        } catch (IOException e) {
+		                            e.printStackTrace();
+		                        } catch (ClassNotFoundException e) {
+		                            e.printStackTrace();
+		                        }
+		                                
+		                        if(restaurantMenu != null && restaurantLocations != null){
+		                            RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
+		                            RestaurantMenuHolder.getInstance(restaurantMenu);
+		                        }
 						}
-				    			
-						if(restaurantMenu != null && restaurantLocations != null){
-							RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
-							RestaurantMenuHolder.getInstance(restaurantMenu);
-						}
+			
 						
 					}
 					
