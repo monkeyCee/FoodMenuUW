@@ -33,7 +33,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCQgPReUADFnaBTF5tCXk00MJMTkGUdk6g" />
+            android:value="AIzaSyC1u5cWRzGJsG4v89khhHYdLCiJz4Zd3Kw" />
 
         <activity
             android:name="ca.uwaterloo.uwfoodservices.RestaurantMenuList"
