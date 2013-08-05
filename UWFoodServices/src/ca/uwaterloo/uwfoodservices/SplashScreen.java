@@ -18,7 +18,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -267,7 +266,7 @@ public class SplashScreen extends Activity {
 		    
 			if (receiver.isNetwork()) {
 				
-					Toast.makeText(getApplicationContext(), "Refreshing using network", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Refreshing..", Toast.LENGTH_SHORT).show();
 	        
 	    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
 	    			String urlMenu = getDatedMenuUrl();
@@ -322,9 +321,7 @@ public class SplashScreen extends Activity {
 				
 				//If network, get new data else error page				
 				if (receiver.isNetwork()) {
-					
-						Toast.makeText(getApplicationContext(), "Cache Preference off, Loading from network", Toast.LENGTH_SHORT).show();
-		        
+							        
 		    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
 		    			String urlMenu = getDatedMenuUrl();
 		    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);	
@@ -332,7 +329,7 @@ public class SplashScreen extends Activity {
 		        }
 				
 				else{ 
-					Toast.makeText(getApplicationContext(), "Cache Preference off, No network", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "There is no stored data. There is either no network or the network does not match your preference.", Toast.LENGTH_SHORT).show();
 					showErrorPage(); }			
 			}
 	    	
@@ -349,15 +346,13 @@ public class SplashScreen extends Activity {
 					if(!(InternalStorage.cacheExists(SplashScreen.this, "menu")) || !(InternalStorage.cacheExists(SplashScreen.this, "location"))){
 						
 						if (receiver.isNetwork()) {
-														
-								Toast.makeText(getApplicationContext(), "No Cached data. Getting data from network", Toast.LENGTH_SHORT).show();
-				        
+																		        
 				    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
 				    			String urlMenu = getDatedMenuUrl();
 				    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);			
 				        }
 						else{ 
-							Toast.makeText(getApplicationContext(), "Cache Preference On. No Cached data. No Network", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(), "There is no stored data and either there is no network or the network does not match your preference", Toast.LENGTH_SHORT).show();
 							showErrorPage(); }
 					}
 					
@@ -375,8 +370,6 @@ public class SplashScreen extends Activity {
                         }
 						
 						else{
-					          Toast.makeText(getApplicationContext(), "Cache Preference On. Cache data available", Toast.LENGTH_SHORT).show();
-		                        
 		                        ArrayList<RestaurantMenuObject> restaurantMenu = null;
 		                        RestaurantObject[] restaurantLocations = null;
 		                        try {
