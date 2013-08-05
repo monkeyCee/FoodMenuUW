@@ -225,8 +225,16 @@ public class SplashScreen extends Activity {
         simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
         formattedDate = simpleDateFormat.format(calendar.getTime());
 
-        String weekInYear = (new SimpleDateFormat("w", Locale.CANADA)).format(calendar.getTime());
-
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setMinimalDaysInFirstWeek(1);
+        if (new SimpleDateFormat("EEE", Locale.CANADA).format(calendar.getTime()).equals("Sun")) {
+            calendar.add(Calendar.DATE, -1);
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("w", Locale.CANADA);
+        simpleDateFormat.setCalendar(calendar);
+        String weekInYear = simpleDateFormat.format(calendar.getTime());
+        
+        
         Log.d(formattedDate + "", "current time - formmated");
 
         weekDay = 0;
