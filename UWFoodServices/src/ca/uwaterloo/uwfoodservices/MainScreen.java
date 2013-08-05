@@ -56,7 +56,8 @@ public class MainScreen extends Activity {
                     {
                         startActivityForResult(intent_restaurant, requestCode);                       
                     }
-                    else if (temp.equals("Locations and\n        Hours")&&selectedTab.equals("Locations and Hours"))
+                    else if (((temp.equals("Locations and\n        Hours"))||(temp.equals("Locations and Hours")))
+                            &&selectedTab.equals("Locations and Hours"))
                     {
                         startActivityForResult(intent_location, requestCode);
                     }
