@@ -83,7 +83,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         actionBar.setTitle(restaurant_selection);
-        actionBar.setIcon(R.drawable.menuicon);
+        actionBar.setIcon(R.drawable.ic_drawer);
         actionBar.setDisplayUseLogoEnabled(false);
         
         // Set max text width based on screen resolution
