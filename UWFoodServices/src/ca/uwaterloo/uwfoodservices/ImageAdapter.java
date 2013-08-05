@@ -32,6 +32,7 @@ public class ImageAdapter extends BaseAdapter{
                 "Roboto-Light.ttf");
         menuHolder = RestaurantMenuHolder.getInstance();
         locationHolder = RestaurantLocationHolder.getInstance(context);
+        MenuUtilities.setImageHash();
     }
 
     @Override
@@ -91,6 +92,7 @@ public class ImageAdapter extends BaseAdapter{
 
             holder.restaraunt_name.setText(locationHolder.objects[position].getRestaurant());
             holder.location.setText(locationHolder.objects[position].getLocation());
+            Log.d(locationHolder.objects[position].getRestaurant(), "IMAGE HASH GET REST");
             holder.thumbnail.setImageResource(MenuUtilities.getImageHash().get(locationHolder.objects[position].getRestaurant()));
             holder.restaraunt_name.setTypeface(tf);
             holder.location.setTypeface(tf);

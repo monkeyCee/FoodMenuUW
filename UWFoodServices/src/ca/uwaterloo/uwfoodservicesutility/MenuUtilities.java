@@ -16,9 +16,10 @@ public class MenuUtilities {
 
     }
 
-    public static Map<String, Integer> imageHash = new HashMap<String, Integer>();
+    public static Map<String, Integer> imageHash;
 
     public static Map<String, Integer> setImageHash() {
+        imageHash = new HashMap<String, Integer>();
         imageHash.put("Bon Appetit", R.drawable.bonappetit);
         imageHash.put("Browsers Café", R.drawable.browsers);
         imageHash.put("Brubakers", R.drawable.brubakers);
