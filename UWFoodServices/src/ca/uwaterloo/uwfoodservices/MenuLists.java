@@ -92,6 +92,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         actionBar.setIcon(R.drawable.menuicon);
         actionBar.setDisplayUseLogoEnabled(false);
         
+        // Set max text width based on screen resolution
+        int screenWidth = MenuUtilities.getScreenWidth(this);
+        MenuUtilities.setMenuItemTextWidth(screenWidth * MenuUtilities.getMenuItemTextWidth() / 768);
+        
         vp = (ViewPager) findViewById(R.id.pager);
         vp.setAdapter(new MenuAdapter(getSupportFragmentManager()));
 
@@ -320,7 +324,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 
 	        @Override
 	        public View getView(int position, View convertView, ViewGroup parent) {
-
+	            
+	            Log.d(MenuUtilities.getMenuItemTextWidth()+ "", "TEXT WIDTH");
+	            Log.d(MenuUtilities.menuItemTextWidth + "", "TEXT WIDTH");
+	            
 	            String headerText = getHeader(position);
 	            if(headerText != null) {
 	            	
