@@ -75,7 +75,7 @@
     <string name="summary_store_data_preference">Stores data for use offline.</string>
     <string name="title_fetch_weekly_preference">Fetch Automatically</string>
     <string name="summary_fetch_weekly_preference">Weekly fetches new data.</string>
-    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_splash_screen">UW Food Menu</string>
     <string name="title_activity_connection_cache">ConnectionCache</string>
     <string name="title_activity_main_screen">MainScreen2</string>
     <string name="title_activity_error_page">ErrorPage</string>

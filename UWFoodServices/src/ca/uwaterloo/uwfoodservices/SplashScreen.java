@@ -225,8 +225,16 @@ public class SplashScreen extends Activity {
         simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
         formattedDate = simpleDateFormat.format(calendar.getTime());
 
-        String weekInYear = (new SimpleDateFormat("w", Locale.CANADA)).format(calendar.getTime());
-
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setMinimalDaysInFirstWeek(1);
+        if (new SimpleDateFormat("EEE", Locale.CANADA).format(calendar.getTime()).equals("Sun")) {
+            calendar.add(Calendar.DATE, -1);
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("w", Locale.CANADA);
+        simpleDateFormat.setCalendar(calendar);
+        String weekInYear = simpleDateFormat.format(calendar.getTime());
+        
+        
         Log.d(formattedDate + "", "current time - formmated");
 
         weekDay = 0;
@@ -332,7 +340,7 @@ public class SplashScreen extends Activity {
 				//If network, get new data else error page				
 				if (receiver.isNetwork()) {
 					
-						Toast.makeText(getApplicationContext(), "Cache Pref off, Loading from network", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), "Cache Preference off, Loading from network", Toast.LENGTH_SHORT).show();
 		        
 		    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
 		    			String urlMenu = getDatedMenuUrl();
@@ -341,7 +349,7 @@ public class SplashScreen extends Activity {
 		        }
 				
 				else{ 
-					Toast.makeText(getApplicationContext(), "Cache Pref off, No network", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Cache Preference off, No network", Toast.LENGTH_SHORT).show();
 					showErrorPage(); }			
 			}
 	    	
@@ -359,14 +367,14 @@ public class SplashScreen extends Activity {
 						
 						if (receiver.isNetwork()) {
 														
-								Toast.makeText(getApplicationContext(), "Cache Pref On. No Cached data. Getting data from network", Toast.LENGTH_SHORT).show();
+								Toast.makeText(getApplicationContext(), "No Cached data. Getting data from network", Toast.LENGTH_SHORT).show();
 				        
 				    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
 				    			String urlMenu = getDatedMenuUrl();
 				    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);			
 				        }
 						else{ 
-							Toast.makeText(getApplicationContext(), "Cache Pref On. No Cache. No Network", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(), "Cache Preference On. No Cached data. No Network", Toast.LENGTH_SHORT).show();
 							showErrorPage(); }
 					}
 					
@@ -375,10 +383,10 @@ public class SplashScreen extends Activity {
 						Log.d(Integer.toString(weekStored), "Week stored");
 						Log.d(getCurrentWeek() + "", "Week Stored current week");
 						if( getCurrentWeek() != weekStored){
-							Toast.makeText(getApplicationContext(), "The data you are viewing is old", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getApplicationContext(), "The data you are viewing is old. We recommend you switch on your network to get the new data", Toast.LENGTH_SHORT).show();
 						}
 						
-						Toast.makeText(getApplicationContext(), "Cache Pref On. Cache available", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getApplicationContext(), "Cache Preference On. Cache data available", Toast.LENGTH_SHORT).show();
 						
 						ArrayList<RestaurantMenuObject> restaurantMenu = null;
 				    	RestaurantObject[] restaurantLocations = null;
