@@ -1,14 +1,15 @@
 package ca.uwaterloo.uwfoodservices;
-import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
-import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
+import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 
 
 public class ImageAdapter extends BaseAdapter{

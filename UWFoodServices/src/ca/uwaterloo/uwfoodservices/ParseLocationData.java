@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
+import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 
 import android.content.Context;
 import android.util.Log;
@@ -34,6 +35,8 @@ public class ParseLocationData {
             JSONArray result_array = data_array.getJSONArray(result);
             location_objects = new RestaurantObject[result_array.length()];
 
+            RestaurantMenuHolder menuHolder = RestaurantMenuHolder.getInstance();
+            
             for(int i=0; i < result_array.length(); i++){
 
                 JSONObject restaurant_details = result_array.getJSONObject(i);
@@ -50,6 +53,12 @@ public class ParseLocationData {
 
                 result_array = data_array.getJSONArray(result);				
                 location_objects[i] = new RestaurantObject(i, restaurant_name, location_name, details);
+                
+                for (int j = 0; j < menuHolder.getCount(); j++) {
+                    if (menuHolder.restaurantMenu.get(j).getRestaurant().equals(restaurant_name)) {
+                        menuHolder.restaurantMenu.get(j).setLocation(location_name);
+                    }
+                }
 
             }
 
