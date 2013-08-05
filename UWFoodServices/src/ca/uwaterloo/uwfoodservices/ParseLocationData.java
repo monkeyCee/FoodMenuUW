@@ -4,7 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
+
 import android.content.Context;
+import android.util.Log;
 
 public class ParseLocationData {
 
@@ -34,7 +37,8 @@ public class ParseLocationData {
             for(int i=0; i < result_array.length(); i++){
 
                 JSONObject restaurant_details = result_array.getJSONObject(i);
-                String restaurant_name = restaurant_details.getString(name);
+                String restaurant_name = MenuUtilities.checkName(restaurant_details.getString(name));
+                Log.d(restaurant_name, "RESTUARANT NAME CHECK");
                 String location_name = restaurant_details.getString(location);
                 JSONObject hour_details = restaurant_details.getJSONObject(hours);
                 JSONArray result_array1 = hour_details.getJSONArray(result);

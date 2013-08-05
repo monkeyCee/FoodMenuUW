@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
@@ -30,7 +32,7 @@ public class CustomInfoView implements GoogleMap.InfoWindowAdapter {
         tv=(TextView)popup.findViewById(R.id.snippet);
         tv.setText(marker.getSnippet());
         ImageView icon = (ImageView) popup.findViewById(R.id.icon);
-        icon.setImageResource(holder.image_map.get(marker.getTitle()));
+        icon.setImageResource(MenuUtilities.getImageHash().get(marker.getTitle()));
         return popup;
     }
 

@@ -8,7 +8,7 @@ public class RestaurantLocationHolder{
 
     private static RestaurantLocationHolder mInstance = null;
     public RestaurantObject[] objects;
-    public HashMap<String, Integer> image_map;
+    //public HashMap<String, Integer> image_map;
 
     public static RestaurantLocationHolder getInstance(Context context, RestaurantObject[] objects){
         if(mInstance == null){
@@ -23,6 +23,7 @@ public class RestaurantLocationHolder{
 
     private RestaurantLocationHolder(Context context, RestaurantObject[] objects){
         this.objects = objects;			
+        /*
         image_map = new HashMap<String, Integer>();
 
         image_map.put("Bon Appetit", R.drawable.bonappetit);
@@ -42,7 +43,7 @@ public class RestaurantLocationHolder{
         image_map.put("University Club", R.drawable.universityclub);
         image_map.put("UW Food Services Administrative Office", R.drawable.foodservices);
         image_map.put("Williams Fresh Cafe", R.drawable.williams_0);
-
+    */
     }
 
     public int getCount(){

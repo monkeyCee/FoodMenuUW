@@ -86,7 +86,7 @@ public class ParseMenuData {
                 outlet_name = MenuUtilities.checkName(restaurant.getString(TAG_OUTLET_NAME)); 
 
                 location_name = "";
-                image = MenuUtilities.getImageHash().get(outlet_name);
+                image = MenuUtilities.setImageHash().get(outlet_name);
 
                 menu = restaurant.getJSONArray(TAG_MENU);
 

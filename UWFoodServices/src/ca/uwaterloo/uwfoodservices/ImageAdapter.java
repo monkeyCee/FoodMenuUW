@@ -1,4 +1,5 @@
 package ca.uwaterloo.uwfoodservices;
+import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -89,7 +90,7 @@ public class ImageAdapter extends BaseAdapter{
 
             holder.restaraunt_name.setText(locationHolder.objects[position].getRestaurant());
             holder.location.setText(locationHolder.objects[position].getLocation());
-            holder.thumbnail.setImageResource(locationHolder.image_map.get(locationHolder.objects[position].getRestaurant()));
+            holder.thumbnail.setImageResource(MenuUtilities.getImageHash().get(locationHolder.objects[position].getRestaurant()));
             holder.restaraunt_name.setTypeface(tf);
             holder.location.setTypeface(tf);
 
