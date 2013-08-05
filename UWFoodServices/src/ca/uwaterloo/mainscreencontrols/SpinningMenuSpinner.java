@@ -13,7 +13,6 @@ import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsSpinner;
 import android.widget.SpinnerAdapter;
 
 public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAdapter> {

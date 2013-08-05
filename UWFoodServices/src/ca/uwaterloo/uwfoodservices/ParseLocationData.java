@@ -8,7 +8,6 @@ import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 
 import android.content.Context;
-import android.util.Log;
 
 public class ParseLocationData {
 

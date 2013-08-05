@@ -2,8 +2,6 @@ package ca.uwaterloo.uwfoodservicesutility;
 
 import java.util.ArrayList;
 
-import ca.uwaterloo.uwfoodservices.R;
-
 public class RestaurantMenuHolder{
 
     private static RestaurantMenuHolder mInstance = null;
