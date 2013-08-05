@@ -129,7 +129,6 @@ public class SplashScreen extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.splash_screen, menu);
         return true;
     }
@@ -206,7 +205,6 @@ public class SplashScreen extends Activity {
     }
 
     public String getDatedMenuUrl() {
-        // Date handling
         prefEditor = sharedPrefs.edit();
         calendar = Calendar.getInstance();
 
@@ -257,11 +255,7 @@ public class SplashScreen extends Activity {
     	
     	menuParser = new ParseMenuData();
 		locationParser = new ParseLocationData(this);
-        
-		// If the refreshPref comes from locations, menu, you load from network, then open either menu, locations
-		//		If there is no network, show error page
-		// Else it means it is a start up call and you can resume normally
-		
+        		
 		if(refreshPref.equals("locations") || refreshPref.equals("menu")){
 		    
 			if (receiver.isNetwork()) {
@@ -318,8 +312,7 @@ public class SplashScreen extends Activity {
 	    		
 	    		InternalStorage.deleteObject(SplashScreen.this, "menu");
 				InternalStorage.deleteObject(SplashScreen.this, "location");
-				
-				//If network, get new data else error page				
+							
 				if (receiver.isNetwork()) {
 							        
 		    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
@@ -332,13 +325,6 @@ public class SplashScreen extends Activity {
 					Toast.makeText(getApplicationContext(), "There is no stored data. There is either no network or the network does not match your preference.", Toast.LENGTH_SHORT).show();
 					showErrorPage(); }			
 			}
-	    	
-	    	//Else use cache to get data 
-	    		//Within here, check if cache has data
-	    			//if yes, load it... before loading cached data, check if it is old
-	    			//else, check if network exists
-	    				//if yes, load data
-	    				// else error page
 	    	
 	    	else{
 
