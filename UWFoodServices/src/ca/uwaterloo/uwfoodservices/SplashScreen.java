@@ -114,7 +114,7 @@ public class SplashScreen extends Activity {
                     @Override
                     public void run() 
                     {
-                        if((RestaurantLocationHolder.getInstance(SplashScreen.this) == null) || (RestaurantMenuHolder.getInstance() == null)){
+                        if((RestaurantLocationHolder.getInstance(SplashScreen.this).objects == null) || (RestaurantMenuHolder.getInstance().restaurantMenu == null)){
                             handler.postDelayed(this, 1000);
                         }
                     }
@@ -414,6 +414,7 @@ public class SplashScreen extends Activity {
 
         Intent intent = new Intent(this, ErrorPage.class);
         startActivity(intent);
+        finish();
 
     }
 
