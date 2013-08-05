@@ -40,6 +40,8 @@ public class SpinningMenu extends SpinningMenuSpinner implements GestureDetector
 		    
 	
 	// Static private members
+    
+    public int clickedX, clickedY;
 
 	/**
 	 * Tag for a class logging
@@ -301,6 +303,9 @@ public class SpinningMenu extends SpinningMenuSpinner implements GestureDetector
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        
+        clickedY = (int)event.getY();
+        clickedX = (int)event.getX();
 
         // Give everything to the gesture detector
         boolean retValue = mGestureDetector.onTouchEvent(event);
@@ -987,7 +992,7 @@ public class SpinningMenu extends SpinningMenuSpinner implements GestureDetector
 
     	float x = - (float)(diameter/2  * android.util.FloatMath.sin(angleOffset)) + diameter/2 - child.getWidth()/2;
     	float z = diameter/2 * (1.0f - (float)android.util.FloatMath.cos(angleOffset));
-    	float y = (- getHeight()/2+154) + (float) (z * android.util.FloatMath.sin(mTheta));
+    	float y = - getHeight()/2 + (float) (z * android.util.FloatMath.sin((float) (Math.PI/6))) + 154;
 
     	child.setItemX(x);
     	child.setItemZ(z);

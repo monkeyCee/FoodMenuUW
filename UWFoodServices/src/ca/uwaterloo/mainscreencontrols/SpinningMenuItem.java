@@ -18,7 +18,7 @@ import ca.uwaterloo.uwfoodservices.R;
 public class SpinningMenuItem extends FrameLayout 
 	implements Comparable<SpinningMenuItem> {
 	
-	protected ImageView mImage;
+	public ImageView mImage;
 	private TextView mText;
 	
 	private int index;
@@ -34,7 +34,6 @@ public class SpinningMenuItem extends FrameLayout
 	public SpinningMenuItem(Context context) {
 		
 		super(context);
-		
 		FrameLayout.LayoutParams params = 
 				new FrameLayout.LayoutParams(
 						LayoutParams.WRAP_CONTENT, 
@@ -49,6 +48,7 @@ public class SpinningMenuItem extends FrameLayout
 	            "Roboto-Medium.ttf");
 	  	
 		mImage = (ImageView)itemTemplate.findViewById(R.id.item_image);
+		mImage.setAlpha(255);
 		mText = (TextView)itemTemplate.findViewById(R.id.item_text);
 		mText.setTextColor(Color.WHITE);
 		mText.setTypeface(tf);
