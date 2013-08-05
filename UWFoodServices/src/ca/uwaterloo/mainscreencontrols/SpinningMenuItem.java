@@ -76,7 +76,6 @@ public class SpinningMenuItem extends FrameLayout
 	public void setCurrentAngle(float currentAngle) {
 		
 		if(index == 0 && currentAngle > 5){
-			Log.d("", "");
 		}
 		
 		this.currentAngle = currentAngle;

@@ -56,7 +56,6 @@ public class SlidingListFragment extends ListFragment {
             break;    
             
         default:
-            Log.d("Clicked", Integer.toString(position+1));
 
         }
     }

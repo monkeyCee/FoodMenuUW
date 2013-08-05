@@ -73,11 +73,6 @@ public class NetworkReceiver extends BroadcastReceiver {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
-        if (activeInfo != null) {
-            Log.d(activeInfo.isConnected() + "", "network connected");
-        } else {
-            Log.d(null + "", "network connected");
-        }
         if ((activeInfo != null) && activeInfo.isConnected()) {
             wifiConnected = activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
             mobileConnected = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;

@@ -41,7 +41,6 @@ public class ParseLocationData {
 
                 JSONObject restaurant_details = result_array.getJSONObject(i);
                 String restaurant_name = MenuUtilities.checkName(restaurant_details.getString(name));
-                Log.d(restaurant_name, "RESTUARANT NAME CHECK");
                 String location_name = restaurant_details.getString(location);
                 JSONObject hour_details = restaurant_details.getJSONObject(hours);
                 JSONArray result_array1 = hour_details.getJSONArray(result);

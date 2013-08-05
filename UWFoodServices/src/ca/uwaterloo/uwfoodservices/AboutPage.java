@@ -104,7 +104,6 @@ public class AboutPage extends SlidingMenus {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        Log.d(item.getTitle() + "", "itemtostring");
         if (item.getTitle() == "Settings") {
             Intent settingsActivity = new Intent(getBaseContext(), SettingsActivity.class);
             startActivity(settingsActivity);

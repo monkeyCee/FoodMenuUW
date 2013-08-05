@@ -43,7 +43,6 @@ public class ParseMenuData {
 
         try {
             JSONObject meta = json.getJSONObject(TAG_META);
-            Log.d(meta.getString("message"), "message");
 
             JSONObject data = json.getJSONObject(TAG_DATA);
             JSONArray outlets = data.getJSONArray(TAG_OUTLETS);
@@ -112,8 +111,6 @@ public class ParseMenuData {
                         for (int k = 0; k < lunch.length(); k ++) {
                             product_name = lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME);
 
-                            Log.d(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID), "PRODUCT_ID");
-
                             if (lunch.getJSONObject(k).getString(TAG_PRODUCT_ID).equals("null")) {
                                 product_id = -1;
                             } else {
@@ -123,7 +120,6 @@ public class ParseMenuData {
 
                             lunchList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
 
-                            Log.d(lunchList.get(k).getProductName(), "result product name - lunch list");
                         }
                     }
                     // Dinner

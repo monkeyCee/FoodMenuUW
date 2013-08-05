@@ -65,17 +65,11 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         restaurant_selection = intent.getStringExtra("Restaurant Name");
         positionRestaurant = intent.getIntExtra("Restaurant Position", 0);
 
-        Log.d("Restaurant Selected", restaurant_selection);
-
         // Date handling
         calendar = Calendar.getInstance();
-        Log.d(calendar.getTime() + "", "current time");
 
         simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
         formattedDate = simpleDateFormat.format(calendar.getTime());
-
-        Log.d(formattedDate + "", "current time - formmated");
-
         weekDay = 0;
         if (calendar.getTime().toString().split(" ")[0].equals("Mon")) { weekDay = 0; }
         if (calendar.getTime().toString().split(" ")[0].equals("Tue")) { weekDay = 1; }
@@ -244,8 +238,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			
 			RestaurantMenuHolder menuHolder = RestaurantMenuHolder.getInstance(null);
 			
-			Log.d((menuHolder.restaurantMenu.get(0).getMenu()[0].getDinner() == null) + "", "REST1");
-			
 			TextView textDay = (TextView) rootView.findViewById(R.id.textDay);
 			SpannableString content = new SpannableString(formattedDate);
 			content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
@@ -277,8 +269,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 				}
 			}
 			
-			Log.d(HDR_POS2[day] + " " + day, "HEADERPOSITION2");
-			
 			listView.setAdapter(new MenuListAdapter(getActivity()));
 			
 			return rootView;
@@ -286,7 +276,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		
 		@Override
 		public void onResume() {
-			//Log.d(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER) - 1),"result");
 			super.onResume();
 		}
 		
@@ -324,14 +313,9 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 
 	        @Override
 	        public View getView(int position, View convertView, ViewGroup parent) {
-	            
-	            Log.d(MenuUtilities.getMenuItemTextWidth()+ "", "TEXT WIDTH");
-	            Log.d(MenuUtilities.menuItemTextWidth + "", "TEXT WIDTH");
-	            
 	            String headerText = getHeader(position);
 	            if(headerText != null) {
 	            	
-	            	Log.d(position + "", "HEADERPOSITION POSITION");
 
 	                View item = convertView;
 	                if(convertView == null || convertView.getTag() == LIST_ITEM) {
@@ -368,15 +352,12 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	            // is under a certain size, inc which case the text will wrap to the next line.
 	            while (textWidth > MenuUtilities.menuItemTextWidth && header.getTextSize() > 33) {
 	            	header.setTextSize((header.getTextSize() - 1)/2); // Black magic happening here.
-	            	Log.d(textWidth + " " + LIST.get(position), "GETWIDTH DIFF FONT SIZE: " + header.getTextSize());
 	            	textWidth = MenuUtilities.getTextWidth(LIST.get(position % LIST.size()), header.getPaint());
 	            }
 	            // The textView is recentered if the textView wraps to a second line.
 	            if (header.getTextSize() == 33.0) {
-	            	Log.d("padding yes", "GETWIDTH PADDING");
 	            	header.setPadding(header.getPaddingLeft(), 0, header.getPaddingRight(), 0);
 	            }
-	            Log.d(textWidth + " " + LIST.get(position), "GETWIDTH");
 	            
 	            //Set last divider in a sublist invisible
 	            View divider = item.findViewById(R.id.item_separator);

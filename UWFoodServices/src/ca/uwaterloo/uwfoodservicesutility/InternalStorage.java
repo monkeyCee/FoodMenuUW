@@ -50,7 +50,6 @@ public class InternalStorage{
     public static boolean deleteObject(Context context, String key) {
         File file = new File(context.getFilesDir(), key);
         if(!file.isFile() && !file.canRead()){
-            Log.d("File", "No such File");
             return false;
         } else {
             return file.delete();

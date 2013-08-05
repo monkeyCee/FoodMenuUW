@@ -144,7 +144,6 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int itemId = item.getItemId();
-		Log.d(item.getTitle() + "", "itemtostring");
 		if (item.getTitle() == "Settings") {
 			Intent settingsActivity = new Intent(getBaseContext(), SettingsActivity.class);
 			startActivity(settingsActivity);

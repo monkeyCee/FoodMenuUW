@@ -31,8 +31,6 @@ public class RestaurantMenuList extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                     long id) {
 
-                Log.d((String) imageAdapter.getItem(position), "STRING RESTAUARNT NAME");
-                Log.d(position + "", "STRING RESTAUARNT POSITION");
                 intent_menu.putExtra("Restaurant Name", (String) imageAdapter.getItem(position));
                 intent_menu.putExtra("Restaurant Position", position);
                 startActivityForResult(intent_menu, requestCode);

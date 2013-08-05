@@ -59,7 +59,6 @@ public class SplashScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);	
 
-		Log.d("In On Create", "+");
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 		receiver = new NetworkReceiver(this);
 		this.registerReceiver(receiver, filter);
@@ -69,8 +68,6 @@ public class SplashScreen extends Activity {
         cachePref = sharedPrefs.getBoolean("save_data_preference", true);
         weekStored = sharedPrefs.getInt("storedWeek", -1);
         refreshPref = sharedPrefs.getString("refresh", "");
-        Log.d(networkPref, "NETWORK PREF 1");
-        Log.d(refreshPref, "refresh came from");
         receiver.updateConnectedFlags();
 
         loadData();
@@ -78,7 +75,6 @@ public class SplashScreen extends Activity {
 
     private void StartSplashScreen()
     {
-        Log.d("In startSplashScreen", "+");
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
         anim.reset();
         LinearLayout l=(LinearLayout) findViewById(R.id.lin_lay);
@@ -142,20 +138,18 @@ public class SplashScreen extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("In on start", "+");
     }
     
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("In on resume", "+");
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        Log.d("In onpause", "+");
         if (receiver != null) {
             this.unregisterReceiver(receiver);
         }
@@ -170,7 +164,6 @@ public class SplashScreen extends Activity {
     @Override
     public void onStop() {	
         super.onStop();
-        Log.d("In on stop", "+");
     }
 
     private static class AsyncDataFetcher extends AsyncTask<String, Void, JSONObject[]> {
@@ -188,7 +181,6 @@ public class SplashScreen extends Activity {
 
         @Override
         protected JSONObject[] doInBackground(String... urls) {
-            Log.d("Url", urls[0]);
             JSONParser json_parse = new JSONParser();
             JSONObject[] jsonObjectArray = new JSONObject[2];
             jsonObjectArray[0] = json_parse.getJSONFromUrl(urls[0]);
@@ -210,7 +202,6 @@ public class SplashScreen extends Activity {
                 }
             }
             else{
-                Log.d("Object is null", "Null");
             }
         }
     }
@@ -219,7 +210,6 @@ public class SplashScreen extends Activity {
         // Date handling
         prefEditor = sharedPrefs.edit();
         calendar = Calendar.getInstance();
-        Log.d(calendar.getTime() + "", "current time");
 
         simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
         formattedDate = simpleDateFormat.format(calendar.getTime());
@@ -232,10 +222,7 @@ public class SplashScreen extends Activity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("w", Locale.CANADA);
         simpleDateFormat.setCalendar(calendar);
         String weekInYear = simpleDateFormat.format(calendar.getTime());
-        
-        
-        Log.d(formattedDate + "", "current time - formmated");
-
+       
         weekDay = 0;
         if (calendar.getTime().toString().split(" ")[0].equals("Mon")) { weekDay = 0; }
         if (calendar.getTime().toString().split(" ")[0].equals("Tue")) { weekDay = 1; }
@@ -247,8 +234,6 @@ public class SplashScreen extends Activity {
 
         prefEditor.putInt("storedWeek", Integer.parseInt(weekInYear));
         prefEditor.commit();
-
-        Log.d(Integer.parseInt(weekInYear) + "", "current time - weekInYear");
 
         return "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + Integer.parseInt(weekInYear) + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
     }
@@ -264,7 +249,6 @@ public class SplashScreen extends Activity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("w", Locale.CANADA);
         simpleDateFormat.setCalendar(calendar);
         String weekInYear = simpleDateFormat.format(calendar.getTime());
-        Log.d(weekInYear, "week stored - weekInYear");
         
         return Integer.parseInt(weekInYear);
     }
@@ -378,9 +362,6 @@ public class SplashScreen extends Activity {
 					}
 					
 					else{
-						
-						Log.d(Integer.toString(weekStored), "Week stored");
-						Log.d(getCurrentWeek() + "", "Week Stored current week");
 						
 						if(getCurrentWeek() != weekStored && !receiver.isNetwork()){
 						    Toast.makeText(getApplicationContext(), "The data you are viewing is old. We recommend you switch on your network to get the new data", Toast.LENGTH_SHORT).show();

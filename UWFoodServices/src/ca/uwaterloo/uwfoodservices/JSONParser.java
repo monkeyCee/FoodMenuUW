@@ -42,12 +42,10 @@ public class JSONParser {
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
-                Log.d(line,"line");
                 sb.append(line + "\n");
             }
             is.close();
             json = sb.toString();
-            Log.d(json, "JSON");
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
         }
