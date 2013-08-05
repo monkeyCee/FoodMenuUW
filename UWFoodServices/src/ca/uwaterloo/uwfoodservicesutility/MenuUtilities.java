@@ -18,7 +18,7 @@ public class MenuUtilities {
 
     public static Map<String, Integer> imageHash = new HashMap<String, Integer>();
 
-    public static Map<String, Integer> getImageHash() {
+    public static Map<String, Integer> setImageHash() {
         imageHash.put("Bon Appetit", R.drawable.bonappetit);
         imageHash.put("Browsers Café", R.drawable.browsers);
         imageHash.put("Brubakers", R.drawable.brubakers);
@@ -34,7 +34,12 @@ public class MenuUtilities {
         imageHash.put("Subway", R.drawable.subway);
         imageHash.put("Tim Hortons", R.drawable.tims);
         imageHash.put("University Club", R.drawable.universityclub);
+        imageHash.put("UW Food Services Admin Office", R.drawable.foodservices);
         imageHash.put("Williams Fresh Café", R.drawable.williams_0);
+        return imageHash;
+    }
+    
+    public static Map<String, Integer> getImageHash() {
         return imageHash;
     }
 
@@ -43,7 +48,7 @@ public class MenuUtilities {
         else if (name.equals("CEIT Cafe")) { return "CEIT Café"; }
         else if (name.equals("Eye Opener Cafe")) { return "Eye-Opener Café"; }
         else if (name.equals("LA Cafe")) { return "Liquid Assets Café"; }
-        else if (name.equals("UW Food Services Administrative Office")) { return "UW Food Admin Office"; }
+        else if (name.equals("UW Food Services Administrative Office")) { return "UW Food Services Admin Office"; }
         else if (name.equals("Williams Fresh Cafe")) { return "Williams Fresh Café"; }
         return name;
     }

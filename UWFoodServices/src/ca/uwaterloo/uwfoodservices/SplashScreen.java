@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import org.json.JSONObject;
@@ -382,8 +381,15 @@ public class SplashScreen extends Activity {
 						
 						Log.d(Integer.toString(weekStored), "Week stored");
 						Log.d(getCurrentWeek() + "", "Week Stored current week");
-						if( getCurrentWeek() != weekStored){
-							Toast.makeText(getApplicationContext(), "The data you are viewing is old. We recommend you switch on your network to get the new data", Toast.LENGTH_SHORT).show();
+						if( getCurrentWeek() != weekStored && receiver.isNetwork()){
+						    Toast.makeText(getApplicationContext(), "Fetching the new data for the new week!", Toast.LENGTH_SHORT).show();
+						    String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
+                            String urlMenu = getDatedMenuUrl();
+                            new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations); 
+						}
+						
+						else{
+						    Toast.makeText(getApplicationContext(), "The data you are viewing is old. We recommend you switch on your network to get the new data", Toast.LENGTH_SHORT).show();
 						}
 						
 						Toast.makeText(getApplicationContext(), "Cache Preference On. Cache data available", Toast.LENGTH_SHORT).show();
