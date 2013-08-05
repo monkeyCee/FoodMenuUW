@@ -43,8 +43,12 @@ public class MainScreen extends Activity {
 			    if ((Math.abs(SpinningMenu.clickedX - xCentre)<200)&&
 			            (Math.abs(SpinningMenu.clickedY - yCentre)<200))
 			    {
-			        ((SpinningMenuItem)parent.getChildAt(position)).mImage.setAlpha(100);
 			        String temp = (String)((SpinningMenuItem) parent.getChildAt(position)).getName();
+			        
+			        if ((selectedTab.equals(temp))||(temp.equals("Locations and\n        Hours")&&
+			                selectedTab.equals("Locations and Hours")))
+			            ((SpinningMenuItem)parent.getChildAt(position)).mImage.setAlpha(100);
+			        
 
                     if (temp.equals("Menu")&&selectedTab.equals("Menu"))
                     {

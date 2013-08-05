@@ -16,7 +16,7 @@ public class Coordinates {
         map.put("Browsers Café Dana Porter Library", new LatLng(43.469681,-80.541998));
         map.put("Brubakers Student Life Centre", new LatLng(43.472051,-80.545284));
         map.put("CEIT Café CEIT Building", new LatLng(43.471814,-80.542223));
-        map.put("Eye Opener Café Optometry Building", new LatLng(43.475454,-80.54565));
+        map.put("Eye-Opener Café Optometry Building", new LatLng(43.475454,-80.54565));
         map.put("Festival Fare Above the Bookstore in SCH", new LatLng(43.469202,-80.540234));
         map.put("Liquid Assets Café Hagey Hall", new LatLng(43.467317,-80.542421));
         map.put("ML's Coffee Shop Modern Languages", new LatLng(43.468851,-80.542705));
