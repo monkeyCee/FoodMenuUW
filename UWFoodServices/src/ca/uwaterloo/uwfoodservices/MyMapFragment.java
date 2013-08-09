@@ -41,7 +41,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
         super.onAttach(activity);
         context = getActivity();
         ((LocationHours)context).fragmentCommunicator = this;
-        holder = RestaurantLocationHolder.getInstance(context);
+        holder = RestaurantLocationHolder.getInstance();
     }
 
     @Override

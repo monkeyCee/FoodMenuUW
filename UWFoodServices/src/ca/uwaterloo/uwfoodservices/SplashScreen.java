@@ -113,7 +113,7 @@ public class SplashScreen extends Activity {
                     @Override
                     public void run() 
                     {
-                        if((RestaurantLocationHolder.getInstance(SplashScreen.this).objects == null) || (RestaurantMenuHolder.getInstance().restaurantMenu == null)){
+                        if((RestaurantLocationHolder.getInstance().objects == null) || (RestaurantMenuHolder.getInstance().restaurantMenu == null)){
                             handler.postDelayed(this, 1000);
                         }
                     }
@@ -173,7 +173,7 @@ public class SplashScreen extends Activity {
 
                 try {
                     InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
-                    InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance(context).objects);
+                    InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance().objects);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -251,7 +251,7 @@ public class SplashScreen extends Activity {
 		    		{
 		    		    public void run() 
 		    		    {
-		    		    	if(RestaurantLocationHolder.getInstance(SplashScreen.this) == null || RestaurantMenuHolder.getInstance() == null){
+		    		    	if(RestaurantLocationHolder.getInstance() == null || RestaurantMenuHolder.getInstance() == null){
 		    		    		handler.postDelayed(this, 1000);
 		    		    	}
 		    		    }
@@ -347,7 +347,7 @@ public class SplashScreen extends Activity {
 		                        }
 		                                
 		                        if(restaurantMenu != null && restaurantLocations != null){
-		                            RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
+		                            RestaurantLocationHolder.getInstance(restaurantLocations);
 		                            RestaurantMenuHolder.getInstance(restaurantMenu);
 		                        }
 						}
