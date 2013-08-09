@@ -134,17 +134,6 @@ public class SplashScreen extends Activity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
 
@@ -152,16 +141,6 @@ public class SplashScreen extends Activity {
             this.unregisterReceiver(receiver);
         }
 
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-    
-    @Override
-    public void onStop() {	
-        super.onStop();
     }
 
     private static class AsyncDataFetcher extends AsyncTask<String, Void, JSONObject[]> {

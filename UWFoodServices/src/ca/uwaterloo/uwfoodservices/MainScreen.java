@@ -22,8 +22,6 @@ public class MainScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_screen);
 	        
-		
-		
 		final Intent intent_restaurant = new Intent(this, RestaurantMenuList.class);
 		final Intent intent_location = new Intent(this, LocationHours.class);
 		final Intent intent_settings = new Intent(this, SettingsActivity.class);
@@ -41,8 +39,7 @@ public class MainScreen extends Activity {
 			    int xCentre = metrics.widthPixels/2;
 			    
 			    if ((Math.abs(SpinningMenu.clickedX - xCentre)<200)&&
-			            (Math.abs(SpinningMenu.clickedY - yCentre)<200))
-			    {
+			            (Math.abs(SpinningMenu.clickedY - yCentre)<200)) {
 			        String temp = (String)((SpinningMenuItem) parent.getChildAt(position)).getName();
 			        
 			        if ((selectedTab.equals(temp))||(temp.equals("Locations and\n        Hours")&&
@@ -70,12 +67,7 @@ public class MainScreen extends Activity {
                     spinningAsync spinAsync = new spinningAsync(parent, position);
                     spinAsync.execute();
 			    }
-			    
-			    
-				
-				
-				}
-        	
+			}
         });
 
         SpinningMenu.setOnItemSelectedListener(new OnItemSelectedListener(){
@@ -102,12 +94,8 @@ public class MainScreen extends Activity {
 
 			public void onNothingSelected(SpinningMenuAdapter<?> parent) {
 			}
-        	
-        }
-        );
+        });
 	}
-	
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

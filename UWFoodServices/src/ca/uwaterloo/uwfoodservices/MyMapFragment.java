@@ -30,7 +30,6 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
     private CameraUpdate center;
     private CameraUpdate zoom;
     private String restaurant;
-    private String location;
     private RadioButton showAll;
     private RadioButton clear;
 
