@@ -39,13 +39,13 @@ public class MainScreen extends Activity {
 			    int xCentre = metrics.widthPixels/2;
 			    
 			    if ((Math.abs(SpinningMenu.clickedX - xCentre)<200)&&
-			            (Math.abs(SpinningMenu.clickedY - yCentre)<200)) {
+			            (Math.abs(SpinningMenu.clickedY - yCentre)<200)) 
+			    {
 			        String temp = (String)((SpinningMenuItem) parent.getChildAt(position)).getName();
 			        
 			        if ((selectedTab.equals(temp))||(temp.equals("Locations and\n        Hours")&&
 			                selectedTab.equals("Locations and Hours")))
-			            ((SpinningMenuItem)parent.getChildAt(position)).mImage.setAlpha(100);
-			        
+			            ((SpinningMenuItem)parent.getChildAt(position)).mImage.setAlpha(100);			        
 
                     if (temp.equals("Menu")&&selectedTab.equals("Menu"))
                     {
@@ -75,21 +75,21 @@ public class MainScreen extends Activity {
 			public void onItemSelected(SpinningMenuAdapter<?> parent, View view,
 					int position, long id) {
 		        
-				switch(position){
-				case 0:
-					selectedTab = "Menu";
-					break;
-				case 1:
-					selectedTab = "Locations and Hours";
-					break;
-				case 2:
-					selectedTab = "Settings";
-					break;
-				case 3:
-					selectedTab = "About Us";
-					break;
-				}
-				
+				switch(position)
+				{
+				    case 0:
+				        selectedTab = "Menu";
+				        break;
+				    case 1:
+				        selectedTab = "Locations and Hours";
+				        break;
+				    case 2:
+				        selectedTab = "Settings";
+				        break;
+				    case 3:
+				        selectedTab = "About Us";
+				        break;
+				}				
 			}
 
 			public void onNothingSelected(SpinningMenuAdapter<?> parent) {
@@ -104,29 +104,27 @@ public class MainScreen extends Activity {
 		return true;
 	}
 	
-	class spinningAsync extends AsyncTask<Void, Void, Void>    {
+	class spinningAsync extends AsyncTask<Void, Void, Void>   
+	{
 	    
 	    SpinningMenuAdapter parent;
 	    int position;
 
-        spinningAsync(SpinningMenuAdapter parent, int positionTracker)    {
+        spinningAsync(SpinningMenuAdapter parent, int positionTracker)    
+        {
             this.parent = parent;
-            this.position = positionTracker;
-          
+            this.position = positionTracker;          
         }
+
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            }
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
+        protected Void doInBackground(Void... params) 
+        {
+            try 
+            {
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
+            } 
+            catch (InterruptedException e)
+            {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
