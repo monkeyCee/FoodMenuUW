@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class ParseMenuData {
 
     private static final String TAG_META = "meta";
@@ -35,12 +37,82 @@ public class ParseMenuData {
     public ParseMenuData(){
     }
 
+    public String capitalize(String product_name) {
+        String[] tokens = product_name.split("\\s");
+        product_name = "";
+
+        for(int i = 0; i < tokens.length; i++){
+            if (!(tokens[i].equals("w/") || tokens[i].equals("and") || tokens[i].equals("on") || tokens[i].equals("with") || tokens[i].equals("de") )) {
+                char capLetter = Character.toUpperCase(tokens[i].charAt(0));
+                product_name +=  " " + capLetter + tokens[i].substring(1, tokens[i].length());
+            } else {
+                product_name +=  " " + tokens[i];
+            }
+        }
+        return product_name;
+    }
+    
+    public String checkProductName(String product_name, String outlet_name) {
+        product_name = product_name.trim();
+        if (outlet_name.equals("Bon Appetit")) {
+            if (product_name.matches("^BA\\..*")) {
+                Log.d(product_name, "BA.");
+                product_name = product_name.replace("BA.", "");
+            } else if (product_name.matches("^BA,.*")) {
+                Log.d(product_name, "BA,");
+                product_name = product_name.replace("BA,", "");
+            } else if (product_name.matches("^BA.*")) {
+                Log.d(product_name, "BA,");
+                product_name = product_name.replace("BA", "");
+            } else {
+                Log.d("false", "BA none");
+            }
+        }
+        product_name = product_name.trim();
+        
+        if (product_name.matches(".*,V$")) {
+            Log.d(product_name, ".*,V$");
+            product_name = product_name.replace(",V", "");
+        } else if(product_name.matches(".* V$")) {
+            Log.d(product_name, ".* V$");
+            product_name = product_name.replace(" V", "");
+        }
+        product_name = product_name.trim();
+        
+        if (product_name.contains(" and ")) {
+            Log.d(product_name, "contains and");
+            product_name = product_name.replace("and", "&");
+        }
+        product_name = product_name.trim();
+        
+        if (product_name.contains("w/")) {
+            if(product_name.charAt(product_name.indexOf("w/") + 2) != ' ') {
+                Log.d(product_name.charAt(product_name.indexOf("w/") + 2) + "", "w/");
+                Log.d(product_name, "w/");
+                product_name = product_name.substring(0, product_name.indexOf("w/") + 2) + " " + product_name.substring(product_name.indexOf("w/") + 2);
+            }
+        }
+        product_name = product_name.trim();
+        
+        if (product_name.endsWith(",") || product_name.endsWith(".")) {
+            Log.d(product_name, ", at end");
+            product_name = product_name.substring(0, product_name.length() - 1);
+        }
+        
+        product_name = capitalize(product_name);
+        
+        product_name = product_name.trim();
+        Log.d(product_name, "name final");
+        return product_name;
+    }
+    
     public void Parse(JSONObject json){
 
         restaurantMenu = new ArrayList<RestaurantMenuObject>();
 
         try {
             JSONObject meta = json.getJSONObject(TAG_META);
+            Log.d(meta.getString("message"), "message");
 
             JSONObject data = json.getJSONObject(TAG_DATA);
             JSONArray outlets = data.getJSONArray(TAG_OUTLETS);
@@ -107,7 +179,9 @@ public class ParseMenuData {
                     if (meals.has(TAG_LUNCH) && (meals.getJSONArray(TAG_LUNCH).length() > 0)) {
                         lunch = meals.getJSONArray(TAG_LUNCH);
                         for (int k = 0; k < lunch.length(); k ++) {
-                            product_name = lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME);
+                            product_name = checkProductName(lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME), outlet_name);
+                            
+                            Log.d(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID), "PRODUCT_ID");
 
                             if (lunch.getJSONObject(k).getString(TAG_PRODUCT_ID).equals("null")) {
                                 product_id = -1;
@@ -118,6 +192,7 @@ public class ParseMenuData {
 
                             lunchList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
 
+                            Log.d(lunchList.get(k).getProductName(), "result product name - lunch list");
                         }
                     }
                     // Dinner
@@ -145,7 +220,16 @@ public class ParseMenuData {
                 restaurantMenu.add(new RestaurantMenuObject(outlet_id, outlet_name, location_name, image, menuArray));
             }
             holder = RestaurantMenuHolder.getInstance(restaurantMenu);
-
+            
+            // Testing 
+            checkProductName("Food ,V", " ");
+            checkProductName("Food V", " ");
+            checkProductName("FoodV", " ");
+            checkProductName("Foodv", " ");
+            checkProductName("Food V ", " ");
+            checkProductName("Food V,", " ");
+            checkProductName("Food V.", " ");
+            
         } catch (JSONException e) {
             e.printStackTrace();
         }
