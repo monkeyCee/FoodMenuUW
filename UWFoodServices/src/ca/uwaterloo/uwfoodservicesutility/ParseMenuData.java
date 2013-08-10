@@ -56,53 +56,41 @@ public class ParseMenuData {
         product_name = product_name.trim();
         if (outlet_name.equals("Bon Appetit")) {
             if (product_name.matches("^BA\\..*")) {
-                Log.d(product_name, "BA.");
                 product_name = product_name.replace("BA.", "");
             } else if (product_name.matches("^BA,.*")) {
-                Log.d(product_name, "BA,");
                 product_name = product_name.replace("BA,", "");
             } else if (product_name.matches("^BA.*")) {
-                Log.d(product_name, "BA,");
                 product_name = product_name.replace("BA", "");
-            } else {
-                Log.d("false", "BA none");
             }
         }
         product_name = product_name.trim();
         
         if (product_name.matches(".*,V$")) {
-            Log.d(product_name, ".*,V$");
             product_name = product_name.replace(",V", "");
         } else if(product_name.matches(".* V$")) {
-            Log.d(product_name, ".* V$");
             product_name = product_name.replace(" V", "");
         }
         product_name = product_name.trim();
         
         if (product_name.contains(" and ")) {
-            Log.d(product_name, "contains and");
             product_name = product_name.replace("and", "&");
         }
         product_name = product_name.trim();
         
         if (product_name.contains("w/")) {
             if(product_name.charAt(product_name.indexOf("w/") + 2) != ' ') {
-                Log.d(product_name.charAt(product_name.indexOf("w/") + 2) + "", "w/");
-                Log.d(product_name, "w/");
                 product_name = product_name.substring(0, product_name.indexOf("w/") + 2) + " " + product_name.substring(product_name.indexOf("w/") + 2);
             }
         }
         product_name = product_name.trim();
         
         if (product_name.endsWith(",") || product_name.endsWith(".")) {
-            Log.d(product_name, ", at end");
             product_name = product_name.substring(0, product_name.length() - 1);
         }
         
         product_name = capitalize(product_name);
         
         product_name = product_name.trim();
-        Log.d(product_name, "name final");
         return product_name;
     }
     
@@ -199,7 +187,7 @@ public class ParseMenuData {
                     if (meals.has(TAG_DINNER) && (meals.getJSONArray(TAG_DINNER).length() > 0)) {
                         dinner = meals.getJSONArray(TAG_DINNER);
                         for (int k = 0; k < dinner.length(); k ++) {
-                            product_name = dinner.getJSONObject(k).getString(TAG_PRODUCT_NAME);
+                            product_name = checkProductName(dinner.getJSONObject(k).getString(TAG_PRODUCT_NAME), outlet_name);
 
                             if (dinner.getJSONObject(k).getString(TAG_PRODUCT_ID).equals("null")) {
                                 product_id = -1;
@@ -220,15 +208,6 @@ public class ParseMenuData {
                 restaurantMenu.add(new RestaurantMenuObject(outlet_id, outlet_name, location_name, image, menuArray));
             }
             holder = RestaurantMenuHolder.getInstance(restaurantMenu);
-            
-            // Testing 
-            checkProductName("Food ,V", " ");
-            checkProductName("Food V", " ");
-            checkProductName("FoodV", " ");
-            checkProductName("Foodv", " ");
-            checkProductName("Food V ", " ");
-            checkProductName("Food V,", " ");
-            checkProductName("Food V.", " ");
             
         } catch (JSONException e) {
             e.printStackTrace();
