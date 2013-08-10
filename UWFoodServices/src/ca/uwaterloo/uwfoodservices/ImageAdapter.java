@@ -30,7 +30,7 @@ public class ImageAdapter extends BaseAdapter{
         tf = Typeface.createFromAsset(context.getAssets(),
                 "Roboto-Light.ttf");
         menuHolder = RestaurantMenuHolder.getInstance();
-        locationHolder = RestaurantLocationHolder.getInstance(context);
+        locationHolder = RestaurantLocationHolder.getInstance();
         MenuUtilities.setImageHash();
     }
 

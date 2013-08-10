@@ -30,7 +30,6 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
     private CameraUpdate center;
     private CameraUpdate zoom;
     private String restaurant;
-    private String location;
     private RadioButton showAll;
     private RadioButton clear;
 
@@ -42,7 +41,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
         super.onAttach(activity);
         context = getActivity();
         ((LocationHours)context).fragmentCommunicator = this;
-        holder = RestaurantLocationHolder.getInstance(context);
+        holder = RestaurantLocationHolder.getInstance();
     }
 
     @Override

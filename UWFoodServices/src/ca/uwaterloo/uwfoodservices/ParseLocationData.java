@@ -60,7 +60,7 @@ public class ParseLocationData {
 
             }
 
-            holder = RestaurantLocationHolder.getInstance(context, location_objects);
+            holder = RestaurantLocationHolder.getInstance(location_objects);
 
         } catch (JSONException e) {
             e.printStackTrace();

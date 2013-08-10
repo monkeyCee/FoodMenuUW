@@ -23,7 +23,6 @@ public class InternalStorage{
         } else {
             return true;
         }
-
     }
 
     public static void writeObject(Context context, String key, Object object) throws IOException {
