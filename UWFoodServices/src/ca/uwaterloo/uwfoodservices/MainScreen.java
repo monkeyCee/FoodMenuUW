@@ -31,75 +31,83 @@ public class MainScreen extends Activity {
 		final Intent intent_about = new Intent(this, AboutPage.class);
 		
 		final SpinningMenu SpinningMenu = (SpinningMenu)findViewById(R.id.SpinningMenu);
-        SpinningMenu.setOnItemClickListener(new OnItemClickListener(){
+		
+		SpinningMenu.post(new Runnable(){
 
-			public void onItemClick(SpinningMenuAdapter<?> parent, View view,
-					int position, long id) {	
-			    
-			    parentTracker = parent;
-			    positionTracker = position;
-			    
-			    DisplayMetrics metrics = new DisplayMetrics();
-			    getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            @Override
+            public void run() {
+                SpinningMenu.setOnItemClickListener(new OnItemClickListener(){
 
-			    int yCentre = metrics.heightPixels/2;
-			    int xCentre = metrics.widthPixels/2;
-			    
-			    if ((Math.abs(SpinningMenu.clickedX - xCentre)<200)&&
-			            (Math.abs(SpinningMenu.clickedY - yCentre)<200)) 
-			    {
-			        String temp = (String)((SpinningMenuItem) parent.getChildAt(position)).getName();
-			        
-			        if ((selectedTab.equals(temp))||(temp.equals("Locations and\n        Hours")&&
-			                selectedTab.equals("Locations and Hours")))
-			            ((SpinningMenuItem)parent.getChildAt(position)).mImage.setAlpha(100);			        
+                    public void onItemClick(SpinningMenuAdapter<?> parent, View view,
+                            int position, long id) {    
+                        
+                        parentTracker = parent;
+                        positionTracker = position;
+                        
+                        DisplayMetrics metrics = new DisplayMetrics();
+                        getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-                    if (temp.equals("Menu")&&selectedTab.equals("Menu"))
-                    {
-                        startActivityForResult(intent_restaurant, requestCode);                       
+                        int yCentre = metrics.heightPixels/2;
+                        int xCentre = metrics.widthPixels/2;
+                        
+                        if ((Math.abs(SpinningMenu.clickedX - xCentre)<200)&&
+                                (Math.abs(SpinningMenu.clickedY - yCentre)<200)) 
+                        {
+                            String temp = (String)((SpinningMenuItem) parent.getChildAt(position)).getName();
+                            
+                            if ((selectedTab.equals(temp))||(temp.equals("Locations and\n        Hours")&&
+                                    selectedTab.equals("Locations and Hours")))
+                                ((SpinningMenuItem)parent.getChildAt(position)).mImage.setAlpha(100);                   
+
+                            if (temp.equals("Menu")&&selectedTab.equals("Menu"))
+                            {
+                                startActivityForResult(intent_restaurant, requestCode);                       
+                            }
+                            else if (((temp.equals("Locations and\n        Hours"))||(temp.equals("Locations and Hours")))
+                                    &&selectedTab.equals("Locations and Hours"))
+                            {
+                                startActivityForResult(intent_location, requestCode);
+                            }
+                            else if (temp.equals("Settings")&&selectedTab.equals("Settings"))
+                            {
+                                startActivityForResult(intent_settings, requestCode);
+                            }
+                            else if (temp.equals("About Us")&&selectedTab.equals("About Us"))
+                            {
+                                startActivityForResult(intent_about, requestCode);
+                            }
+                        }
                     }
-                    else if (((temp.equals("Locations and\n        Hours"))||(temp.equals("Locations and Hours")))
-                            &&selectedTab.equals("Locations and Hours"))
-                    {
-                        startActivityForResult(intent_location, requestCode);
-                    }
-                    else if (temp.equals("Settings")&&selectedTab.equals("Settings"))
-                    {
-                        startActivityForResult(intent_settings, requestCode);
-                    }
-                    else if (temp.equals("About Us")&&selectedTab.equals("About Us"))
-                    {
-                        startActivityForResult(intent_about, requestCode);
-                    }
-			    }
-			}
-        });
+                });
 
-        SpinningMenu.setOnItemSelectedListener(new OnItemSelectedListener(){
+                SpinningMenu.setOnItemSelectedListener(new OnItemSelectedListener(){
 
-			public void onItemSelected(SpinningMenuAdapter<?> parent, View view,
-					int position, long id) {
-		        
-				switch(position)
-				{
-				    case 0:
-				        selectedTab = "Menu";
-				        break;
-				    case 1:
-				        selectedTab = "Locations and Hours";
-				        break;
-				    case 2:
-				        selectedTab = "Settings";
-				        break;
-				    case 3:
-				        selectedTab = "About Us";
-				        break;
-				}				
-			}
+                    public void onItemSelected(SpinningMenuAdapter<?> parent, View view,
+                            int position, long id) {
+                        
+                        switch(position)
+                        {
+                            case 0:
+                                selectedTab = "Menu";
+                                break;
+                            case 1:
+                                selectedTab = "Locations and Hours";
+                                break;
+                            case 2:
+                                selectedTab = "Settings";
+                                break;
+                            case 3:
+                                selectedTab = "About Us";
+                                break;
+                        }               
+                    }
 
-			public void onNothingSelected(SpinningMenuAdapter<?> parent) {
-			}
-        });
+                    public void onNothingSelected(SpinningMenuAdapter<?> parent) {
+                    }
+                });                
+            }		    
+		});
+        
 	}
 	
 	@Override
