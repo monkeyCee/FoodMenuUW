@@ -35,6 +35,63 @@ public class ParseMenuData {
     public ParseMenuData(){
     }
 
+    public String capitalize(String product_name) {
+        String[] tokens = product_name.split("\\s");
+        product_name = "";
+
+        for(int i = 0; i < tokens.length; i++){
+            if (!(tokens[i].equals("w/") || tokens[i].equals("and") || tokens[i].equals("on") || tokens[i].equals("with") || tokens[i].equals("de") )) {
+                char capLetter = Character.toUpperCase(tokens[i].charAt(0));
+                product_name +=  " " + capLetter + tokens[i].substring(1, tokens[i].length());
+            } else {
+                product_name +=  " " + tokens[i];
+            }
+        }
+        return product_name;
+    }
+    
+    public String checkProductName(String product_name, String outlet_name) {
+        product_name = product_name.trim();
+        if (outlet_name.equals("Bon Appetit")) {
+            if (product_name.matches("^BA\\..*")) {
+                product_name = product_name.replace("BA.", "");
+            } else if (product_name.matches("^BA,.*")) {
+                product_name = product_name.replace("BA,", "");
+            } else if (product_name.matches("^BA.*")) {
+                product_name = product_name.replace("BA", "");
+            }
+        }
+        product_name = product_name.trim();
+        
+        if (product_name.matches(".*,V$")) {
+            product_name = product_name.replace(",V", "");
+        } else if(product_name.matches(".* V$")) {
+            product_name = product_name.replace(" V", "");
+        }
+        product_name = product_name.trim();
+        
+        if (product_name.contains(" and ")) {
+            product_name = product_name.replace("and", "&");
+        }
+        product_name = product_name.trim();
+        
+        if (product_name.contains("w/")) {
+            if(product_name.charAt(product_name.indexOf("w/") + 2) != ' ') {
+                product_name = product_name.substring(0, product_name.indexOf("w/") + 2) + " " + product_name.substring(product_name.indexOf("w/") + 2);
+            }
+        }
+        product_name = product_name.trim();
+        
+        if (product_name.endsWith(",") || product_name.endsWith(".")) {
+            product_name = product_name.substring(0, product_name.length() - 1);
+        }
+        
+        product_name = capitalize(product_name);
+        
+        product_name = product_name.trim();
+        return product_name;
+    }
+    
     public void Parse(JSONObject json){
 
         restaurantMenu = new ArrayList<RestaurantMenuObject>();
@@ -109,24 +166,23 @@ public class ParseMenuData {
                         if (meals.has(TAG_LUNCH) && (meals.getJSONArray(TAG_LUNCH).length() > 0)) {
                             lunch = meals.getJSONArray(TAG_LUNCH);
                             for (int k = 0; k < lunch.length(); k ++) {
-                                product_name = lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME);
-    
+                                product_name = checkProductName(lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME), outlet_name);
+
                                 if (lunch.getJSONObject(k).getString(TAG_PRODUCT_ID).equals("null")) {
                                     product_id = -1;
                                 } else {
                                     product_id = Integer.parseInt(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
                                 }
                                 diet_type = lunch.getJSONObject(k).getString(TAG_DIET_TYPE);
-    
+
                                 lunchList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
-    
                             }
                         }
                         // Dinner
                         if (meals.has(TAG_DINNER) && (meals.getJSONArray(TAG_DINNER).length() > 0)) {
                             dinner = meals.getJSONArray(TAG_DINNER);
                             for (int k = 0; k < dinner.length(); k ++) {
-                                product_name = dinner.getJSONObject(k).getString(TAG_PRODUCT_NAME);
+                                product_name = checkProductName(dinner.getJSONObject(k).getString(TAG_PRODUCT_NAME), outlet_name);
     
                                 if (dinner.getJSONObject(k).getString(TAG_PRODUCT_ID).equals("null")) {
                                     product_id = -1;
@@ -137,6 +193,7 @@ public class ParseMenuData {
                                 diet_type = dinner.getJSONObject(k).getString(TAG_DIET_TYPE);
     
                                 dinnerList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
+
                             }
                         }
     
@@ -148,6 +205,9 @@ public class ParseMenuData {
                 }
                 holder = RestaurantMenuHolder.getInstance(restaurantMenu);
             }
+
+            holder = RestaurantMenuHolder.getInstance(restaurantMenu);
+            
         } catch (JSONException e) {
             e.printStackTrace();
         }
