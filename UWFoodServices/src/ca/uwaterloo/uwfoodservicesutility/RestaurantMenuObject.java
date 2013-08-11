@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 public class RestaurantMenuObject implements Serializable {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -1200991450138069262L;
     int id;
     String restaurant_name;

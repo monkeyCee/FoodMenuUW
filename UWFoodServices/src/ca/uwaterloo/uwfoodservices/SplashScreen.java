@@ -113,7 +113,7 @@ public class SplashScreen extends Activity {
                     @Override
                     public void run() 
                     {
-                        if((RestaurantLocationHolder.getInstance(SplashScreen.this).objects == null) || (RestaurantMenuHolder.getInstance().restaurantMenu == null)){
+                        if((RestaurantLocationHolder.getInstance().objects == null) || (RestaurantMenuHolder.getInstance().restaurantMenu == null)){
                             handler.postDelayed(this, 1000);
                         }
                     }
@@ -134,17 +134,6 @@ public class SplashScreen extends Activity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
 
@@ -152,16 +141,6 @@ public class SplashScreen extends Activity {
             this.unregisterReceiver(receiver);
         }
 
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-    
-    @Override
-    public void onStop() {	
-        super.onStop();
     }
 
     private static class AsyncDataFetcher extends AsyncTask<String, Void, JSONObject[]> {
@@ -194,7 +173,7 @@ public class SplashScreen extends Activity {
 
                 try {
                     InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
-                    InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance(context).objects);
+                    InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance().objects);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -272,7 +251,7 @@ public class SplashScreen extends Activity {
 		    		{
 		    		    public void run() 
 		    		    {
-		    		    	if(RestaurantLocationHolder.getInstance(SplashScreen.this) == null || RestaurantMenuHolder.getInstance() == null){
+		    		    	if(RestaurantLocationHolder.getInstance() == null || RestaurantMenuHolder.getInstance() == null){
 		    		    		handler.postDelayed(this, 1000);
 		    		    	}
 		    		    }
@@ -368,7 +347,7 @@ public class SplashScreen extends Activity {
 		                        }
 		                                
 		                        if(restaurantMenu != null && restaurantLocations != null){
-		                            RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
+		                            RestaurantLocationHolder.getInstance(restaurantLocations);
 		                            RestaurantMenuHolder.getInstance(restaurantMenu);
 		                        }
 						}

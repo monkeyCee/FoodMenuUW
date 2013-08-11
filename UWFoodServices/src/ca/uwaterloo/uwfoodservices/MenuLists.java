@@ -40,7 +40,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     ViewPager vp;
     String restaurant_selection;
     static int positionRestaurant;
-    RestaurantLocationHolder holder = RestaurantLocationHolder.getInstance(getBaseContext());
+    RestaurantLocationHolder holder = RestaurantLocationHolder.getInstance();
     
     SharedPreferences.Editor editor;
     SharedPreferences pref;

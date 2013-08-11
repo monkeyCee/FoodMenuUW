@@ -7,18 +7,18 @@ public class RestaurantLocationHolder{
     private static RestaurantLocationHolder mInstance = null;
     public RestaurantObject[] objects;
 
-    public static RestaurantLocationHolder getInstance(Context context, RestaurantObject[] objects){
+    public static RestaurantLocationHolder getInstance(RestaurantObject[] objects){
         if(mInstance == null){
-            mInstance = new RestaurantLocationHolder(context.getApplicationContext(), objects);
+            mInstance = new RestaurantLocationHolder(objects);
         }
         return mInstance;
     }
 
-    public static RestaurantLocationHolder getInstance(Context context){
+    public static RestaurantLocationHolder getInstance(){
         return mInstance;
     }
 
-    private RestaurantLocationHolder(Context context, RestaurantObject[] objects){
+    private RestaurantLocationHolder(RestaurantObject[] objects){
         this.objects = objects;			
     }
 
