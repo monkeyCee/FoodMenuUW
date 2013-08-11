@@ -47,7 +47,6 @@ public class SpinningMenuItem extends FrameLayout
 	            "Roboto-Medium.ttf");
 	  	
 		mImage = (ImageView)itemTemplate.findViewById(R.id.item_image);
-		mImage.setAlpha(255);
 		mText = (TextView)itemTemplate.findViewById(R.id.item_text);
 		mText.setTextColor(Color.WHITE);
 		mText.setTypeface(tf);

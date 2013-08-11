@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -16,12 +17,14 @@ public class MainScreen extends Activity {
 	
 	private int requestCode = -1;
 	private String selectedTab;
+	private SpinningMenuAdapter<?> parentTracker;
+	private int positionTracker;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_screen);
-	        
+		
 		final Intent intent_restaurant = new Intent(this, RestaurantMenuList.class);
 		final Intent intent_location = new Intent(this, LocationHours.class);
 		final Intent intent_settings = new Intent(this, SettingsActivity.class);
@@ -32,6 +35,10 @@ public class MainScreen extends Activity {
 
 			public void onItemClick(SpinningMenuAdapter<?> parent, View view,
 					int position, long id) {	
+			    
+			    parentTracker = parent;
+			    positionTracker = position;
+			    
 			    DisplayMetrics metrics = new DisplayMetrics();
 			    getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
@@ -64,8 +71,6 @@ public class MainScreen extends Activity {
                     {
                         startActivityForResult(intent_about, requestCode);
                     }
-                    spinningAsync spinAsync = new spinningAsync(parent, position);
-                    spinAsync.execute();
 			    }
 			}
         });
@@ -96,6 +101,16 @@ public class MainScreen extends Activity {
 			}
         });
 	}
+	
+	@Override
+	protected void onResume()
+	{
+	    super.onResume();
+	    if (parentTracker != null)
+	        ((SpinningMenuItem)parentTracker.getChildAt(positionTracker)).mImage.setAlpha(255);
+	    else
+	        return;
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,34 +118,5 @@ public class MainScreen extends Activity {
 		getMenuInflater().inflate(R.menu.main_screen2, menu);
 		return true;
 	}
-	
-	class spinningAsync extends AsyncTask<Void, Void, Void>   
-	{
-	    
-	    SpinningMenuAdapter parent;
-	    int position;
-
-        spinningAsync(SpinningMenuAdapter parent, int positionTracker)    
-        {
-            this.parent = parent;
-            this.position = positionTracker;          
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) 
-        {
-            try 
-            {
-                Thread.sleep(1000);
-            } 
-            catch (InterruptedException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            ((SpinningMenuItem)parent.getChildAt(position)).mImage.setAlpha(255);
-            return null;
-        }   
-    }   
 
 }
