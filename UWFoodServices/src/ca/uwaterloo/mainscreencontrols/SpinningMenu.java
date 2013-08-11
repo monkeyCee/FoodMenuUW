@@ -958,7 +958,7 @@ public class SpinningMenu extends SpinningMenuSpinner implements GestureDetector
         }
         
         // Track the motion
-        trackMotionScroll((float) (/* -1 * */ (int) distanceX*0.5));
+        trackMotionScroll(/* -1 * */ (int) (distanceX*0.5));
        
         mIsFirstScroll = false;
         return true;
