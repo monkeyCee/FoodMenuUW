@@ -16,7 +16,7 @@ import android.view.View;
 public class MainScreen extends Activity {
 	
 	private int requestCode = -1;
-	private String selectedTab;
+	private String selectedTab = "Menu";
 	private SpinningMenuAdapter<?> parentTracker;
 	private int positionTracker;
 
