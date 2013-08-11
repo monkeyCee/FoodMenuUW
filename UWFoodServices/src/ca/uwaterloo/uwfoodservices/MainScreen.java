@@ -14,33 +14,34 @@ import android.view.Menu;
 import android.view.View;
 
 public class MainScreen extends Activity {
-	
-	private int requestCode = -1;
-	private String selectedTab = "Menu";
-	private SpinningMenuAdapter<?> parentTracker;
-	private int positionTracker;
+    
+    private int requestCode = -1;
+    private String selectedTab = "Menu";
+    private SpinningMenuAdapter<?> parentTracker;
+    private int positionTracker;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main_screen);
-		
-		final Intent intent_restaurant = new Intent(this, RestaurantMenuList.class);
-		final Intent intent_location = new Intent(this, LocationHours.class);
-		final Intent intent_settings = new Intent(this, SettingsActivity.class);
-		final Intent intent_about = new Intent(this, AboutPage.class);
-		
-		final SpinningMenu SpinningMenu = (SpinningMenu)findViewById(R.id.SpinningMenu);
-		
-		SpinningMenu.post(new Runnable(){
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_screen);
+        
+        final Intent intent_restaurant = new Intent(this, RestaurantMenuList.class);
+        final Intent intent_location = new Intent(this, LocationHours.class);
+        final Intent intent_settings = new Intent(this, SettingsActivity.class);
+        final Intent intent_about = new Intent(this, AboutPage.class);
+        
+        final SpinningMenu spinningMenu = (SpinningMenu)findViewById(R.id.SpinningMenu);
+        
+        
+        spinningMenu.post(new Runnable(){
 
             @Override
             public void run() {
-                SpinningMenu.setOnItemClickListener(new OnItemClickListener(){
+                spinningMenu.setOnItemClickListener(new OnItemClickListener(){
 
                     public void onItemClick(SpinningMenuAdapter<?> parent, View view,
                             int position, long id) {    
-                        
+                        spinningMenu.scrollToChild(position);
                         parentTracker = parent;
                         positionTracker = position;
                         
@@ -50,8 +51,8 @@ public class MainScreen extends Activity {
                         int yCentre = metrics.heightPixels/2;
                         int xCentre = metrics.widthPixels/2;
                         
-                        if ((Math.abs(SpinningMenu.clickedX - xCentre)<200)&&
-                                (Math.abs(SpinningMenu.clickedY - yCentre)<200)) 
+                        if ((Math.abs(spinningMenu.clickedX - xCentre)<200)&&
+                                (Math.abs(spinningMenu.clickedY - yCentre)<200)) 
                         {
                             String temp = (String)((SpinningMenuItem) parent.getChildAt(position)).getName();
                             
@@ -80,7 +81,7 @@ public class MainScreen extends Activity {
                     }
                 });
 
-                SpinningMenu.setOnItemSelectedListener(new OnItemSelectedListener(){
+                spinningMenu.setOnItemSelectedListener(new OnItemSelectedListener(){
 
                     public void onItemSelected(SpinningMenuAdapter<?> parent, View view,
                             int position, long id) {
@@ -105,26 +106,26 @@ public class MainScreen extends Activity {
                     public void onNothingSelected(SpinningMenuAdapter<?> parent) {
                     }
                 });                
-            }		    
-		});
+            }           
+        });
         
-	}
-	
-	@Override
-	protected void onResume()
-	{
-	    super.onResume();
-	    if (parentTracker != null)
-	        ((SpinningMenuItem)parentTracker.getChildAt(positionTracker)).mImage.setAlpha(255);
-	    else
-	        return;
-	}
+    }
+    
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (parentTracker != null)
+            ((SpinningMenuItem)parentTracker.getChildAt(positionTracker)).mImage.setAlpha(255);
+        else
+            return;
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_screen2, menu);
-		return true;
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_screen2, menu);
+        return true;
+    }
 
 }
