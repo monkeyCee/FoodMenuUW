@@ -3,6 +3,7 @@ package ca.uwaterloo.uwfoodservices;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -19,10 +20,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,13 +39,11 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-
 public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		
     ViewPager vp;
-    String restaurant_selection;
+    static String restaurantSelection;
     static int positionRestaurant;
-    RestaurantLocationHolder holder = RestaurantLocationHolder.getInstance(getBaseContext());
     
     SharedPreferences.Editor editor;
     SharedPreferences pref;
@@ -50,6 +53,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     static int weekDay;
     static Calendar calendar;
     static SimpleDateFormat simpleDateFormat;
+    static Calendar currentDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,12 +65,13 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         Intent intent = getIntent();
-        restaurant_selection = intent.getStringExtra("Restaurant Name");
+        restaurantSelection = intent.getStringExtra("Restaurant Name");
         positionRestaurant = intent.getIntExtra("Restaurant Position", 0);
 
         // Date handling
         calendar = Calendar.getInstance();
-
+        currentDate = Calendar.getInstance();
+        
         simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
         formattedDate = simpleDateFormat.format(calendar.getTime());
         weekDay = 0;
@@ -81,7 +86,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        actionBar.setTitle(restaurant_selection);
+        actionBar.setTitle(restaurantSelection);
         actionBar.setIcon(R.drawable.ic_drawer);
         actionBar.setDisplayUseLogoEnabled(false);
         
@@ -128,31 +133,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 
         vp.setCurrentItem(weekDay);
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
 	public static class MenuAdapter extends FragmentPagerAdapter {
@@ -268,17 +248,44 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 				}
 			}
 			
-			listView.setAdapter(new MenuListAdapter(getActivity()));
-			
+			MenuListAdapter menuListAdapter = new MenuListAdapter(getActivity());
+			listView.setOnItemClickListener(new OnItemClickListener() {
+			    
+			    @Override
+	            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+	                    long arg3) {
+	                // arg2 = the id of the item in our view (List/Grid) that we clicked
+	                // arg3 = the id of the item that we have clicked
+	                // if we didn't assign any id for the Object (Book) the arg3 value is 0
+	                // That means if we comment, aBookDetail.setBookIsbn(i); arg3 value become 0
+	                Log.d("You clicked on position : " + arg2 + " and id : " + arg3, "CLICKITEM");
+	                //Toast.makeText(getBaseContext(), "You clicked on position : " + arg2 + " and id : " + arg3, Toast.LENGTH_SHORT).show();
+	                Intent intentProductInfo = new Intent(getActivity(), ProductInfo.class);
+	                
+	                Long productDay = currentDate.getTimeInMillis();
+	                intentProductInfo.putExtra("Restaurant Name", restaurantSelection);
+	                intentProductInfo.putExtra("Product Day", productDay);
+	                
+	                int currentPosition = 1;
+	                ArrayList<Integer> productIds = new ArrayList<Integer>();
+	                intentProductInfo.putExtra("Current Position", currentPosition);
+	                intentProductInfo.putExtra("Product Ids", productIds);
+	                startActivity(intentProductInfo);
+	                
+	                /*
+	                restaurantSelection = intent.getStringExtra("Restaurant Name");
+	                productDay = intent.getLongExtra("Product Day", -1);
+	                currentPosition = intent.getIntExtra("Current Position", -1);
+	                productIds = intent.getIntegerArrayListExtra("Product Ids");
+			        */
+			    }
+			});
+			listView.setAdapter(menuListAdapter);
+			listView.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 			return rootView;
 		}
 		
-		@Override
-		public void onResume() {
-			super.onResume();
-		}
-		
-		private class MenuListAdapter extends BaseAdapter {
+		private class MenuListAdapter extends BaseAdapter{
 			public int textWidth;
 			
 	        public MenuListAdapter(Context context) {
@@ -339,6 +346,8 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                item.setTag(LIST_ITEM);
 	            }
 
+	            ImageButton image = (ImageButton)item.findViewById(R.id.button);
+	            
 	            TextView header = (TextView)item.findViewById(R.id.lv_item_header);
 	            Typeface tf = Typeface.createFromAsset(mContext.getAssets(),
 	    	            "Roboto-Light.ttf");
@@ -364,7 +373,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                divider.setVisibility(View.INVISIBLE);
 	            }
 	            
-
 	            return item;
 	        }
 
@@ -378,6 +386,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	        }
 
 	        private final Context mContext;
+
 	    }
 	}
 	
@@ -416,7 +425,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		        Intent intent = new Intent(MenuLists.this, SplashScreen.class);
 		        editor = pref.edit();
 		        editor.putString("refresh", "menu");
-		        editor.putString("restaurant", restaurant_selection);
+		        editor.putString("restaurant", restaurantSelection);
 		        editor.putInt("position", positionRestaurant);
 		        editor.commit();
 		        startActivity(intent);

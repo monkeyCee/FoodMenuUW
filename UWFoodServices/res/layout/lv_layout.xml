@@ -2,8 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:context=".MainActivity"
     style="@style/listViewItem"
+    android:descendantFocusability="blocksDescendants"
     android:background="@android:drawable/list_selector_background"
     >
 
@@ -12,6 +12,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/lvDividerHeight"
+        android:descendantFocusability="blocksDescendants"
         android:background="@color/lvDividerColor"/>
 
     <ImageButton
@@ -21,8 +22,8 @@
         android:id="@+id/button"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:clickable="true"
         android:contentDescription="@string/cd"
+        android:descendantFocusability="blocksDescendants"
         />
 
     <TextView
