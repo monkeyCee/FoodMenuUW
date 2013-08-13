@@ -20,4 +20,8 @@ public class WatcardHolder {
         return mInstance;
     }
     
+    public void reset(){
+        mInstance = null;
+    }
+    
 }

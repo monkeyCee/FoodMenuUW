@@ -35,7 +35,6 @@ public class LoginWatcard extends Activity {
             @Override
             public void onClick(View v) {      
                 if(!username.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
-                    Log.d("Starting", "Intent");
                     Intent intent = new Intent (LoginWatcard.this, DataWatcard.class);
                     intent.putExtra("Username", username.getText().toString());
                     intent.putExtra("Password", password.getText().toString());

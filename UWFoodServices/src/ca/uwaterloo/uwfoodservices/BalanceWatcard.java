@@ -8,12 +8,14 @@ import android.widget.TextView;
 
 public class BalanceWatcard extends Activity {
     
+    private WatcardHolder holder;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_balance_watcard);
         
-        WatcardHolder holder = WatcardHolder.getInstance();
+        holder = WatcardHolder.getInstance();
         
         Typeface tf = Typeface.createFromAsset(this.getAssets(),
                 "Roboto-Light.ttf");
@@ -56,6 +58,20 @@ public class BalanceWatcard extends Activity {
             }
         }
       
+    }
+    
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        holder.reset();
+        finish();
+    }
+    
+    @Override
+    public void onStop() {  
+        super.onStop();
+        holder.reset();
+        finish();
     }
 
     @Override
