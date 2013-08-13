@@ -41,34 +41,29 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar" >
         </activity>
-        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.LocationHours"
             android:label="@string/title_activity_location_hours"
             android:screenOrientation="portrait" >
         </activity>
-        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.MenuLists"
             android:label="@string/title_activity_menu_lists"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo" >
         </activity>
-        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo" >
         </activity>
-        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.SettingsActivityTest"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo" >
         </activity>
-        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.SplashScreen"
             android:label="@string/title_activity_splash_screen"
@@ -81,15 +76,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.ErrorPage"
             android:label="@string/title_activity_error_page"
-            android:screenOrientation="portrait"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar" >
         </activity>
-        
         <activity
             android:name="ca.uwaterloo.uwfoodservices.MainScreen"
             android:label="@string/title_activity_main_screen"
@@ -98,9 +91,29 @@
         </activity>
         <activity
             android:name="ca.uwaterloo.uwfoodservices.AboutPage"
-            android:label="@string/title_activity_about_page" 
-            android:screenOrientation="portrait" 
-            android:theme="@android:style/Theme.Holo">
+            android:label="@string/title_activity_about_page"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo" >
+        </activity>
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.LoginWatcard"
+            android:label="@string/title_activity_login_watcard"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.NoActionBar" >
+        </activity>
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.BalanceWatcard"
+            android:label="@string/title_activity_balance_watcard"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.NoActionBar"
+            android:noHistory="true" >
+        </activity>
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.DataWatcard"
+            android:label="@string/title_activity_data_watcard"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.NoActionBar"
+            android:noHistory="true" >
         </activity>
     </application>
 

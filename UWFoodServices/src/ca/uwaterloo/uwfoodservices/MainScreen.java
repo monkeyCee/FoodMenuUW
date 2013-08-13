@@ -29,6 +29,7 @@ public class MainScreen extends Activity {
         final Intent intent_location = new Intent(this, LocationHours.class);
         final Intent intent_settings = new Intent(this, SettingsActivity.class);
         final Intent intent_about = new Intent(this, AboutPage.class);
+        final Intent intent_watcard = new Intent(this, LoginWatcard.class);
         
         final SpinningMenu spinningMenu = (SpinningMenu)findViewById(R.id.SpinningMenu);
         
@@ -48,6 +49,7 @@ public class MainScreen extends Activity {
                         DisplayMetrics metrics = new DisplayMetrics();
                         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
+
                         int yCentre = metrics.heightPixels/2;
                         int xCentre = metrics.widthPixels/2;
                         
@@ -59,7 +61,6 @@ public class MainScreen extends Activity {
                             if ((selectedTab.equals(temp))||(temp.equals("Locations and\n        Hours")&&
                                     selectedTab.equals("Locations and Hours")))
                                 ((SpinningMenuItem)parent.getChildAt(position)).mImage.setAlpha(100);                   
-
                             if (temp.equals("Menu")&&selectedTab.equals("Menu"))
                             {
                                 startActivityForResult(intent_restaurant, requestCode);                       
@@ -77,12 +78,14 @@ public class MainScreen extends Activity {
                             {
                                 startActivityForResult(intent_about, requestCode);
                             }
+                            else if(temp.equals("WatCard Balance")&&selectedTab.equals("WatCard Balance")){
+                                startActivityForResult(intent_watcard, requestCode);
+                            }
                         }
                     }
                 });
 
                 spinningMenu.setOnItemSelectedListener(new OnItemSelectedListener(){
-
                     public void onItemSelected(SpinningMenuAdapter<?> parent, View view,
                             int position, long id) {
                         
@@ -99,6 +102,9 @@ public class MainScreen extends Activity {
                                 break;
                             case 3:
                                 selectedTab = "About Us";
+                                break;
+                            case 4:
+                                selectedTab = "WatCard Balance";
                                 break;
                         }               
                     }
