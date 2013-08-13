@@ -958,7 +958,7 @@ public class SpinningMenu extends SpinningMenuSpinner implements GestureDetector
         }
         
         // Track the motion
-        trackMotionScroll(/* -1 * */ (int) distanceX);
+        trackMotionScroll(/* -1 * */ (int) (distanceX*0.5));
        
         mIsFirstScroll = false;
         return true;
@@ -1197,9 +1197,9 @@ public class SpinningMenu extends SpinningMenuSpinner implements GestureDetector
     }    
          
     void onUp(){
-        if (mFlingRunnable.mRotator.isFinished()) {
+        //if (mFlingRunnable.mRotator.isFinished()) {
             scrollIntoSlots();
-        }        
+        ///}        
         dispatchUnpress();    	
     }
         
@@ -1258,7 +1258,7 @@ public class SpinningMenu extends SpinningMenuSpinner implements GestureDetector
         
     }
     
-	void scrollToChild(int i){		
+	public void scrollToChild(int i){		
 		
 		SpinningMenuItem view = (SpinningMenuItem)getAdapter().getView(i, null, null);
 		float angle = view.getCurrentAngle();
