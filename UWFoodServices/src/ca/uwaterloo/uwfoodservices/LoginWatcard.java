@@ -34,11 +34,15 @@ public class LoginWatcard extends Activity {
             
             @Override
             public void onClick(View v) {      
-                if(username.getText().toString() != null && password.getText().toString() != null){
+                if(!username.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
+                    Log.d("Starting", "Intent");
                     Intent intent = new Intent (LoginWatcard.this, DataWatcard.class);
                     intent.putExtra("Username", username.getText().toString());
                     intent.putExtra("Password", password.getText().toString());
                     startActivityForResult(intent, 1);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
                 }
                 
             }

@@ -58,7 +58,6 @@ public class DataWatcard extends Activity {
                     if(!dataFetcher.isCancelled()){
                         noError();
                     }
-                    Log.d("Dismissed", "Not Cancelled");
                 }
                 
             });
