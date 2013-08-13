@@ -86,6 +86,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         actionBar.setDisplayUseLogoEnabled(false);
         
         // Set max text width based on screen resolution
+        MenuUtilities.setMenuItemTextWidth(550);
         int screenWidth = MenuUtilities.getScreenWidth(this);
         MenuUtilities.setMenuItemTextWidth(screenWidth * MenuUtilities.getMenuItemTextWidth() / 768);
         
