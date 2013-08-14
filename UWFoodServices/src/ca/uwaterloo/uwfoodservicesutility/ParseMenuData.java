@@ -40,7 +40,9 @@ public class ParseMenuData {
         product_name = "";
 
         for(int i = 0; i < tokens.length; i++){
-            if (!(tokens[i].equals("w/") || tokens[i].equals("and") || tokens[i].equals("on") || tokens[i].equals("with") || tokens[i].equals("de") )) {
+            if (!(tokens[i].equals("w/") || tokens[i].equals("and") || tokens[i].equals("on") 
+                    || tokens[i].equals("with") || tokens[i].equals("de") || tokens[i].equals("a"))
+                    || tokens[i].equals("served") || tokens[i].equals("in") || tokens[i].equals("of")) {
                 char capLetter = Character.toUpperCase(tokens[i].charAt(0));
                 product_name +=  " " + capLetter + tokens[i].substring(1, tokens[i].length());
             } else {
