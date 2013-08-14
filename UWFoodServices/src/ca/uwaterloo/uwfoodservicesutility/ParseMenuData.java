@@ -71,7 +71,7 @@ public class ParseMenuData {
         product_name = product_name.trim();
         
         if (product_name.contains(" and ")) {
-            product_name = product_name.replace("and", "&");
+            product_name = product_name.replace(" and ", " & ");
         }
         product_name = product_name.trim();
         
