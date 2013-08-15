@@ -85,10 +85,12 @@ public class DataWatcard extends Activity {
         public AsyncDataFetcher(Context context){
             this.context = context;
         }
+        
         @Override
         protected void onPreExecute()
         {             
             progressDialog.show();
+            progressDialog.setMessage("Fetching your balance..");
         }; 
         
         @Override

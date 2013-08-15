@@ -13,6 +13,9 @@ public class ParseWatcardData {
     private WatcardHolder holder;
     Context context;
     WatcardObject[] objects;
+    private float totalFlex = 0;
+    private float mealPlan = 0;
+    private String total;
     
     public ParseWatcardData(Document doc, Context context){
         this.doc = doc;
@@ -36,11 +39,22 @@ public class ParseWatcardData {
                             row.getElementById("oneweb_balance_information_td_price").text(),
                             row.getElementById("oneweb_balance_information_td_amount").text(), 
                             row.getElementById("oneweb_balance_information_td_credit").text());
+                if(objects[i].getID().equals("1") || objects[i].getID().equals("2") || objects[i].getID().equals("3")){
+                    mealPlan += Float.parseFloat(row.getElementById("oneweb_balance_information_td_amount").text());
+                }
+                if(objects[i].getID().equals("4") || objects[i].getID().equals("5") || objects[i].getID().equals("6")){
+                    totalFlex += Float.parseFloat(row.getElementById("oneweb_balance_information_td_amount").text());
+                }
+                if(i == 12){
+                    total = row.getElementById("oneweb_balance_information_td_amount").text();
+                }
                 i++;               
             }
         }
         
-        WatcardHolder.getInstance(objects);
+        WatcardHolder.getInstance(objects).setMealplan(mealPlan);
+        WatcardHolder.getInstance().setTotal(total);
+        WatcardHolder.getInstance().setFlex(totalFlex);
         return true;
     }
 

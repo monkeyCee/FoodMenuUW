@@ -64,6 +64,9 @@ public class LoginWatcard extends Activity {
                 else if(code == 1){
                     Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
                 }
+                else{
+                    Toast.makeText(getApplicationContext(), "No Network.", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

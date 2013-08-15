@@ -36,7 +36,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/flex_value1"
+        android:id="@+id/flex_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/meal_value"
@@ -49,23 +49,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
         <TextView
-        android:id="@+id/flex_value2"
+        android:id="@+id/total_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/flex_value1"
-        android:layout_marginTop="25dp"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:minHeight="75dp"
-        android:minWidth="125dp"
-        android:text="@string/defaultdata"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-        
-    <TextView
-        android:id="@+id/flex_value3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/flex_value2"
+        android:layout_below="@+id/flex_value"
         android:layout_marginTop="25dp"
         android:layout_alignParentRight="true"
         android:gravity="center"
@@ -89,25 +76,11 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
     
         <TextView
-        android:id="@+id/flex2"
+        android:id="@+id/total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/meal_text"
         android:layout_below="@+id/flex1"
-        android:layout_marginTop="25dp"
-        android:background="#101010"
-        android:gravity="center"
-        android:minHeight="75dp"
-        android:minWidth="125dp"
-        android:text="@string/defaultdata"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-        
-            <TextView
-        android:id="@+id/flex3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/meal_text"
-        android:layout_below="@+id/flex2"
         android:layout_marginTop="25dp"
         android:background="#101010"
         android:gravity="center"

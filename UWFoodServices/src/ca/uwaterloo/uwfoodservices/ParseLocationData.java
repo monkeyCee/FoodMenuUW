@@ -49,7 +49,7 @@ public class ParseLocationData {
                     details[j] = result_array1.getString(j);
                 }
 
-                result_array = data_array.getJSONArray(result);				
+                result_array = data_array.getJSONArray(result);             
                 location_objects[i] = new RestaurantObject(i, restaurant_name, location_name, details);
                 
                 for (int j = 0; j < menuHolder.getCount(); j++) {
