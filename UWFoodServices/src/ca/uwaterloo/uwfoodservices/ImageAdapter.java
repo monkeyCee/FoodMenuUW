@@ -20,7 +20,7 @@ public class ImageAdapter extends BaseAdapter{
     private RestaurantLocationHolder locationHolder;
     private Context context;
 
-    private String[] sliding_list = {"Home", "Skip to Menu", "Location & Hours", "About Us"};
+    private String[] sliding_list = {"Home", "Skip to Menu", "Location & Hours", "WatCard Login", "About Us"};
     Typeface tf;
 
     public ImageAdapter(Context context, String id){
