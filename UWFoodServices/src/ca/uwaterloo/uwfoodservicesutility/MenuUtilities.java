@@ -37,6 +37,25 @@ public class MenuUtilities {
         imageHash.put("University Club", R.drawable.universityclub);
         imageHash.put("UW Food Services Admin Office", R.drawable.foodservices);
         imageHash.put("Williams Fresh Café", R.drawable.williams_0);
+        
+        imageHash.put("Apple Two Hairstylists", R.drawable.appletwo);
+        imageHash.put("Campus Pizza", R.drawable.campuspizza);
+        imageHash.put("Curry in a Hurry", R.drawable.curryinahurry);
+        imageHash.put("Domino&apos;s Pizza", R.drawable.dominospizza);
+        imageHash.put("East Side Mario&apos;s", R.drawable.eastsidemarios);
+        imageHash.put("Farah Foods", R.drawable.farahfoods);
+        imageHash.put("Grab a Greek", R.drawable.grabagreek);
+        imageHash.put("McGinnis Front Row", R.drawable.frontrow);
+        imageHash.put("Meet Point", R.drawable.meetpoint);
+        imageHash.put("Pita Pit", R.drawable.pitapit);
+        imageHash.put("Pizza Pizza", R.drawable.pizzapizza);
+        imageHash.put("Sobeys", R.drawable.sobeys);
+        imageHash.put("Student Health Pharmacy", R.drawable.studenthealthpharmacy);
+        imageHash.put("Swiss Chalet", R.drawable.swisschalet);
+        imageHash.put("The Grill", R.drawable.thegrill);
+        imageHash.put("Waterloo Taxi", R.drawable.waterlootaxi);
+        imageHash.put("Williams Coffee Pub", R.drawable.williams_1);
+        
         return imageHash;
     }
     

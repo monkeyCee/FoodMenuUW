@@ -47,7 +47,7 @@
 		<item>@drawable/menu_icon</item>		
 		<item>@drawable/clock_icon</item> 		
 		<item>@drawable/settings_icon</item>		
-		<item>@drawable/aboutus_icon</item>					
+		<item>@drawable/aboutus_icon</item>				
 	</array>	
 	<array name="names">
 	    <item>Menu</item>

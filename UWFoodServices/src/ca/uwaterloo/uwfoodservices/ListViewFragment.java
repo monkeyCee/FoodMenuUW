@@ -18,6 +18,7 @@ public class ListViewFragment extends Fragment {
     private ListView listView;
     private Context context;
     private ActivityCommunicator activityCommunicator;
+    private String type;
 
     @Override
     public void onAttach(Activity activity){
@@ -33,7 +34,7 @@ public class ListViewFragment extends Fragment {
     }
 
     public void init() {
-        listView.setAdapter(new ImageAdapter(context, "location"));
+        listView.setAdapter(new ImageAdapter(context, type));
 
         listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -50,6 +51,7 @@ public class ListViewFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
             Bundle savedInstanceState) {
+        type = getArguments().getString("type");
         View view = null;
         try {
             view = inflater.inflate(
