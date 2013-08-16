@@ -25,7 +25,7 @@
     <string name="error">Network connection required. Click the settings button to go to your phone settings. When you are connected, hit the refresh button.</string>
     <string name="ready">Refresh!</string>
     <string name="Username">Student ID</string>
-    <string name="Password">Password</string>
+    <string name="Password">WatCard PIN</string>
     <string name="login">Login</string>
     <string name="settingsPhone">Phone Settings</string>
 
