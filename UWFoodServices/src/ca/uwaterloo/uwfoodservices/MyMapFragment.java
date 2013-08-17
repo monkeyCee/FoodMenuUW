@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -164,12 +165,24 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
         showAll.setChecked(false);
         clear.setChecked(false); 
         
+        if (position == -1){
+            myMap.clear();
+            LatLng coordinate = new LatLng(43.469828,-80.546415);
+            center=CameraUpdateFactory.newLatLng(coordinate);
+            zoom=CameraUpdateFactory.zoomTo(14);
+            myMap.moveCamera(center);
+            myMap.animateCamera(zoom);
+            return;}
+        
         if (filterType.equals("all"))
         {
             if (position>=0 && position < holderLoc.getCount())
                 setupLocationMarker(position);
             else
+            {
+                position -= holderLoc.getCount();
                 setupVendorMarker(position);
+            }
         }
         else if (filterType.equals("location"))
             setupLocationMarker(position);

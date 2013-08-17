@@ -64,16 +64,19 @@ public class ListViewFragment extends Fragment {
                             switch (pos)
                             {
                                 case 0:   
+                                    type = "all";
                                     listView.setAdapter(new ImageAdapter(context, "all"));
-                                    activityCommunicator.passDataToActivity(positionTracker, "all");                                    
+                                    activityCommunicator.passDataToActivity(-1, "all");                                    
                                     break;
                                 case 1:
+                                    type = "location";
                                     listView.setAdapter(new ImageAdapter(context, "location"));
-                                    activityCommunicator.passDataToActivity(positionTracker, "location");
+                                    activityCommunicator.passDataToActivity(-1, "location");
                                     break;
                                 case 2:
+                                    type = "watcardVendors";
                                     listView.setAdapter(new ImageAdapter(context, "watcardVendors"));
-                                    activityCommunicator.passDataToActivity(positionTracker, "watcardVendors");
+                                    activityCommunicator.passDataToActivity(-1, "watcardVendors");
                                     break;
                             }                                                            
                     }
