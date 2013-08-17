@@ -2,13 +2,14 @@ package ca.uwaterloo.uwfoodservicesutility;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductInfoObject implements Serializable {
 
     private static final long serialVersionUID = -3378840073417894876L;
     Integer product_id;
     String product_name;
-    ArrayList<String> ingredients;
+    List<String> ingredients;
     Integer serving_size;
     String serving_size_unit;
     Integer calories;
@@ -31,18 +32,18 @@ public class ProductInfoObject implements Serializable {
     Integer vitamin_c_percent;
     Integer calcium_percent;
     Integer iron_percent;
-    ArrayList<String> micro_nutrients;
+    List<String> micro_nutrients;
     String tips;
     Integer diet_id;
     String diet_type;
     
-    public ProductInfoObject(Integer product_id, String product_name, ArrayList<String> ingredients,
+    public ProductInfoObject(Integer product_id, String product_name, List<String> ingredients,
             Integer serving_size, String serving_size_unit, Integer calories, Integer total_fat_g, 
             Integer total_fat_percent, Integer fat_saturated_g, Integer fat_saturated_percent, Integer fat_trans_g,
             Integer fat_trans_percent, Integer cholesterol_mg, Integer sodium_mg, Integer sodium_percent,
             Integer carbo_g, Integer carbo_percent, Integer carbo_fibre_g, Integer carbo_fibre_percent,
             Integer carbo_sugars_g, Integer protein_g, Integer vitamin_a_percent, Integer vitamin_c_percent,
-            Integer calcium_percent, Integer iron_percent, ArrayList<String> micro_nutrients, String tips,
+            Integer calcium_percent, Integer iron_percent, List<String> micro_nutrients, String tips,
             Integer diet_id, String diet_type){
         
         this.product_id = product_id;
@@ -78,7 +79,7 @@ public class ProductInfoObject implements Serializable {
 
     public Integer get_product_id(){ return product_id; }
     public String get_product_name(){ return product_name; }
-    public ArrayList<String> get_ingredients(){ return ingredients; }
+    public List<String> get_ingredients(){ return ingredients; }
     public Integer get_serving_size(){ return serving_size; }
     public String get_serving_size_unit(){ return serving_size_unit; }
     public Integer get_calories(){ return calories; }
@@ -101,7 +102,7 @@ public class ProductInfoObject implements Serializable {
     public Integer get_vitamin_c_percent(){ return vitamin_c_percent; }
     public Integer get_calcium_percent(){ return sodium_percent; }
     public Integer get_iron_percent(){ return iron_percent; }
-    public ArrayList<String> get_micro_nutrients(){ return micro_nutrients; }
+    public List<String> get_micro_nutrients(){ return micro_nutrients; }
     public String get_tips(){ return tips; }
     public Integer get_get_diet_id(){ return diet_id; }
     public String get_diet_type(){ return diet_type; }
