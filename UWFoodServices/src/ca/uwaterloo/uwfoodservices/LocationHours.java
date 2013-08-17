@@ -140,7 +140,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 
         private ArrayList<MenuFragment> mFragments;
 
-        public final static String[] location_tabs = new String[] {"ListView", "MapView", "Filter"};
+        public final static String[] location_tabs = new String[] {"ListView", "MapView"};
 
         public MenuAdapterLoc(FragmentManager fm) {
             super(fm);
@@ -179,7 +179,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 
         private ArrayList<MenuFragment> mFragments;
 
-        public final static String[] location_tabs = new String[] {"ListView", "MapView", "Filter"};
+        public final static String[] location_tabs = new String[] {"ListView", "MapView"};
 
         public MenuAdapterAll(FragmentManager fm) {
             super(fm);

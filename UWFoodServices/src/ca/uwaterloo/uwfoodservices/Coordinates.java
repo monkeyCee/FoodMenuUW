@@ -38,8 +38,8 @@ public class Coordinates {
         map.put("Apple Two Hairstylists", new LatLng(43.471758, -80.545506));
         map.put("Campus Pizza", new LatLng(43.472208, -80.537952));
         map.put("Curry in a Hurry", new LatLng(43.471838, -80.538545));
-        map.put("Domino&apos;s Pizza", new LatLng(43.467650, -80.568600));
-        map.put("East Side Mario&apos;s", new LatLng(43.471530, -80.538530));
+        map.put("Domino's Pizza", new LatLng(43.467650, -80.568600));
+        map.put("East Side Mario's", new LatLng(43.471530, -80.538530));
         map.put("Farah Foods", new LatLng(43.471700, -80.538440));
         map.put("Grab a Greek", new LatLng(43.472630, -80.537875));
         map.put("McGinnis Front Row", new LatLng(43.472027, -80.537118));

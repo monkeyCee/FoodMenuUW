@@ -41,8 +41,8 @@ public class MenuUtilities {
         imageHash.put("Apple Two Hairstylists", R.drawable.appletwo);
         imageHash.put("Campus Pizza", R.drawable.campuspizza);
         imageHash.put("Curry in a Hurry", R.drawable.curryinahurry);
-        imageHash.put("Domino&apos;s Pizza", R.drawable.dominospizza);
-        imageHash.put("East Side Mario&apos;s", R.drawable.eastsidemarios);
+        imageHash.put("Domino's Pizza", R.drawable.dominospizza);
+        imageHash.put("East Side Mario's", R.drawable.eastsidemarios);
         imageHash.put("Farah Foods", R.drawable.farahfoods);
         imageHash.put("Grab a Greek", R.drawable.grabagreek);
         imageHash.put("McGinnis Front Row", R.drawable.frontrow);
@@ -70,6 +70,8 @@ public class MenuUtilities {
         else if (name.equals("LA Cafe")) { return "Liquid Assets Café"; }
         else if (name.equals("UW Food Services Administrative Office")) { return "UW Food Services Admin Office"; }
         else if (name.equals("Williams Fresh Cafe")) { return "Williams Fresh Café"; }
+        else if (name.equals("East Side Mario&apos;s")){return "East Side Mario's";}
+        else if (name.equals("Domino&apos;s Pizza")){return "Domino's Pizza";}
         return name;
     }
 
