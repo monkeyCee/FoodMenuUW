@@ -36,7 +36,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_watcard_vendors);
+        setContentView(R.layout.activity_location_hours);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         Intent intent = getIntent();
         
@@ -46,7 +46,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
         actionBar.setIcon(R.drawable.clock_icon);
         actionBar.setDisplayUseLogoEnabled(false);
 
-        vp = (ViewPager) findViewById(R.id.pager2);
+        vp = (ViewPager) findViewById(R.id.pager);
         if (intent.hasExtra("locations"))
         {
             vp.setAdapter(new MenuAdapterLoc(getSupportFragmentManager()));
@@ -88,7 +88,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
             }
         });
         
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             actionBar.addTab(actionBar.newTab()
                     .setText(MenuAdapterVend.location_tabs[i])
                     .setTabListener(this));
@@ -102,7 +102,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
 
         private ArrayList<MenuFragment> mFragments;
 
-        public final static String[] location_tabs = new String[] {"ListView", "MapView", "Filter"};
+        public final static String[] location_tabs = new String[] {"ListView", "MapView"};
 
         public MenuAdapterVend(FragmentManager fm) {
             super(fm);
@@ -126,22 +126,13 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
                 fragment.setArguments(args);
                 return fragment;        
             }
-            else if (position ==1){                
+            else {                
                 Fragment fragment = new VendorMapFragment();
                 Bundle args = new Bundle();
                 args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
                 fragment.setArguments(args);
                 return fragment;
-            }
-            else
-            {
-                Fragment fragment = new FilterFragment();
-                Bundle args = new Bundle();
-                args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                fragment.setArguments(args);
-                return fragment;   
-            }
-            
+            }            
     }
     }
     
@@ -173,20 +164,12 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
                 fragment.setArguments(args);
                 return fragment;        
             }
-            else if (position ==1){                
+            else {                
                 Fragment fragment = new MyMapFragment();
                 Bundle args = new Bundle();
                 args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
                 fragment.setArguments(args);
                 return fragment;
-            }
-            else
-            {
-                Fragment fragment = new FilterFragment();
-                Bundle args = new Bundle();
-                args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                fragment.setArguments(args);
-                return fragment;   
             }
             
     }
@@ -220,20 +203,12 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
                 fragment.setArguments(args);
                 return fragment;        
             }
-            else if (position ==1){                
+            else{                
                 Fragment fragment = new AllMapFragment();
                 Bundle args = new Bundle();
                 args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
                 fragment.setArguments(args);
                 return fragment;
-            }
-            else
-            {
-                Fragment fragment = new FilterFragment();
-                Bundle args = new Bundle();
-                args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                fragment.setArguments(args);
-                return fragment;   
             }
             
     }
