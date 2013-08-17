@@ -49,10 +49,15 @@ public class SlidingListFragment extends ListFragment {
             startActivity(intent);
             break;
 
-        case 3:
+        case 4:
             intent = new Intent(getActivity(), AboutPage.class);
             startActivity(intent);
-            break;    
+            break;   
+            
+        case 3:
+            intent = new Intent(getActivity(), LoginWatcard.class);
+            startActivity(intent);
+            break;  
             
         default:
 

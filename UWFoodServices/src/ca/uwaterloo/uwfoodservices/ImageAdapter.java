@@ -22,7 +22,7 @@ public class ImageAdapter extends BaseAdapter{
     private Context context;
     private int counter = 0;
 
-    private String[] sliding_list = {"Home", "Skip to Menu", "Location & Hours", "About Us"};
+    private String[] sliding_list = {"Home", "Skip to Menu", "Location & Hours", "WatCard Balance", "About Us"};
     Typeface tf;
 
     public ImageAdapter(Context context, String id){

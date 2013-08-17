@@ -158,8 +158,9 @@ public class SplashScreen extends Activity {
 
         @Override
         protected JSONObject[] doInBackground(String... urls) {
-            JSONParser json_parse = new JSONParser();
-            JSONObject[] jsonObjectArray = new JSONObject[3];
+            NetworkParser json_parse = new NetworkParser();
+            JSONObject[] jsonObjectArray = new JSONObject[2];
+
             jsonObjectArray[0] = json_parse.getJSONFromUrl(urls[0]);
             jsonObjectArray[1] = json_parse.getJSONFromUrl(urls[1]);
             jsonObjectArray[2] = json_parse.getJSONFromUrl(urls[2]);
