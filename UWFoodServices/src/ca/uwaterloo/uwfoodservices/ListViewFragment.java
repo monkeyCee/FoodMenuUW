@@ -23,7 +23,9 @@ public class ListViewFragment extends Fragment {
     private Spinner spinner;
     private Context context;
     private ActivityCommunicator activityCommunicator;
+    
     private String type;
+    private int positionTracker;
 
     @Override
     public void onAttach(Activity activity){
@@ -40,13 +42,13 @@ public class ListViewFragment extends Fragment {
 
     public void init() {
         listView.setAdapter(new ImageAdapter(context, type));
-
         listView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position,
                     long id) {
-                activityCommunicator.passDataToActivity(position);
+                positionTracker = position;
+                activityCommunicator.passDataToActivity(position, type);
                 getActivity().getActionBar().setSelectedNavigationItem(1);
             }
         });
@@ -62,25 +64,18 @@ public class ListViewFragment extends Fragment {
                             switch (pos)
                             {
                                 case 0:   
-                                    Intent intent1 =new Intent();
-                                    intent1.putExtra("all", "all");
-                                    intent1.setClass(ListViewFragment.this.getActivity().getApplicationContext(), LocationHours.class); 
-                                    startActivity(intent1);
+                                    listView.setAdapter(new ImageAdapter(context, "all"));
+                                    activityCommunicator.passDataToActivity(positionTracker, "all");                                    
                                     break;
                                 case 1:
-                                    Intent intent2=new Intent();
-                                    intent2.putExtra("locations", "loc");
-                                    intent2.setClass(ListViewFragment.this.getActivity().getApplicationContext(), LocationHours.class); 
-                                    startActivity(intent2);
+                                    listView.setAdapter(new ImageAdapter(context, "location"));
+                                    activityCommunicator.passDataToActivity(positionTracker, "location");
                                     break;
                                 case 2:
-                                    Intent intent3=new Intent();
-                                    intent3.putExtra("vendors", "vend");
-                                    intent3.setClass(ListViewFragment.this.getActivity().getApplicationContext(), LocationHours.class); 
-                                    startActivity(intent3);
+                                    listView.setAdapter(new ImageAdapter(context, "watcardVendors"));
+                                    activityCommunicator.passDataToActivity(positionTracker, "watcardVendors");
                                     break;
-                            }              
-                                                 
+                            }                                                            
                     }
 
                     @Override

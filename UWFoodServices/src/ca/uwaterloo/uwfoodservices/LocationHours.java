@@ -18,9 +18,11 @@ import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -32,13 +34,15 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
     SharedPreferences.Editor editor;
     SharedPreferences pref;
     NetworkReceiver receiver;
+    String filterType = "all";
+    public final String[] location_tabs = new String[] {"ListView", "MapView"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_hours);
+        
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        Intent intent = getIntent();
         
         receiver = new NetworkReceiver(this);
         actionBar = getSupportActionBar();
@@ -47,18 +51,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
         actionBar.setDisplayUseLogoEnabled(false);
 
         vp = (ViewPager) findViewById(R.id.pager);
-        if (intent.hasExtra("locations"))
-        {
-            vp.setAdapter(new MenuAdapterLoc(getSupportFragmentManager()));
-        }
-        else if (intent.hasExtra("vendors"))
-        {
-            vp.setAdapter(new MenuAdapterVend(getSupportFragmentManager()));
-        }
-        else
-        {
-            vp.setAdapter(new MenuAdapterAll(getSupportFragmentManager()));
-        }
+        vp.setAdapter(new MenuAdapter(getSupportFragmentManager()));
 
         vp.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
@@ -90,7 +83,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
         
         for (int i = 0; i < 2; i++) {
             actionBar.addTab(actionBar.newTab()
-                    .setText(MenuAdapterVend.location_tabs[i])
+                    .setText(location_tabs[i])
                     .setTabListener(this));
         }
 
@@ -98,13 +91,11 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
     }
     
-    public static class MenuAdapterVend extends FragmentPagerAdapter {
+    public class MenuAdapter extends FragmentStatePagerAdapter {
 
-        private ArrayList<MenuFragment> mFragments;
+        private ArrayList<MenuFragment> mFragments;        
 
-        public final static String[] location_tabs = new String[] {"ListView", "MapView"};
-
-        public MenuAdapterVend(FragmentManager fm) {
+        public MenuAdapter(FragmentManager fm) {
             super(fm);
             mFragments = new ArrayList<MenuFragment>();
             for (int i = 0; i < location_tabs.length; i++)
@@ -122,95 +113,22 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
                 Fragment fragment = new ListViewFragment();
                 Bundle args = new Bundle();
                 args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                args.putString ("type", "watcardVendors");
+                if (filterType.equals("all"))
+                    args.putString ("type", "all");
+                else if (filterType.equals("location"))
+                    args.putString ("type", "location");
+                else if (filterType.equals("watcardVendors"))
+                    args.putString ("type", "watcardVendors");
                 fragment.setArguments(args);
                 return fragment;        
             }
-            else {                
-                Fragment fragment = new VendorMapFragment();
-                Bundle args = new Bundle();
-                args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                fragment.setArguments(args);
-                return fragment;
-            }            
-    }
-    }
-    
-    public static class MenuAdapterLoc extends FragmentPagerAdapter {
-
-        private ArrayList<MenuFragment> mFragments;
-
-        public final static String[] location_tabs = new String[] {"ListView", "MapView"};
-
-        public MenuAdapterLoc(FragmentManager fm) {
-            super(fm);
-            mFragments = new ArrayList<MenuFragment>();
-            for (int i = 0; i < location_tabs.length; i++)
-                mFragments.add(new MenuFragment());
-        }
-
-        @Override
-        public int getCount() {
-            return location_tabs.length;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if(position == 0){
-                Fragment fragment = new ListViewFragment();
-                Bundle args = new Bundle();
-                args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                args.putString ("type", "location");
-                fragment.setArguments(args);
-                return fragment;        
-            }
-            else {                
+            else{                
                 Fragment fragment = new MyMapFragment();
                 Bundle args = new Bundle();
                 args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
                 fragment.setArguments(args);
                 return fragment;
-            }
-            
-    }
-    }
-    
-    public static class MenuAdapterAll extends FragmentPagerAdapter {
-
-        private ArrayList<MenuFragment> mFragments;
-
-        public final static String[] location_tabs = new String[] {"ListView", "MapView"};
-
-        public MenuAdapterAll(FragmentManager fm) {
-            super(fm);
-            mFragments = new ArrayList<MenuFragment>();
-            for (int i = 0; i < location_tabs.length; i++)
-                mFragments.add(new MenuFragment());
-        }
-
-        @Override
-        public int getCount() {
-            return location_tabs.length;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if(position == 0){
-                Fragment fragment = new ListViewFragment();
-                Bundle args = new Bundle();
-                args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                args.putString ("type", "all");
-                fragment.setArguments(args);
-                return fragment;        
-            }
-            else{                
-                Fragment fragment = new AllMapFragment();
-                Bundle args = new Bundle();
-                args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                fragment.setArguments(args);
-                return fragment;
-            }
-            
+            }            
     }
     }
     @Override
@@ -246,14 +164,12 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    
+    }    
 
     @Override
-    public void passDataToActivity(int position) {
-        fragmentCommunicator.passDataToFragment(position);
-        
+    public void passDataToActivity(int position, String filterOption) {
+        this.filterType = filterOption;
+       fragmentCommunicator.passDataToFragment(position, filterType);        
     }
 
     @Override

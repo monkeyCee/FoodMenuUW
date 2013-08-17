@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,7 +117,8 @@ public class VendorMapFragment extends Fragment implements FragmentCommunicator{
     }
 
     @Override
-    public void passDataToFragment(int position) {
+    public void passDataToFragment(int position, String filterType) {
+        
         showAll.setChecked(false);
         clear.setChecked(false);
         LatLng coordinate = new Coordinates().map.get(holder.objects[position].getVendorName());
@@ -140,6 +142,7 @@ public class VendorMapFragment extends Fragment implements FragmentCommunicator{
         vendor_location.showInfoWindow();
         
     }
+
     
     
 
