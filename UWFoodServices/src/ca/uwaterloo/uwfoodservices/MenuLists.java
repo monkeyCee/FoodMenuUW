@@ -3,7 +3,6 @@ package ca.uwaterloo.uwfoodservices;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -266,8 +265,11 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                intentProductInfo.putExtra("Restaurant Name", restaurantSelection);
 	                intentProductInfo.putExtra("Product Day", productDay);
 	                
-	                int currentPosition = 1;
+	                int currentPosition = 0;
 	                ArrayList<Integer> productIds = new ArrayList<Integer>();
+	                productIds.add(665);
+	                productIds.add(2453);
+	                productIds.add(2452);
 	                intentProductInfo.putExtra("Current Position", currentPosition);
 	                intentProductInfo.putExtra("Product Ids", productIds);
 	                startActivity(intentProductInfo);

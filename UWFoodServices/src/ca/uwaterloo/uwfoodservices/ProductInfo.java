@@ -1,35 +1,32 @@
 package ca.uwaterloo.uwfoodservices;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.view.MenuItem;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import org.json.JSONObject;
 
-import ca.uwaterloo.uwfoodservices.MenuLists.MenuAdapter;
-import ca.uwaterloo.uwfoodservices.MenuLists.MenuFragment;
-import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
+import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
+
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
 
@@ -42,6 +39,8 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
     SharedPreferences.Editor editor;
     SharedPreferences pref;
     NetworkReceiver receiver;
+    
+    static ParseProductInfo productInfoParser;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +57,17 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         currentPosition = intent.getIntExtra("Current Position", -1);
         productIds = intent.getIntegerArrayListExtra("Product Ids");
 
+        List<String> productInfoUrls = new ArrayList<String>();
+        for (int id:productIds) {
+                productInfoUrls.add("http://api.uwaterloo.ca/public/v2/foodservices/product/" + id
+                + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
+        }
+        
+        productInfoParser = new ParseProductInfo();
+        new AsyncDataFetcher(this).execute(productInfoUrls);
+        
+        
+        
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -103,6 +113,37 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
 
         //vp.setCurrentItem(weekDay);
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+    }
+    
+    private static class AsyncDataFetcher extends AsyncTask<List<String>, Void, List<JSONObject>> {
+
+        Context context;
+
+        public AsyncDataFetcher(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {             
+        }; 
+
+        @Override
+        protected List<JSONObject> doInBackground(List<String>... urls) {
+            List<JSONObject> jsonList = new ArrayList<JSONObject>();
+            JSONParser json_parse = new JSONParser();
+            for (String url : urls[0]) {
+                jsonList.add(json_parse.getJSONFromUrl(url));
+            }
+            return jsonList;
+        }
+
+        @Override
+        protected void onPostExecute(List<JSONObject> jsonList) {
+            if(jsonList != null){
+                productInfoParser.Parse(jsonList); 
+            }
+        }
     }
     
     public static class MenuAdapter extends FragmentPagerAdapter {
