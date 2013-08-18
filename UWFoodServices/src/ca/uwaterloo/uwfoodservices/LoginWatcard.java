@@ -57,14 +57,14 @@ public class LoginWatcard extends Activity {
                 startActivity(intent);
             }
             else{
-                int code = data.getIntExtra("Code", -1);
+                int code = data.getIntExtra("Code", -2);
                 if(code == 0){
                     Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
                 }
                 else if(code == 1){
                     Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
                 }
-                else{
+                else if(code == -1){
                     Toast.makeText(getApplicationContext(), "No Network.", Toast.LENGTH_SHORT).show();
                 }
             }
