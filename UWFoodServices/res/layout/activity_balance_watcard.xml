@@ -11,82 +11,77 @@
     tools:context=".BalanceWatcard" >
 
     <TextView
-        android:id="@+id/meal_text"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="#101010"
-        android:gravity="center"
-        android:minHeight="75dp"
-        android:minWidth="125dp"
         android:text="@string/defaultdata"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        android:textSize="25sp" />
+    
+    <TextView
+        android:id="@+id/meal_text"
+        android:textColor="#606060"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/name"
+        android:layout_marginTop="45dp"
+        android:text="@string/defaultdata"
+        android:textSize="20sp" />
+    
     <TextView
         android:id="@+id/meal_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
-        android:minHeight="75dp"
-        android:minWidth="125dp"
+        android:layout_below="@+id/meal_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
         android:text="@string/defaultdata"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        android:textSize="25sp" />
+    
+    <TextView
+        android:id="@+id/flex_text"
+        android:textColor="#606060"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/meal_value"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="@string/defaultdata"
+        android:textSize="20sp" />
+    
     <TextView
         android:id="@+id/flex_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/meal_value"
+        android:layout_below="@+id/flex_text"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:minHeight="75dp"
-        android:minWidth="125dp"
         android:text="@string/defaultdata"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textSize="25sp" />
     
-        <TextView
+    <TextView
+        android:id="@+id/total_text"
+        android:layout_width="wrap_content"
+        android:textColor="#606060"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/flex_value"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="@string/defaultdata"
+        android:textSize="20sp" />
+    
+    <TextView
         android:id="@+id/total_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/flex_value"
+        android:layout_below="@+id/total_text"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:minHeight="75dp"
-        android:minWidth="125dp"
         android:text="@string/defaultdata"
-        android:textAppearance="?android:attr/textAppearanceLarge" />        
+        android:textSize="25sp" />
 
-    <TextView
-        android:id="@+id/flex1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/meal_text"
-        android:layout_below="@+id/meal_text"
-        android:layout_marginTop="25dp"
-        android:background="#101010"
-        android:gravity="center"
-        android:minHeight="75dp"
-        android:minWidth="125dp"
-        android:text="@string/defaultdata"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
     
-        <TextView
-        android:id="@+id/total"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/meal_text"
-        android:layout_below="@+id/flex1"
-        android:layout_marginTop="25dp"
-        android:background="#101010"
-        android:gravity="center"
-        android:minHeight="75dp"
-        android:minWidth="125dp"
-        android:text="@string/defaultdata"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>

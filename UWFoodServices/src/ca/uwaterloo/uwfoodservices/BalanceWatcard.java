@@ -20,13 +20,15 @@ public class BalanceWatcard extends Activity {
         Typeface tf = Typeface.createFromAsset(this.getAssets(),
                 "Roboto-Light.ttf");
         
+        TextView name = (TextView) findViewById(R.id.name);
         TextView mealplan_id = (TextView) findViewById(R.id.meal_text);
         TextView mealplan_value = (TextView) findViewById(R.id.meal_value);
-        TextView flex1_id = (TextView) findViewById(R.id.flex1);
+        TextView flex1_id = (TextView) findViewById(R.id.flex_text);
         TextView flex1_value = (TextView) findViewById(R.id.flex_value);
-        TextView total_id = (TextView) findViewById(R.id.total);
+        TextView total_id = (TextView) findViewById(R.id.total_text);
         TextView total_value = (TextView) findViewById(R.id.total_value);
            
+        name.setTypeface(tf);
         mealplan_id.setTypeface(tf);
         mealplan_value.setTypeface(tf);
         flex1_id.setTypeface(tf);
@@ -38,6 +40,7 @@ public class BalanceWatcard extends Activity {
         flex1_id.setText("Flexible $");
         total_id.setText("Total");
         
+        name.setText(holder.getName());
         mealplan_value.setText(holder.getMealplan());
         flex1_value.setText(holder.getFlex());
         total_value.setText(holder.getTotal());

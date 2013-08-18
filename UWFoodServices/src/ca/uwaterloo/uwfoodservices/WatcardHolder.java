@@ -7,6 +7,7 @@ public class WatcardHolder {
     private float totalFlex = 0;
     private float mealPlan = 0;
     private String total;
+    private String name;
     
     public static WatcardHolder getInstance(WatcardObject[] objects){
         if(mInstance == null){
@@ -49,5 +50,13 @@ public class WatcardHolder {
     
     public String getTotal(){
         return total;  
+    }
+    
+    public String getName(){
+        return name;  
+    }
+    
+    public void setName(String name){
+        this.name = name;
     }
 }

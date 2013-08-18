@@ -22,7 +22,7 @@ public class DataWatcard extends Activity {
     
     private static ProgressDialog progressDialog;
     private NetworkReceiver receiver;
-    private static int code = -1;
+    private static int code = -2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class DataWatcard extends Activity {
 
         if(receiver.isNetwork()){
             dataFetcher.execute(username, password);
-            progressDialog.setCancelable(true);
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setOnDismissListener(new OnDismissListener(){
 
                 @Override

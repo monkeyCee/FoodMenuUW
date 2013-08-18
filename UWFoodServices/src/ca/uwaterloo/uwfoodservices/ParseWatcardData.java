@@ -16,6 +16,7 @@ public class ParseWatcardData {
     private float totalFlex = 0;
     private float mealPlan = 0;
     private String total;
+    private String name;
     
     public ParseWatcardData(Document doc, Context context){
         this.doc = doc;
@@ -29,6 +30,8 @@ public class ParseWatcardData {
         if(doc.getElementById("oneweb_message_invalid_login") != null){
             return false;
         }
+        
+        String name = doc.getElementById("oneweb_account_name").text();
         
         for(Element table : this.doc.select("table[id=oneweb_balance_information_table]")){ 
             for (Element row : table.select("tr:gt(1)")) {                   
@@ -55,6 +58,7 @@ public class ParseWatcardData {
         WatcardHolder.getInstance(objects).setMealplan(mealPlan);
         WatcardHolder.getInstance().setTotal(total);
         WatcardHolder.getInstance().setFlex(totalFlex);
+        WatcardHolder.getInstance().setName(name);
         return true;
     }
 
