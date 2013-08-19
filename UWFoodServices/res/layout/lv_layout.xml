@@ -1,11 +1,9 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     style="@style/listViewItem"
-    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
     android:background="@android:drawable/list_selector_background"
-    >
+    android:descendantFocusability="blocksDescendants" >
 
     <View
         android:id="@+id/item_separator"

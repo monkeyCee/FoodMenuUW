@@ -8,21 +8,29 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
+import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
+import ca.uwaterloo.uwfoodservicesutility.ProductInfoHolder;
+import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
@@ -41,6 +49,8 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
     NetworkReceiver receiver;
     
     static ParseProductInfo productInfoParser;
+    
+    static boolean loaded = false;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,8 +76,6 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         productInfoParser = new ParseProductInfo();
         new AsyncDataFetcher(this).execute(productInfoUrls);
         
-        
-        
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -76,7 +84,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         actionBar.setDisplayUseLogoEnabled(false);
         
         vp = (ViewPager) findViewById(R.id.pager);
-        vp.setAdapter(new MenuAdapter(getSupportFragmentManager()));
+        vp.setAdapter(new ProductInfoAdapter(getSupportFragmentManager()));
 
         vp.setOnPageChangeListener(new OnPageChangeListener() {
             @Override
@@ -105,9 +113,9 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             }
         });
         
-        for (int i = 0; i < MenuAdapter.days.length; i++) {
+        for (int i = 0; i < ProductInfoAdapter.days.length; i++) {
             actionBar.addTab(actionBar.newTab()
-                    .setText(MenuAdapter.days[i])
+                    .setText(ProductInfoAdapter.days[i])
                     .setTabListener(this));
         }
 
@@ -124,59 +132,67 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         }
 
         @Override
-        protected void onPreExecute()
-        {             
-        }; 
-
-        @Override
         protected List<JSONObject> doInBackground(List<String>... urls) {
             List<JSONObject> jsonList = new ArrayList<JSONObject>();
             JSONParser json_parse = new JSONParser();
-            for (String url : urls[0]) {
-                jsonList.add(json_parse.getJSONFromUrl(url));
+            Log.d("PREPARE TO LOAD - BEFORE", "LOADED");
+            for (int i = 0; i < urls[0].size(); i ++) {
+                Log.d("LOADING URL " + urls[0].get(i), "LOADED");
+                jsonList.add(json_parse.getJSONFromUrl(urls[0].get(i)));
             }
+            Log.d("RETURNING", "LOADED");
             return jsonList;
         }
 
         @Override
         protected void onPostExecute(List<JSONObject> jsonList) {
+            Log.d("ONPOST", "LOADED");
+            Log.d("" + (jsonList != null), "LOADED");
             if(jsonList != null){
+                Log.d("PREPARE TO LOAD", "LOADED");
                 productInfoParser.Parse(jsonList); 
+                loaded = true;
+            } else {
+                Log.d("NOT LOADED?", "LOADED");
             }
         }
     }
     
-    public static class MenuAdapter extends FragmentPagerAdapter {
+    public static class ProductInfoAdapter extends FragmentPagerAdapter {
 
-        private ArrayList<MenuFragment> mFragments;
+        private ArrayList<ProductInfoFragment> mFragments;
 
         public final static String[] days = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
-        public MenuAdapter(FragmentManager fm) {
+        public ProductInfoAdapter(FragmentManager fm) {
             super(fm);
-            mFragments = new ArrayList<MenuFragment>();
-            for (int i = 0; i < days.length; i++)
-                mFragments.add(new MenuFragment());
+            mFragments = new ArrayList<ProductInfoFragment>();
+            for (int i = 0; i < 3; i++)
+                mFragments.add(new ProductInfoFragment());
         }
 
         @Override
         public int getCount() {
-            return days.length;
+            return 3;
         }
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = new MenuFragment();
+            Fragment fragment = new ProductInfoFragment();
             Bundle args = new Bundle();
-            args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
+            args.putInt(ProductInfoFragment.ARG_SECTION_NUMBER, position);
             fragment.setArguments(args);
             return fragment;
         }
 
     }
     
-    public static class MenuFragment extends Fragment {
+    public static class ProductInfoFragment extends Fragment {
+        
         public static final String ARG_SECTION_NUMBER = "section_number";
+        int position;
+        List<String> LIST = new ArrayList<String>();
+        String serving;
         
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -184,25 +200,57 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             View rootView = inflater.inflate(R.layout.fragment_restaurant_menu,
                     container, false);
             
+            ProductInfoHolder productInfoHolder = ProductInfoHolder.getInstance(null);
+            
+            position = getArguments().getInt(ARG_SECTION_NUMBER);
+            
             ListView listView = (ListView) rootView.findViewById(R.id.list_menu);
             
-            listView.setAdapter(new MenuListAdapter(getActivity()));
+            while(loaded == false) {
+                //Log.d("WAITING", "LOADED");
+            }
+            
+            LIST.clear();
+            Log.d(position + "", "POSITION");
+            serving = "Per" + productInfoHolder.productInfo.get(position).get_serving_size();
+            if (productInfoHolder.productInfo.get(position).get_serving_size_unit().equals("g")) {
+                serving += " g";
+            } else {
+                serving += " ml";
+            }
+            LIST.add(serving);
+            LIST.add(productInfoHolder.productInfo.get(position).get_calories() + "");
+            LIST.add(productInfoHolder.productInfo.get(position).get_total_fat_g() + "");
+            LIST.add(productInfoHolder.productInfo.get(position).get_fat_saturated_g() + "");
+            LIST.add(productInfoHolder.productInfo.get(position).get_fat_trans_g() + "");
+            LIST.add(productInfoHolder.productInfo.get(position).get_cholesterol_mg() + "");
+            LIST.add(productInfoHolder.productInfo.get(position).get_sodium_mg() + "");
+            LIST.add(productInfoHolder.productInfo.get(position).get_carbo_g() + "");
+            LIST.add(productInfoHolder.productInfo.get(position).get_carbo_sugars_g() + "");
+            LIST.add(productInfoHolder.productInfo.get(position).get_protein_g() + "");
+            
+            if (productInfoHolder.productInfo.get(position).get_vitamin_a_percent() != null) { LIST.add("Vitamin A"); }
+            if (productInfoHolder.productInfo.get(position).get_vitamin_c_percent() != null) { LIST.add("Vitamin C"); }
+            if (productInfoHolder.productInfo.get(position).get_calcium_percent() != null) { LIST.add("Calcium"); }
+            if (productInfoHolder.productInfo.get(position).get_iron_percent() != null) { LIST.add("Iron"); }
+            
+            ProductInfoAdapter menuListAdapter = new ProductInfoAdapter(getActivity());
+            listView.setAdapter(menuListAdapter);
             return rootView;
         }
         
-        private class MenuListAdapter extends BaseAdapter {
+        private class ProductInfoAdapter extends BaseAdapter {
             public int textWidth;
             
             private final Context mContext;
             
-            public MenuListAdapter(Context context) {
+            public ProductInfoAdapter(Context context) {
                 mContext = context;
             }
 
             @Override
             public int getCount() {
-                return 0;
-                //return LIST.size();
+                return LIST.size();
             }
 
             @Override
@@ -230,6 +278,17 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
                 
                 View item = convertView;
                 
+                item = LayoutInflater.from(mContext).inflate(R.layout.lv_nutrition, parent, false);
+                Typeface tf = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Light.ttf");
+
+                TextView item_nutrition = (TextView)item.findViewById(R.id.lv_item_nutrition);
+                item_nutrition.setText("NUTRITION");
+                item_nutrition.setTypeface(tf);
+                
+                TextView item_percent = (TextView)item.findViewById(R.id.lv_item_percent);
+                item_percent.setText("NUTRITION");
+                item_percent.setTypeface(tf);
+
                 return item;
             }
         }

@@ -266,7 +266,6 @@ public class SplashScreen extends Activity {
 	    			String urlMenu = getDatedMenuUrl();
 	    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);	
 	    			
-	    			
 	    			final Handler handler = new Handler();
 		    		final Runnable r = new Runnable()
 		    		{

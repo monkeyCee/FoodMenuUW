@@ -257,10 +257,8 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                // arg3 = the id of the item that we have clicked
 	                // if we didn't assign any id for the Object (Book) the arg3 value is 0
 	                // That means if we comment, aBookDetail.setBookIsbn(i); arg3 value become 0
-	                Log.d("You clicked on position : " + arg2 + " and id : " + arg3, "CLICKITEM");
-	                //Toast.makeText(getBaseContext(), "You clicked on position : " + arg2 + " and id : " + arg3, Toast.LENGTH_SHORT).show();
 	                Intent intentProductInfo = new Intent(getActivity(), ProductInfo.class);
-	                
+	                Log.d("You clicked on position : " + arg2 + " and id : " + arg3, "CLICKITEM");
 	                Long productDay = currentDate.getTimeInMillis();
 	                intentProductInfo.putExtra("Restaurant Name", restaurantSelection);
 	                intentProductInfo.putExtra("Product Day", productDay);
@@ -273,13 +271,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                intentProductInfo.putExtra("Current Position", currentPosition);
 	                intentProductInfo.putExtra("Product Ids", productIds);
 	                startActivity(intentProductInfo);
-	                
-	                /*
-	                restaurantSelection = intent.getStringExtra("Restaurant Name");
-	                productDay = intent.getLongExtra("Product Day", -1);
-	                currentPosition = intent.getIntExtra("Current Position", -1);
-	                productIds = intent.getIntegerArrayListExtra("Product Ids");
-			        */
 			    }
 			});
 			listView.setAdapter(menuListAdapter);
@@ -333,8 +324,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                    item.setTag(LIST_HEADER);
 
 	                }
-	                Typeface tf = Typeface.createFromAsset(mContext.getAssets(),
-	        	            "Roboto-Bold.ttf");
+	                Typeface tf = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Bold.ttf");
 	                TextView headerTextView = (TextView)item.findViewById(R.id.lv_list_hdr);
 	                headerTextView.setTypeface(tf);
 	                headerTextView.setText(headerText);
@@ -351,8 +341,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	            ImageButton image = (ImageButton)item.findViewById(R.id.button);
 	            
 	            TextView header = (TextView)item.findViewById(R.id.lv_item_header);
-	            Typeface tf = Typeface.createFromAsset(mContext.getAssets(),
-	    	            "Roboto-Light.ttf");
+	            Typeface tf = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Light.ttf");
 	            header.setText(LIST.get(position % LIST.size()));
 	            header.setTypeface(tf);
 

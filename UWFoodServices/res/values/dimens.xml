@@ -10,9 +10,12 @@
     
     <dimen name="lvPrimaryTextSize">18sp</dimen>
     <dimen name="lvSecondaryTextSize">14sp</dimen>
+    <dimen name="lvProductTextSize">14sp</dimen>
 
     <dimen name="lvHdrItemHeight">45dp</dimen>
     <dimen name="lvItemHeight">45dp</dimen>
+    
+    <dimen name="lvProductItemHeight">24dp</dimen>
     
     <dimen name="lvHeadingPaddingLeft">8dp</dimen>
     <dimen name="lvHeadingTextSize">18sp</dimen>
@@ -20,6 +23,10 @@
     <dimen name="lvPrimaryPaddingTop">6dp</dimen>
     <dimen name="lvPrimaryPaddingBottom">1dp</dimen>
     <dimen name="lvPrimaryPaddingLeft">8dp</dimen>
+    
+    <dimen name="lvProductPaddingTop">2dp</dimen>
+    <dimen name="lvProductPaddingBottom">0dp</dimen>
+    <dimen name="lvProductPaddingLeft">8dp</dimen>
 
     <dimen name="lvSecondaryPaddingTop">2dp</dimen>
     <dimen name="lvSecondaryPaddingBottom">6dp</dimen>

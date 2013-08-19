@@ -33,6 +33,11 @@
 
     <style name="listViewItem">
         <item name="android:layout_height">@dimen/lvItemHeight</item>
+        <!-- <item name="android:clickable">true</item> -->
+    </style>
+    
+    <style name="productInfoItem">
+        <item name="android:layout_height">@dimen/lvProductItemHeight</item>
         <item name="android:clickable">true</item>
     </style>
     
@@ -43,7 +48,15 @@
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="android:textSize">@dimen/lvPrimaryTextSize</item>
     </style>
-
+    
+    <style name="listViewProductDetail">
+        <item name="android:paddingTop">@dimen/lvProductPaddingTop</item>
+        <item name="android:paddingBottom">@dimen/lvProductPaddingBottom</item>
+        <item name="android:paddingLeft">@dimen/lvProductPaddingLeft</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textSize">@dimen/lvProductTextSize</item>
+    </style>
+    
     <style name="listViewSecondaryDetail">
         <item name="android:paddingTop">@dimen/lvSecondaryPaddingTop</item>
         <item name="android:paddingBottom">@dimen/lvSecondaryPaddingBottom</item>
