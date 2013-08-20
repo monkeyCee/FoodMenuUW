@@ -31,6 +31,7 @@ import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
 import ca.uwaterloo.uwfoodservicesutility.ProductInfoHolder;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
+import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuItem;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.MenuItem;
@@ -39,10 +40,15 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
 
     ViewPager vp;
-    String restaurantSelection;
+    int restaurantPosition;
     long productDay;
     int currentPosition;
+    int weekDay;
     ArrayList<Integer> productIds;
+    
+    ArrayList<RestaurantMenuItem> productList;
+    
+    RestaurantMenuHolder menuHolder;
     
     SharedPreferences.Editor editor;
     SharedPreferences pref;
@@ -62,11 +68,31 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         Intent intent = getIntent();
-        restaurantSelection = intent.getStringExtra("Restaurant Name");
+        restaurantPosition = intent.getIntExtra("Restaurant Position", -1);
         productDay = intent.getLongExtra("Product Day", -1);
         currentPosition = intent.getIntExtra("Current Position", -1);
-        productIds = intent.getIntegerArrayListExtra("Product Ids");
+        weekDay = intent.getIntExtra("Weekday", -1);
+        productIds = new ArrayList<Integer>();
+        //productIds = intent.getIntegerArrayListExtra("Product Ids");
+        
+        Log.d(weekDay+"", "weekday");
+        
+        menuHolder = RestaurantMenuHolder.getInstance();
+        if (menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getLunch() != null) {
+            Log.d((currentPosition > (menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getLunch().size() - 1)) + "", "PRODUCT - DINNER");
+            if (currentPosition >
+                    (menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getLunch().size() - 1)) {
+                productList = menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getDinner();
+            } else {
+                productList = menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getLunch();
+            }
+            for (int i = 0; i < productList.size(); i++) {
+                productIds.add(productList.get(i).getProductID());
+            }
+        }
 
+        Log.d(productIds + "", "PRODUCTIDS");
+        
         List<String> productInfoUrls = new ArrayList<String>();
         for (int id:productIds) {
                 productInfoUrls.add("http://api.uwaterloo.ca/public/v2/foodservices/product/" + id
@@ -79,7 +105,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        actionBar.setTitle(restaurantSelection);
+        actionBar.setTitle(menuHolder.restaurantMenu.get(restaurantPosition).getRestaurant());
         actionBar.setIcon(R.drawable.ic_drawer);
         actionBar.setDisplayUseLogoEnabled(false);
         
@@ -137,10 +163,11 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             JSONParser json_parse = new JSONParser();
             Log.d("PREPARE TO LOAD - BEFORE", "LOADED");
             for (int i = 0; i < urls[0].size(); i ++) {
-                Log.d("LOADING URL " + urls[0].get(i), "LOADED");
                 jsonList.add(json_parse.getJSONFromUrl(urls[0].get(i)));
+                Log.d("added " + i, "LOADED");
             }
-            Log.d("RETURNING", "LOADED");
+            Log.d("" + (jsonList != null), "LOADED");
+            Log.d("returning jsonList", "LOADED");
             return jsonList;
         }
 

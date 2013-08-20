@@ -214,7 +214,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 				}
 			}
 			
-			RestaurantMenuHolder menuHolder = RestaurantMenuHolder.getInstance(null);
+			RestaurantMenuHolder menuHolder = RestaurantMenuHolder.getInstance();
 			
 			TextView textDay = (TextView) rootView.findViewById(R.id.textDay);
 			SpannableString content = new SpannableString(formattedDate);
@@ -260,7 +260,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                Intent intentProductInfo = new Intent(getActivity(), ProductInfo.class);
 	                Log.d("You clicked on position : " + arg2 + " and id : " + arg3, "CLICKITEM");
 	                Long productDay = currentDate.getTimeInMillis();
-	                intentProductInfo.putExtra("Restaurant Name", restaurantSelection);
+	                intentProductInfo.putExtra("Restaurant Position", positionRestaurant);
 	                intentProductInfo.putExtra("Product Day", productDay);
 	                
 	                int currentPosition = 0;
@@ -269,6 +269,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                productIds.add(2453);
 	                productIds.add(2452);
 	                intentProductInfo.putExtra("Current Position", currentPosition);
+	                intentProductInfo.putExtra("Weekday", day);
 	                intentProductInfo.putExtra("Product Ids", productIds);
 	                startActivity(intentProductInfo);
 			    }
