@@ -52,7 +52,7 @@ public class ParseMenuData {
             JSONArray lunch;
             JSONArray dinner;
             String product_name;
-            int product_id;
+            Integer product_id;
             String diet_type;
 
             String weekDay;
@@ -109,11 +109,7 @@ public class ParseMenuData {
                         for (int k = 0; k < lunch.length(); k ++) {
                             product_name = lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME);
 
-                            if (lunch.getJSONObject(k).getString(TAG_PRODUCT_ID).equals("null")) {
-                                product_id = -1;
-                            } else {
-                                product_id = Integer.parseInt(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
-                            }
+                            product_id = Integer.parseInt(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
                             diet_type = lunch.getJSONObject(k).getString(TAG_DIET_TYPE);
 
                             lunchList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
@@ -126,12 +122,7 @@ public class ParseMenuData {
                         for (int k = 0; k < dinner.length(); k ++) {
                             product_name = dinner.getJSONObject(k).getString(TAG_PRODUCT_NAME);
 
-                            if (dinner.getJSONObject(k).getString(TAG_PRODUCT_ID).equals("null")) {
-                                product_id = -1;
-                            } else {
-                                product_id = Integer.parseInt(dinner.getJSONObject(k).getString(TAG_PRODUCT_ID));
-                            }
-
+                            product_id = Integer.parseInt(dinner.getJSONObject(k).getString(TAG_PRODUCT_ID));
                             diet_type = dinner.getJSONObject(k).getString(TAG_DIET_TYPE);
 
                             dinnerList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
