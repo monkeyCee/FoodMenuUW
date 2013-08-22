@@ -149,7 +149,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
     }
     
-    private static class AsyncDataFetcher extends AsyncTask<List<String>, Void, List<JSONObject>> {
+    private static class AsyncDataFetcher extends AsyncTask<List<String>, Void, Void> {
 
         Context context;
 
@@ -158,7 +158,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         }
 
         @Override
-        protected List<JSONObject> doInBackground(List<String>... urls) {
+        protected Void doInBackground(List<String>... urls) {
             List<JSONObject> jsonList = new ArrayList<JSONObject>();
             JSONParser json_parse = new JSONParser();
             Log.d("PREPARE TO LOAD - BEFORE", "LOADED");
@@ -168,11 +168,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             }
             Log.d("" + (jsonList != null), "LOADED");
             Log.d("returning jsonList", "LOADED");
-            return jsonList;
-        }
-
-        @Override
-        protected void onPostExecute(List<JSONObject> jsonList) {
+            
             Log.d("ONPOST", "LOADED");
             Log.d("" + (jsonList != null), "LOADED");
             if(jsonList != null){
@@ -182,7 +178,9 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             } else {
                 Log.d("NOT LOADED?", "LOADED");
             }
+            return null;
         }
+
     }
     
     public static class ProductInfoAdapter extends FragmentPagerAdapter {

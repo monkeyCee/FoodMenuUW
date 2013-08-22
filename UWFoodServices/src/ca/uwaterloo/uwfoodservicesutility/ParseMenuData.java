@@ -109,7 +109,7 @@ public class ParseMenuData {
                         for (int k = 0; k < lunch.length(); k ++) {
                             product_name = lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME);
 
-                            product_id = Integer.parseInt(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
+                            product_id = Integer.getInteger(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
                             diet_type = lunch.getJSONObject(k).getString(TAG_DIET_TYPE);
 
                             lunchList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
