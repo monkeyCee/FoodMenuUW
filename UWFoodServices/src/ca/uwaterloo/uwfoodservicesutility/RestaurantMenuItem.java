@@ -22,7 +22,7 @@ public class RestaurantMenuItem implements Serializable {
         return product_name;
     }
 
-    public int getProductID() {
+    public Integer getProductID() {
         return product_id;
     }
 

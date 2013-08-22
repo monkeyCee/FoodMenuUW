@@ -91,4 +91,12 @@ public class MenuUtilities {
         display.getSize(size);
         return size.y;
     }
+    
+    public static Integer getInteger(String string) {
+        if (string.equals("null")) {
+            return null;
+        } else {
+            return Integer.valueOf(string);
+        }
+    }
 }

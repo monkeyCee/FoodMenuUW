@@ -232,7 +232,8 @@ public class SplashScreen extends Activity {
         prefEditor.putInt("storedWeek", Integer.parseInt(weekInYear));
         prefEditor.commit();
 
-        return "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + Integer.parseInt(weekInYear) + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
+        //return "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + Integer.parseInt(weekInYear) + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
+        return "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + 29 + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
     }
 
     public int getCurrentWeek(){

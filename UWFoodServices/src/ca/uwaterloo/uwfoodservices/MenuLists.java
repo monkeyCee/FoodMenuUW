@@ -264,13 +264,8 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                intentProductInfo.putExtra("Product Day", productDay);
 	                
 	                int currentPosition = 0;
-	                ArrayList<Integer> productIds = new ArrayList<Integer>();
-	                productIds.add(665);
-	                productIds.add(2453);
-	                productIds.add(2452);
 	                intentProductInfo.putExtra("Current Position", currentPosition);
 	                intentProductInfo.putExtra("Weekday", day);
-	                intentProductInfo.putExtra("Product Ids", productIds);
 	                startActivity(intentProductInfo);
 			    }
 			});

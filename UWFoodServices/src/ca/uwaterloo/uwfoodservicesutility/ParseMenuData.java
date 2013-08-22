@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class ParseMenuData {
 
     private static final String TAG_META = "meta";
@@ -108,8 +110,10 @@ public class ParseMenuData {
                         lunch = meals.getJSONArray(TAG_LUNCH);
                         for (int k = 0; k < lunch.length(); k ++) {
                             product_name = lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME);
-
-                            product_id = Integer.getInteger(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
+                            
+                            product_id = MenuUtilities.getInteger(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
+                            Log.d(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID), "GETINTEGER PRODUCT GET STRING");
+                            Log.d(product_id + "", "GETINTEGER PRODUCT ID");
                             diet_type = lunch.getJSONObject(k).getString(TAG_DIET_TYPE);
 
                             lunchList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
@@ -122,7 +126,7 @@ public class ParseMenuData {
                         for (int k = 0; k < dinner.length(); k ++) {
                             product_name = dinner.getJSONObject(k).getString(TAG_PRODUCT_NAME);
 
-                            product_id = Integer.parseInt(dinner.getJSONObject(k).getString(TAG_PRODUCT_ID));
+                            product_id = MenuUtilities.getInteger(dinner.getJSONObject(k).getString(TAG_PRODUCT_ID));
                             diet_type = dinner.getJSONObject(k).getString(TAG_DIET_TYPE);
 
                             dinnerList.add(new RestaurantMenuItem(product_name, product_id, diet_type));

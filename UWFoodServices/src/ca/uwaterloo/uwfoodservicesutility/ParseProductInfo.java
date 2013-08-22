@@ -55,16 +55,18 @@ public class ParseProductInfo {
 
         List<ProductInfoObject> productInfoList = new ArrayList<ProductInfoObject>();
         try {
+            Log.d("YES 1 " + json.size(), "PRODUCT INFO");
+            
             for (JSONObject jsonObject : json) {
                 Log.d("YES1", "LOADED");
                 JSONObject meta = jsonObject.getJSONObject(TAG_META);
                 
                 JSONObject data = jsonObject.getJSONObject(TAG_DATA);
-                
-                Integer product_id = Integer.getInteger(data.getString(TAG_PRODUCT_ID)); 
+                Log.d("YES 1", "PRODUCT INFO");
+                Integer product_id = MenuUtilities.getInteger(data.getString(TAG_PRODUCT_ID)); 
                 String product_name = data.getString(TAG_PRODUCT_NAME);
                 List<String> ingredients = Arrays.asList(data.getString(TAG_INGREDIENTS).split(", ")); //
-                Integer serving_size = Integer.getInteger(data.getString(TAG_SERVING_SIZE).replaceAll("\\D+",""));
+                Integer serving_size = MenuUtilities.getInteger(data.getString(TAG_SERVING_SIZE).replaceAll("\\D+",""));
                 String serving_size_unit;
                 if (data.getString(TAG_SERVING_SIZE).contains("grams")) {
                     serving_size_unit = "g";
@@ -76,29 +78,29 @@ public class ParseProductInfo {
                     serving_size_unit = "ml";
                 }
                 Log.d("YES2", "LOADED");
-                Integer calories = Integer.getInteger(data.getString(TAG_CALORIES));
-                Integer total_fat_g = Integer.getInteger(data.getString(TAG_TOTAL_FAT_G));
-                Integer total_fat_percent = Integer.getInteger(data.getString(TAG_TOTAL_FAT_PERCENT));
-                Integer fat_saturated_g = Integer.getInteger(data.getString(TAG_FAT_SATURATED_G));
-                Integer fat_saturated_percent = Integer.getInteger(data.getString(TAG_FAT_SATURATED_PERCENT));
-                Integer fat_trans_g = Integer.getInteger(data.getString(TAG_FAT_TRANS_G));
-                Integer fat_trans_percent = Integer.getInteger(data.getString(TAG_FAT_TRANS_PERCENT));
-                Integer cholesterol_mg = Integer.getInteger(data.getString(TAG_CHOLESTEROL_MG));
-                Integer sodium_mg = Integer.getInteger(data.getString(TAG_SODIUM_MG));
-                Integer sodium_percent = Integer.getInteger(data.getString(TAG_SODIUM_PERCENT));
-                Integer carbo_g = Integer.getInteger(data.getString(TAG_CARBO_G));
-                Integer carbo_percent = Integer.getInteger(data.getString(TAG_CARBO_PERCENT));
-                Integer carbo_fibre_g = Integer.getInteger(data.getString(TAG_CARBO_FIBRE_G));
-                Integer carbo_fibre_percent = Integer.getInteger(data.getString(TAG_CARBO_FIBRE_PERCENT));
-                Integer carbo_sugars_g = Integer.getInteger(data.getString(TAG_CARBO_SUGARS_G));
-                Integer protein_g = Integer.getInteger(data.getString(TAG_PROTEIN_G));
-                Integer vitamin_a_percent = Integer.getInteger(data.getString(TAG_VITAMIN_A_PERCENT));
-                Integer vitamin_c_percent = Integer.getInteger(data.getString(TAG_VITAMIN_C_PERCENT));
-                Integer calcium_percent = Integer.getInteger(data.getString(TAG_CALCIUM_PERCENT));
-                Integer iron_percent = Integer.getInteger(data.getString(TAG_IRON_PERCENT));
+                Integer calories = MenuUtilities.getInteger(data.getString(TAG_CALORIES));
+                Integer total_fat_g = MenuUtilities.getInteger(data.getString(TAG_TOTAL_FAT_G));
+                Integer total_fat_percent = MenuUtilities.getInteger(data.getString(TAG_TOTAL_FAT_PERCENT));
+                Integer fat_saturated_g = MenuUtilities.getInteger(data.getString(TAG_FAT_SATURATED_G));
+                Integer fat_saturated_percent = MenuUtilities.getInteger(data.getString(TAG_FAT_SATURATED_PERCENT));
+                Integer fat_trans_g = MenuUtilities.getInteger(data.getString(TAG_FAT_TRANS_G));
+                Integer fat_trans_percent = MenuUtilities.getInteger(data.getString(TAG_FAT_TRANS_PERCENT));
+                Integer cholesterol_mg = MenuUtilities.getInteger(data.getString(TAG_CHOLESTEROL_MG));
+                Integer sodium_mg = MenuUtilities.getInteger(data.getString(TAG_SODIUM_MG));
+                Integer sodium_percent = MenuUtilities.getInteger(data.getString(TAG_SODIUM_PERCENT));
+                Integer carbo_g = MenuUtilities.getInteger(data.getString(TAG_CARBO_G));
+                Integer carbo_percent = MenuUtilities.getInteger(data.getString(TAG_CARBO_PERCENT));
+                Integer carbo_fibre_g = MenuUtilities.getInteger(data.getString(TAG_CARBO_FIBRE_G));
+                Integer carbo_fibre_percent = MenuUtilities.getInteger(data.getString(TAG_CARBO_FIBRE_PERCENT));
+                Integer carbo_sugars_g = MenuUtilities.getInteger(data.getString(TAG_CARBO_SUGARS_G));
+                Integer protein_g = MenuUtilities.getInteger(data.getString(TAG_PROTEIN_G));
+                Integer vitamin_a_percent = MenuUtilities.getInteger(data.getString(TAG_VITAMIN_A_PERCENT));
+                Integer vitamin_c_percent = MenuUtilities.getInteger(data.getString(TAG_VITAMIN_C_PERCENT));
+                Integer calcium_percent = MenuUtilities.getInteger(data.getString(TAG_CALCIUM_PERCENT));
+                Integer iron_percent = MenuUtilities.getInteger(data.getString(TAG_IRON_PERCENT));
                 List<String> micro_nutrients = Arrays.asList(data.getString(TAG_MICRO_NUTRIENTS).split(", "));
                 String tips = data.getString(TAG_TIPS);
-                Integer diet_id = Integer.parseInt(data.getString(TAG_DIET_ID));
+                Integer diet_id = MenuUtilities.getInteger(data.getString(TAG_DIET_ID));
                 String diet_type = data.getString(TAG_DIET_TYPE);
                 Log.d("YES4", "LOADED");
                 productInfoList.add(new ProductInfoObject(product_id, product_name, ingredients, serving_size, serving_size_unit, 
@@ -107,10 +109,12 @@ public class ParseProductInfo {
                         carbo_fibre_percent, carbo_sugars_g, protein_g, vitamin_a_percent, vitamin_c_percent, calcium_percent,
                         iron_percent, micro_nutrients, tips, diet_id, diet_type));
                 Log.d("YES5", "LOADED");
+                
+                Log.d(productInfoList.size() + "", "PRODUCT INFO LIST - SIZE");
             }
             
             holder = ProductInfoHolder.getInstance(productInfoList);
-            
+            //Log.d(holder.productInfo.size() + "", "PRODUCT INFO - SIZE 1");
             Log.d("LOAD SOMETHING", "LOADED");
             
         } catch (JSONException e) {

@@ -87,6 +87,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
                 productList = menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getLunch();
             }
             for (int i = 0; i < productList.size(); i++) {
+                Log.d(productList.get(i).getProductID() + "", "PRODUCT ID");
                 productIds.add(productList.get(i).getProductID());
             }
         }
@@ -94,9 +95,11 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         Log.d(productIds + "", "PRODUCTIDS");
         
         List<String> productInfoUrls = new ArrayList<String>();
-        for (int id:productIds) {
+        for (Integer id:productIds) {
+            if (id != null) {
                 productInfoUrls.add("http://api.uwaterloo.ca/public/v2/foodservices/product/" + id
                 + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
+            }
         }
         
         productInfoParser = new ParseProductInfo();
@@ -175,6 +178,8 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
                 Log.d("PREPARE TO LOAD", "LOADED");
                 productInfoParser.Parse(jsonList); 
                 loaded = true;
+                ProductInfoHolder productInfoHolder = ProductInfoHolder.getInstance(null);
+                Log.d(productInfoHolder.productInfo.size() + "", "PRODUCT INFO - SIZE");
             } else {
                 Log.d("NOT LOADED?", "LOADED");
             }
