@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -130,7 +129,7 @@ public class MainScreen extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_screen2, menu);
+        getMenuInflater().inflate(R.menu.activity_main_screen, menu);
         return true;
     }
 

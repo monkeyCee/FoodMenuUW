@@ -97,6 +97,15 @@
     <string name="licenses">LICENSES</string>
     <string name="click_here_to_view_legal_notice">Click here to view Legal Notice</string>
     <string name="contains_information_provided_by_the_university_of_waterloo_under_license_on_an_as_is_basis_">Contains information provided by the University of Waterloo under license on an \'as is\' basis.</string>
+
+    <string name="title_activity_watcard_vendors">WatcardVendors</string>
+        
+    <string-array name="spinner_array">
+    <item>All</item>
+	<item>On-Campus Food Services</item>
+	<item>Off-Campus Flex Locations</item>	
+	</string-array>
+
     <string name="title_activity_balance_watcard">BalanceWatcard</string>
     <string name="title_activity_data_watcard">DataWatcard</string>
 

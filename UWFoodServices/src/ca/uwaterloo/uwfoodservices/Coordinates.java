@@ -34,6 +34,25 @@ public class Coordinates {
         map.put("University Club ", new LatLng(43.472284,-80.547364));
         map.put("UW Food Services Admin Office ", new LatLng(43.469591,-80.543349));
         map.put("Williams Fresh Café Environment 3", new LatLng(43.46824,-80.543573));
+        
+        map.put("Apple Two Hairstylists", new LatLng(43.471758, -80.545506));
+        map.put("Campus Pizza", new LatLng(43.472208, -80.537952));
+        map.put("Curry in a Hurry", new LatLng(43.471838, -80.538545));
+        map.put("Domino's Pizza", new LatLng(43.467650, -80.568600));
+        map.put("East Side Mario's", new LatLng(43.471530, -80.538530));
+        map.put("Farah Foods", new LatLng(43.471700, -80.538440));
+        map.put("Grab a Greek", new LatLng(43.472630, -80.537875));
+        map.put("McGinnis Front Row", new LatLng(43.472027, -80.537118));
+        map.put("Meet Point", new LatLng(43.472591, -80.537931));
+        map.put("Pita Pit", new LatLng(43.472702, -80.537706));
+        map.put("Pizza Pizza", new LatLng(43.476101, -80.525309));
+        map.put("Sobeys", new LatLng(43.468566, -80.568176));
+        map.put("Student Health Pharmacy", new LatLng(43.471758, -80.545506));
+        map.put("Swiss Chalet", new LatLng(43.479210, -80.521160));
+        map.put("The Grill", new LatLng(43.472578, -80.538070));
+        map.put("Waterloo Taxi", new LatLng(43.470360, -80.544700));
+        map.put("Williams Coffee Pub", new LatLng(43.472400, -80.538400));              
+        
 
     }
 

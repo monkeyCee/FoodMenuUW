@@ -34,6 +34,7 @@ public class SplashScreen extends Activity {
 
     static ParseLocationData locationParser;
     static ParseMenuData menuParser;
+    static ParseWatcardVendorData watcardVendorParser;
     SharedPreferences.Editor prefEditor;
 
     public static final String WIFI = "Wi-Fi Only";
@@ -56,8 +57,7 @@ public class SplashScreen extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_splash_screen);	
-
+		setContentView(R.layout.activity_splash_screen);
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 		receiver = new NetworkReceiver(this);
 		this.registerReceiver(receiver, filter);
@@ -159,9 +159,11 @@ public class SplashScreen extends Activity {
         @Override
         protected JSONObject[] doInBackground(String... urls) {
             NetworkParser json_parse = new NetworkParser();
-            JSONObject[] jsonObjectArray = new JSONObject[2];
+            JSONObject[] jsonObjectArray = new JSONObject[3];
+
             jsonObjectArray[0] = json_parse.getJSONFromUrl(urls[0]);
             jsonObjectArray[1] = json_parse.getJSONFromUrl(urls[1]);
+            jsonObjectArray[2] = json_parse.getJSONFromUrl(urls[2]);
             return jsonObjectArray;
         }
 
@@ -170,10 +172,13 @@ public class SplashScreen extends Activity {
             if(jObjArray != null){
                 menuParser.Parse(jObjArray[0]);	
                 locationParser.Parse(jObjArray[1]);	
+                watcardVendorParser.Parse(jObjArray[2]);
 
                 try {
+                    
                     InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
                     InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance().objects);
+                    InternalStorage.writeObject (context, "watcard_vendor", WatcardVendorHolder.getInstance().objects);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -231,9 +236,10 @@ public class SplashScreen extends Activity {
 
 	@SuppressWarnings("unchecked")
     private void loadData() {
-    	
+
     	menuParser = new ParseMenuData();
 		locationParser = new ParseLocationData(this);
+		watcardVendorParser = new ParseWatcardVendorData(this);
         		
 		if(refreshPref.equals("locations") || refreshPref.equals("menu")){
 		    
@@ -243,7 +249,8 @@ public class SplashScreen extends Activity {
 	        
 	    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
 	    			String urlMenu = getDatedMenuUrl();
-	    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);	
+	    			String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
+	    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
 	    			
 	    			
 	    			final Handler handler = new Handler();
@@ -251,7 +258,8 @@ public class SplashScreen extends Activity {
 		    		{
 		    		    public void run() 
 		    		    {
-		    		    	if(RestaurantLocationHolder.getInstance() == null || RestaurantMenuHolder.getInstance() == null){
+		    		    	if(RestaurantLocationHolder.getInstance() == null || RestaurantMenuHolder.getInstance() == null ||
+		    		    	        WatcardVendorHolder.getInstance() == null){
 		    		    		handler.postDelayed(this, 1000);
 		    		    	}
 		    		    }
@@ -288,15 +296,16 @@ public class SplashScreen extends Activity {
 			StartSplashScreen();
 			
 	    	if (!cachePref) {
-	    		
 	    		InternalStorage.deleteObject(SplashScreen.this, "menu");
 				InternalStorage.deleteObject(SplashScreen.this, "location");
+				InternalStorage.deleteObject(SplashScreen.this, "watcard_vendor");
 							
 				if (receiver.isNetwork()) {
 							        
 		    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
 		    			String urlMenu = getDatedMenuUrl();
-		    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);	
+		    			String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
+		    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
 		    			
 		        }
 				
@@ -308,13 +317,14 @@ public class SplashScreen extends Activity {
 	    	else{
 
 	    		try {
-					if(!(InternalStorage.cacheExists(SplashScreen.this, "menu")) || !(InternalStorage.cacheExists(SplashScreen.this, "location"))){
-						
-						if (receiver.isNetwork()) {
-																		        
+					if(!(InternalStorage.cacheExists(SplashScreen.this, "menu")) || !(InternalStorage.cacheExists(SplashScreen.this, "location"))||
+					        !(InternalStorage.cacheExists(SplashScreen.this, "watcard_vendor"))){
+					    
+						if (receiver.isNetwork()) {				        
 				    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
 				    			String urlMenu = getDatedMenuUrl();
-				    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations);			
+				    			String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
+				    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);			
 				        }
 						else{ 
 							Toast.makeText(getApplicationContext(), "There is no stored data and either there is no network or the network does not match your preference", Toast.LENGTH_SHORT).show();
@@ -331,15 +341,19 @@ public class SplashScreen extends Activity {
                             Toast.makeText(getApplicationContext(), "Fetching the new data for the new week!", Toast.LENGTH_SHORT).show();
                             String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
                             String urlMenu = getDatedMenuUrl();
-                            new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations); 
+                            String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
+                            new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors); 
                         }
 						
 						else{
 		                        ArrayList<RestaurantMenuObject> restaurantMenu = null;
 		                        RestaurantObject[] restaurantLocations = null;
+		                        WatcardVendorObject[] watcardVendors = null;
 		                        try {
 		                            restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
 		                            restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
+		                            watcardVendors = (WatcardVendorObject[]) InternalStorage.readObject(SplashScreen.this, "watcard_vendor");
+	
 		                        } catch (IOException e) {
 		                            e.printStackTrace();
 		                        } catch (ClassNotFoundException e) {
@@ -349,6 +363,7 @@ public class SplashScreen extends Activity {
 		                        if(restaurantMenu != null && restaurantLocations != null){
 		                            RestaurantLocationHolder.getInstance(restaurantLocations);
 		                            RestaurantMenuHolder.getInstance(restaurantMenu);
+		                            WatcardVendorHolder.getInstance(watcardVendors);
 		                        }
 						}
 			

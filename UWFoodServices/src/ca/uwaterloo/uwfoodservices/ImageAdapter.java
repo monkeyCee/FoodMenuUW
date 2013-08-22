@@ -18,7 +18,9 @@ public class ImageAdapter extends BaseAdapter{
     private String id;
     private RestaurantMenuHolder menuHolder;
     private RestaurantLocationHolder locationHolder;
+    private WatcardVendorHolder  watcardVendorHolder;
     private Context context;
+    private int counter = 0;
 
     private String[] sliding_list = {"Home", "Skip to Menu", "Location & Hours", "WatCard Balance", "About Us"};
     Typeface tf;
@@ -31,16 +33,22 @@ public class ImageAdapter extends BaseAdapter{
                 "Roboto-Light.ttf");
         menuHolder = RestaurantMenuHolder.getInstance();
         locationHolder = RestaurantLocationHolder.getInstance();
+        watcardVendorHolder = WatcardVendorHolder.getInstance();
         MenuUtilities.setImageHash();
     }
 
     @Override
     public int getCount() {
-        if(id == "menu"){
+        if(id.equals("menu")){
             return menuHolder.getCount();
-        } else if (id == "location") {
+        } else if (id.equals("location")) {
             return locationHolder.getCount();
-        } else {
+        } else if (id.equals("watcardVendors")){
+            return watcardVendorHolder.getCount();
+        } else if (id.equals("all")){
+            return watcardVendorHolder.getCount()+locationHolder.getCount();
+        }
+        else {
             return sliding_list.length;
         }
     }
@@ -77,7 +85,8 @@ public class ImageAdapter extends BaseAdapter{
 
             return convertView;
 
-        } else if (id == "location") {
+        } 
+        else if (id == "location") {
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.list_row, null);
                 holder = new ViewHolder();
@@ -96,7 +105,62 @@ public class ImageAdapter extends BaseAdapter{
             holder.location.setTypeface(tf);
 
             return convertView;
-        } else {
+        } 
+        else if (id == "watcardVendors"){
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.list_row, null);
+                holder = new ViewHolder();
+                holder.restaraunt_name = (TextView) convertView.findViewById(R.id.restaurant_name);
+                holder.location = (TextView) convertView.findViewById(R.id.location);
+                holder.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            holder.restaraunt_name.setText(watcardVendorHolder.objects[position].getVendorName());
+            holder.location.setText(watcardVendorHolder.objects[position].getTelephone());
+            holder.thumbnail.setImageResource(MenuUtilities.getImageHash().get(watcardVendorHolder.objects[position].getVendorName()));
+            holder.restaraunt_name.setTypeface(tf);
+            holder.location.setTypeface(tf);
+
+            return convertView;
+        }
+        else if (id == "all"){
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.list_row, null);
+                holder = new ViewHolder();
+                holder.restaraunt_name = (TextView) convertView.findViewById(R.id.restaurant_name);
+                holder.location = (TextView) convertView.findViewById(R.id.location);
+                holder.thumbnail = (ImageView) convertView.findViewById(R.id.thumbnail);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            if (position < locationHolder.getCount() && position >=0)
+            {
+                holder.restaraunt_name.setText(locationHolder.objects[position].getRestaurant());
+                holder.location.setText(locationHolder.objects[position].getLocation());
+                holder.thumbnail.setImageResource(MenuUtilities.getImageHash().get(locationHolder.objects[position].getRestaurant()));
+                holder.restaraunt_name.setTypeface(tf);
+                holder.location.setTypeface(tf);
+            }
+            else
+            {
+                position -= locationHolder.getCount();
+                holder.restaraunt_name.setText(watcardVendorHolder.objects[position].getVendorName());
+                holder.location.setText(watcardVendorHolder.objects[position].getTelephone());
+                holder.thumbnail.setImageResource(MenuUtilities.getImageHash().get(watcardVendorHolder.objects[position].getVendorName()));
+                holder.restaraunt_name.setTypeface(tf);
+                holder.location.setTypeface(tf);
+            }
+            
+            
+
+            return convertView;
+        }
+        else {
             if(convertView == null){
                 convertView = inflater.inflate(R.layout.sliding_row, null);
             }
