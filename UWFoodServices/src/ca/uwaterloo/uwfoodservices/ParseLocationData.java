@@ -53,8 +53,8 @@ public class ParseLocationData {
                 location_objects[i] = new RestaurantObject(i, restaurant_name, location_name, details);
                 
                 for (int j = 0; j < menuHolder.getCount(); j++) {
-                    if (menuHolder.restaurantMenu.get(j).getRestaurant().equals(restaurant_name)) {
-                        menuHolder.restaurantMenu.get(j).setLocation(location_name);
+                    if (menuHolder.getRestaurantMenu().get(j).getRestaurant().equals(restaurant_name)) {
+                        menuHolder.getRestaurantMenu().get(j).setLocation(location_name);
                     }
                 }
 

@@ -1,6 +1,7 @@
 package ca.uwaterloo.uwfoodservices;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class ImageAdapter extends BaseAdapter{
     @Override
     public int getCount() {
         if(id == "menu"){
+            Log.d((menuHolder == null) + "", "MENUHOLDER NULL");
             return menuHolder.getCount();
         } else if (id == "location") {
             return locationHolder.getCount();
@@ -47,7 +49,7 @@ public class ImageAdapter extends BaseAdapter{
 
     @Override
     public Object getItem(int position) {
-        return menuHolder.restaurantMenu.get(position).getRestaurant();
+        return menuHolder.getRestaurantMenu().get(position).getRestaurant();
     }
 
     @Override
@@ -69,9 +71,9 @@ public class ImageAdapter extends BaseAdapter{
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.restaraunt_name.setText(menuHolder.restaurantMenu.get(position).getRestaurant());
-            holder.location.setText(menuHolder.restaurantMenu.get(position).getLocation());
-            holder.thumbnail.setImageResource(menuHolder.restaurantMenu.get(position).getImage());
+            holder.restaraunt_name.setText(menuHolder.getRestaurantMenu().get(position).getRestaurant());
+            holder.location.setText(menuHolder.getRestaurantMenu().get(position).getLocation());
+            holder.thumbnail.setImageResource(menuHolder.getRestaurantMenu().get(position).getImage());
             holder.restaraunt_name.setTypeface(tf);
             holder.location.setTypeface(tf);
 
@@ -107,7 +109,6 @@ public class ImageAdapter extends BaseAdapter{
             slidingText.setText(sliding_list[position]);
 
             return convertView;
-
         }
     }
 

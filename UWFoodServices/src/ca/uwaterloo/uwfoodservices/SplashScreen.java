@@ -113,7 +113,8 @@ public class SplashScreen extends Activity {
                     @Override
                     public void run() 
                     {
-                        if((RestaurantLocationHolder.getInstance(SplashScreen.this).objects == null) || (RestaurantMenuHolder.getInstance().restaurantMenu == null)){
+                        if((RestaurantLocationHolder.getInstance(SplashScreen.this).objects == null)
+                                || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
                             handler.postDelayed(this, 1000);
                         }
                     }
@@ -193,7 +194,7 @@ public class SplashScreen extends Activity {
                 locationParser.Parse(jObjArray[1]);	
 
                 try {
-                    InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
+                    InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().getRestaurantMenu());
                     InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance(context).objects);
                 } catch (IOException e) {
                     e.printStackTrace();

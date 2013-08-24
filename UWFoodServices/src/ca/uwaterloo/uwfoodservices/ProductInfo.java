@@ -23,10 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
 import ca.uwaterloo.uwfoodservicesutility.ProductInfoHolder;
@@ -47,6 +45,8 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
     ArrayList<Integer> productIds;
     
     ArrayList<RestaurantMenuItem> productList;
+    static List<String> productInfoUrls;
+    static List<String> productNames;
     
     RestaurantMenuHolder menuHolder;
     
@@ -73,33 +73,35 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         currentPosition = intent.getIntExtra("Current Position", -1);
         weekDay = intent.getIntExtra("Weekday", -1);
         productIds = new ArrayList<Integer>();
+        productNames = new ArrayList<String>();
         //productIds = intent.getIntegerArrayListExtra("Product Ids");
         
         Log.d(weekDay+"", "weekday");
         
         menuHolder = RestaurantMenuHolder.getInstance();
-        if (menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getLunch() != null) {
-            Log.d((currentPosition > (menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getLunch().size() - 1)) + "", "PRODUCT - DINNER");
+        if (menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getLunch() != null) {
+            Log.d((currentPosition > (menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getLunch().size() - 1)) + "", "PRODUCT - DINNER");
             if (currentPosition >
-                    (menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getLunch().size() - 1)) {
-                productList = menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getDinner();
+                    (menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getLunch().size() - 1)) {
+                productList = menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getDinner();
             } else {
-                productList = menuHolder.restaurantMenu.get(restaurantPosition).getMenu()[weekDay].getLunch();
+                productList = menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getLunch();
             }
             for (int i = 0; i < productList.size(); i++) {
                 Log.d(productList.get(i).getProductID() + "", "PRODUCT ID");
-                productIds.add(productList.get(i).getProductID());
+                if (productList.get(i) != null) {
+                    productIds.add(productList.get(i).getProductID());
+                    productNames.add(productList.get(i).getProductName());
+                }
             }
         }
 
         Log.d(productIds + "", "PRODUCTIDS");
         
-        List<String> productInfoUrls = new ArrayList<String>();
+        productInfoUrls = new ArrayList<String>();
         for (Integer id:productIds) {
-            if (id != null) {
-                productInfoUrls.add("http://api.uwaterloo.ca/public/v2/foodservices/product/" + id
-                + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
-            }
+            productInfoUrls.add("http://api.uwaterloo.ca/public/v2/foodservices/product/" + id
+            + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
         }
         
         productInfoParser = new ParseProductInfo();
@@ -108,7 +110,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        actionBar.setTitle(menuHolder.restaurantMenu.get(restaurantPosition).getRestaurant());
+        actionBar.setTitle(menuHolder.getRestaurantMenu().get(restaurantPosition).getRestaurant());
         actionBar.setIcon(R.drawable.ic_drawer);
         actionBar.setDisplayUseLogoEnabled(false);
         
@@ -142,10 +144,8 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             }
         });
         
-        for (int i = 0; i < ProductInfoAdapter.days.length; i++) {
-            actionBar.addTab(actionBar.newTab()
-                    .setText(ProductInfoAdapter.days[i])
-                    .setTabListener(this));
+        for (int i = 0; i < productNames.size(); i++) {
+            actionBar.addTab(actionBar.newTab().setText(productNames.get(i)).setTabListener(this));
         }
 
         //vp.setCurrentItem(weekDay);
@@ -167,7 +167,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             Log.d("PREPARE TO LOAD - BEFORE", "LOADED");
             for (int i = 0; i < urls[0].size(); i ++) {
                 jsonList.add(json_parse.getJSONFromUrl(urls[0].get(i)));
-                Log.d("added " + i, "LOADED");
+                Log.d("added " + urls[0].get(i), "LOADED");
             }
             Log.d("" + (jsonList != null), "LOADED");
             Log.d("returning jsonList", "LOADED");
@@ -178,7 +178,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
                 Log.d("PREPARE TO LOAD", "LOADED");
                 productInfoParser.Parse(jsonList); 
                 loaded = true;
-                ProductInfoHolder productInfoHolder = ProductInfoHolder.getInstance(null);
+                ProductInfoHolder productInfoHolder = ProductInfoHolder.getInstance();
                 Log.d(productInfoHolder.productInfo.size() + "", "PRODUCT INFO - SIZE");
             } else {
                 Log.d("NOT LOADED?", "LOADED");
@@ -197,13 +197,13 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         public ProductInfoAdapter(FragmentManager fm) {
             super(fm);
             mFragments = new ArrayList<ProductInfoFragment>();
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < productInfoUrls.size(); i++)
                 mFragments.add(new ProductInfoFragment());
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return productInfoUrls.size();
         }
 
         @Override
@@ -230,8 +230,6 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             View rootView = inflater.inflate(R.layout.fragment_restaurant_menu,
                     container, false);
             
-            ProductInfoHolder productInfoHolder = ProductInfoHolder.getInstance(null);
-            
             position = getArguments().getInt(ARG_SECTION_NUMBER);
             
             ListView listView = (ListView) rootView.findViewById(R.id.list_menu);
@@ -240,14 +238,20 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
                 //Log.d("WAITING", "LOADED");
             }
             
+            ProductInfoHolder productInfoHolder = ProductInfoHolder.getInstance();
+            
             LIST.clear();
-            Log.d(position + "", "POSITION");
+            Log.d(position + "", "POSITION1");
+            Log.d(productInfoHolder.productInfo.get(position) + "", "POSITION1");
             serving = "Per" + productInfoHolder.productInfo.get(position).get_serving_size();
+            Log.d(position + "", "POSITION1.1");
             if (productInfoHolder.productInfo.get(position).get_serving_size_unit().equals("g")) {
                 serving += " g";
             } else {
                 serving += " ml";
             }
+            Log.d(position + "", "POSITION1.9");
+            Log.d(position + "", "POSITION2");
             LIST.add(serving);
             LIST.add(productInfoHolder.productInfo.get(position).get_calories() + "");
             LIST.add(productInfoHolder.productInfo.get(position).get_total_fat_g() + "");
@@ -258,14 +262,16 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             LIST.add(productInfoHolder.productInfo.get(position).get_carbo_g() + "");
             LIST.add(productInfoHolder.productInfo.get(position).get_carbo_sugars_g() + "");
             LIST.add(productInfoHolder.productInfo.get(position).get_protein_g() + "");
-            
+            Log.d(position + "", "POSITION3");
             if (productInfoHolder.productInfo.get(position).get_vitamin_a_percent() != null) { LIST.add("Vitamin A"); }
             if (productInfoHolder.productInfo.get(position).get_vitamin_c_percent() != null) { LIST.add("Vitamin C"); }
             if (productInfoHolder.productInfo.get(position).get_calcium_percent() != null) { LIST.add("Calcium"); }
             if (productInfoHolder.productInfo.get(position).get_iron_percent() != null) { LIST.add("Iron"); }
-            
-            ProductInfoAdapter menuListAdapter = new ProductInfoAdapter(getActivity());
-            listView.setAdapter(menuListAdapter);
+            Log.d(position + "", "POSITION4");
+            ProductInfoAdapter productInfoAdapter = new ProductInfoAdapter(getActivity());
+            Log.d(position + "", "POSITION5");
+            listView.setAdapter(productInfoAdapter);
+            Log.d(position + "", "POSITION6");
             return rootView;
         }
         

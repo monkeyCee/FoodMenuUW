@@ -228,22 +228,22 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			
 			day = getArguments().getInt(ARG_SECTION_NUMBER);
 			
-			if (menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch() == null) {
+			if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch() == null) {
 				LIST.add("There is nothing on the menu");
 			} else {
-				for (int i = 0; i < menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().size(); i++) {
-					LIST.add(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductName());
+				for (int i = 0; i < menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch().size(); i++) {
+					LIST.add(menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductName());
 				}
 			}
 			
 			HDR_POS2[day] = LIST.size();
 			LIST.add("DINNER");
 			
-			if (menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getDinner() == null) {
+			if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner() == null) {
 				LIST.add("There is nothing on the menu");
 			} else {
-				for (int i = 0; i < menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getDinner().size(); i++) {
-					LIST.add(menuHolder.restaurantMenu.get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductName());
+				for (int i = 0; i < menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().size(); i++) {
+					LIST.add(menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductName());
 				}
 			}
 			
