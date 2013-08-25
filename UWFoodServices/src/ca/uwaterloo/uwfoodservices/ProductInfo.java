@@ -40,10 +40,12 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
     ViewPager vp;
     int restaurantPosition;
     long productDay;
+    String selectedItem;
     int currentPosition;
     int weekDay;
     ArrayList<Integer> productIds;
     
+    int tabPosition;
     ArrayList<RestaurantMenuItem> productList;
     static List<String> productInfoUrls;
     static List<String> productNames;
@@ -72,6 +74,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         productDay = intent.getLongExtra("Product Day", -1);
         currentPosition = intent.getIntExtra("Current Position", -1);
         weekDay = intent.getIntExtra("Weekday", -1);
+        selectedItem = intent.getStringExtra("Selected Item");
         productIds = new ArrayList<Integer>();
         productNames = new ArrayList<String>();
         //productIds = intent.getIntegerArrayListExtra("Product Ids");
@@ -81,9 +84,8 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         menuHolder = RestaurantMenuHolder.getInstance();
         Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 1");
         if (menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getLunch() != null) {
-            Log.d((currentPosition > (menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getLunch().size() - 1)) + "", "PRODUCT - DINNER");
-            if (currentPosition >
-                    (menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getLunch().size() - 1)) {
+            if (currentPosition > menuHolder.getRestaurantMenu()
+                    .get(restaurantPosition).getMenu()[weekDay].getLunch().size()) {
                 productList = menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getDinner();
             } else {
                 productList = menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getLunch();
@@ -152,7 +154,17 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             actionBar.addTab(actionBar.newTab().setText(productNames.get(i)).setTabListener(this));
         }
 
-        //vp.setCurrentItem(weekDay);
+        tabPosition = 0;
+        for (int i = 0; i < productNames.size(); i ++) {
+            Log.d(productNames.get(i), "TABPOSITION - PRODUCT NAMES");
+            Log.d(selectedItem, "TABPOSITION - PRODUCT NAMES");
+            if (productNames.get(i).equals(selectedItem)) {
+                tabPosition = i;
+            }
+        }
+        
+        Log.d(tabPosition + "", "TABPOSITION");
+        vp.setCurrentItem(tabPosition);
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
     }
     
