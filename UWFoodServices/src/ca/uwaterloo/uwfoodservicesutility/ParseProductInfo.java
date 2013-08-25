@@ -26,8 +26,8 @@ public class ParseProductInfo {
     private static final String TAG_TOTAL_FAT_PERCENT = "total_fat_percent";
     private static final String TAG_FAT_SATURATED_G = "fat_saturated_g";
     private static final String TAG_FAT_SATURATED_PERCENT = "fat_saturated_percent";
-    private static final String TAG_FAT_TRANS_G = "fat_saturated_g";
-    private static final String TAG_FAT_TRANS_PERCENT = "fat_saturated_percent";
+    private static final String TAG_FAT_TRANS_G = "fat_trans_g";
+    private static final String TAG_FAT_TRANS_PERCENT = "fat_trans_percent";
     private static final String TAG_CHOLESTEROL_MG = "cholesterol_mg";
     private static final String TAG_SODIUM_MG = "sodium_mg";
     private static final String TAG_SODIUM_PERCENT = "sodium_percent";
