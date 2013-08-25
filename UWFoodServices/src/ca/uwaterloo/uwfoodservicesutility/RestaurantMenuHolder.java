@@ -22,17 +22,15 @@ public class RestaurantMenuHolder extends Application{
         if(mInstance == null){
             mInstance = new RestaurantMenuHolder(restaurantMenu);
         }
-        Log.d(restaurantMenu.size() +"", "mInstance - size getInstance 2");
         return mInstance;
     }
 
     private RestaurantMenuHolder(ArrayList<RestaurantMenuObject> restaurantMenu){
-        Log.d(restaurantMenu.size() +"", "mInstance - size constructor");
         RestaurantMenuHolder.restaurantMenu = restaurantMenu;
     }
 
     public int getCount(){
-        Log.d((mInstance == null) +"", "mInstance");
+        Log.d((restaurantMenu == null) +"", "mInstance null?");
         Log.d(restaurantMenu.size() +"", "mInstance - size");
         return restaurantMenu.size();
     }

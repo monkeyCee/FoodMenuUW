@@ -9,6 +9,7 @@ import java.util.Locale;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -175,6 +176,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	    public int[] HDR_POS2 = new int[7];
 	    
 	    List<String> LIST = new ArrayList<String>();
+	    List<ArrayList<Boolean>> clickableList = null;
 
 	    private static final Integer LIST_HEADER = 0;
 	    private static final Integer LIST_ITEM = 1;
@@ -188,6 +190,15 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			View rootView = inflater.inflate(R.layout.fragment_restaurant_menu,
 					container, false);
 			
+			if (clickableList == null) {
+			    clickableList = new ArrayList<ArrayList<Boolean>>();
+			    for (int i = 0; i < 7; i ++) {
+			        clickableList.add(new ArrayList<Boolean>());
+			    }
+			}
+			
+			day = getArguments().getInt(ARG_SECTION_NUMBER);
+
 			calendar = Calendar.getInstance();
 			calendar.add(Calendar.DATE, getArguments().getInt(ARG_SECTION_NUMBER) - weekDay);
 			
@@ -224,26 +235,39 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			ListView listView = (ListView) rootView.findViewById(R.id.list_menu);
 			
 			LIST.clear();
-			LIST.add("LUNCH");
 			
-			day = getArguments().getInt(ARG_SECTION_NUMBER);
+			LIST.add("LUNCH");
+			clickableList.get(day).add(false);
 			
 			if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch() == null) {
 				LIST.add("There is nothing on the menu");
+				clickableList.get(day).add(false);
 			} else {
 				for (int i = 0; i < menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch().size(); i++) {
 					LIST.add(menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductName());
+					if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductID() != null) {
+					    clickableList.get(day).add(true);
+					} else {
+					    clickableList.get(day).add(false);
+					}
 				}
 			}
 			
 			HDR_POS2[day] = LIST.size();
 			LIST.add("DINNER");
+            clickableList.get(day).add(false);
 			
 			if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner() == null) {
 				LIST.add("There is nothing on the menu");
+	            clickableList.get(day).add(false);
 			} else {
 				for (int i = 0; i < menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().size(); i++) {
 					LIST.add(menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductName());
+					if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductID() != null) {
+                        clickableList.get(day).add(true);
+                    } else {
+                        clickableList.get(day).add(false);
+                    }
 				}
 			}
 			
@@ -338,7 +362,13 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	            
 	            TextView header = (TextView)item.findViewById(R.id.lv_item_header);
 	            Typeface tf = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Light.ttf");
+	            Log.d(clickableList.get(day).get(position % clickableList.size()) + " " + LIST.get(position % LIST.size()), "CICKABLE SIZE");
 	            header.setText(LIST.get(position % LIST.size()));
+	            header.setFocusable(clickableList.get(day).get(position % clickableList.size()));
+	            header.setFocusableInTouchMode(clickableList.get(day).get(position % clickableList.size()));
+	            if (clickableList.get(day).get(position % clickableList.size()) == false) {
+	                header.setTextColor(getResources().getColor(R.color.gray));
+	            }
 	            header.setTypeface(tf);
 
 	            // Measures the width of the text in the textView.

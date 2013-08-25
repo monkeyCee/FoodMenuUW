@@ -79,6 +79,7 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
         Log.d(weekDay+"", "weekday");
         
         menuHolder = RestaurantMenuHolder.getInstance();
+        Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 1");
         if (menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getLunch() != null) {
             Log.d((currentPosition > (menuHolder.getRestaurantMenu().get(restaurantPosition).getMenu()[weekDay].getLunch().size() - 1)) + "", "PRODUCT - DINNER");
             if (currentPosition >
@@ -89,24 +90,27 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             }
             for (int i = 0; i < productList.size(); i++) {
                 Log.d(productList.get(i).getProductID() + "", "PRODUCT ID");
-                if (productList.get(i) != null) {
+                if (productList.get(i).getProductID() != null) {
                     productIds.add(productList.get(i).getProductID());
                     productNames.add(productList.get(i).getProductName());
                 }
             }
         }
 
+        Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 2");
         Log.d(productIds + "", "PRODUCTIDS");
         
         productInfoUrls = new ArrayList<String>();
         for (Integer id:productIds) {
-            productInfoUrls.add("http://api.uwaterloo.ca/public/v2/foodservices/product/" + id
-            + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
+            if (id != null) {
+                productInfoUrls.add("http://api.uwaterloo.ca/public/v2/foodservices/product/" + id
+                + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
+            }
         }
-        
+        Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 3");
         productInfoParser = new ParseProductInfo();
         new AsyncDataFetcher(this).execute(productInfoUrls);
-        
+        Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 4");
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -173,13 +177,11 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
             Log.d("returning jsonList", "LOADED");
             
             Log.d("ONPOST", "LOADED");
-            Log.d("" + (jsonList != null), "LOADED");
+            Log.d("" + (jsonList.size()), "LOADED - SIZE JSONLIST");
             if(jsonList != null){
                 Log.d("PREPARE TO LOAD", "LOADED");
                 productInfoParser.Parse(jsonList); 
                 loaded = true;
-                ProductInfoHolder productInfoHolder = ProductInfoHolder.getInstance();
-                Log.d(productInfoHolder.productInfo.size() + "", "PRODUCT INFO - SIZE");
             } else {
                 Log.d("NOT LOADED?", "LOADED");
             }
@@ -191,8 +193,6 @@ public class ProductInfo extends SlidingMenus implements ActionBar.TabListener{
     public static class ProductInfoAdapter extends FragmentPagerAdapter {
 
         private ArrayList<ProductInfoFragment> mFragments;
-
-        public final static String[] days = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
         public ProductInfoAdapter(FragmentManager fm) {
             super(fm);
