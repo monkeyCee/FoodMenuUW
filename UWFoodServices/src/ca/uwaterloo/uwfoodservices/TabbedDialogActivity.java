@@ -1,3 +1,16 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package ca.uwaterloo.uwfoodservices;
 
 import java.util.ArrayList;
@@ -5,26 +18,27 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TabHost;
+import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
@@ -32,11 +46,17 @@ import ca.uwaterloo.uwfoodservicesutility.ProductInfoHolder;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuItem;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.MenuItem;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-
-public class ProductInfo extends Activity{
+/**
+ * @see http
+ *      ://stackoverflow.com/questions/16806716/tabbed-dialog-with-fragments-
+ *      in-widget
+ * 
+ * @author Luksprog
+ * 
+ */
+public class TabbedDialogActivity extends FragmentActivity implements
+		ViewPager.OnPageChangeListener, TabHost.OnTabChangeListener,
+		TabContentFactory {
 
     int restaurantPosition;
     long productDay;
@@ -60,14 +80,21 @@ public class ProductInfo extends Activity{
     
     static boolean loaded = false;
     
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_info);
-        
-        receiver = new NetworkReceiver(this);
-        
-        pref = PreferenceManager.getDefaultSharedPreferences(this);
+	private ViewPager mViewPager;
+	private TabHost mTabHost;
+	private ProductInfoAdapter mPagerContent;
+
+	@Override
+	protected void onCreate(Bundle arg0) {
+		super.onCreate(arg0);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.frag_tabbeddialogactivity);
+		
+		//Linearlayout layout = (LinearLayout) findViewById(R.id.)
+		
+		receiver = new NetworkReceiver(this);
+		pref = PreferenceManager.getDefaultSharedPreferences(this);
+		
 
         Intent intent = getIntent();
         restaurantPosition = intent.getIntExtra("Restaurant Position", -1);
@@ -77,9 +104,6 @@ public class ProductInfo extends Activity{
         selectedItem = intent.getStringExtra("Selected Item");
         productIds = new ArrayList<Integer>();
         productNames = new ArrayList<String>();
-        //productIds = intent.getIntegerArrayListExtra("Product Ids");
-        
-        Log.d(weekDay+"", "weekday");
         
         menuHolder = RestaurantMenuHolder.getInstance();
         Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 1");
@@ -98,9 +122,6 @@ public class ProductInfo extends Activity{
                 }
             }
         }
-
-        Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 2");
-        Log.d(productIds + "", "PRODUCTIDS");
         
         productInfoUrls = new ArrayList<String>();
         for (Integer id:productIds) {
@@ -109,11 +130,10 @@ public class ProductInfo extends Activity{
                 + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
             }
         }
-        Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 3");
+        
         productInfoParser = new ParseProductInfo();
         new AsyncDataFetcher(this).execute(productInfoUrls);
-        Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 4");
-
+		
         tabPosition = 0;
         for (int i = 0; i < productNames.size(); i ++) {
             Log.d(productNames.get(i), "TABPOSITION - PRODUCT NAMES");
@@ -124,9 +144,24 @@ public class ProductInfo extends Activity{
         }
         
         Log.d(tabPosition + "", "TABPOSITION");
-    }
-    
-    private static class AsyncDataFetcher extends AsyncTask<List<String>, Void, Void> {
+        
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+		// TabHost initialization
+		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+		mTabHost.setup();
+		
+		for (int i = 0; i < productNames.size(); i++) {
+			mTabHost.addTab(mTabHost.newTabSpec("tab" + i).setContent(this).setIndicator(productNames.get(i)));
+		}
+		mTabHost.setOnTabChangedListener(this);
+		mTabHost.setCurrentTab(tabPosition);
+		// ViewPager initialization
+		mPagerContent = new ProductInfoAdapter(getSupportFragmentManager());
+		mViewPager.setAdapter(mPagerContent);
+		mViewPager.setOnPageChangeListener(this);
+	}
+
+	private static class AsyncDataFetcher extends AsyncTask<List<String>, Void, Void> {
 
         Context context;
 
@@ -157,10 +192,9 @@ public class ProductInfo extends Activity{
             }
             return null;
         }
-
-    }
-    
-    public static class ProductInfoAdapter extends FragmentPagerAdapter {
+	}
+	
+	public static class ProductInfoAdapter extends FragmentPagerAdapter {
 
         private ArrayList<ProductInfoFragment> mFragments;
 
@@ -186,8 +220,8 @@ public class ProductInfo extends Activity{
         }
 
     }
-    
-    public static class ProductInfoFragment extends Fragment {
+
+	public static class ProductInfoFragment extends Fragment {
         
         public static final String ARG_SECTION_NUMBER = "section_number";
         int position;
@@ -335,4 +369,34 @@ public class ProductInfo extends Activity{
             }
         }
     }
+
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+	}
+
+	@Override
+	public void onPageSelected(int position) {
+		mTabHost.setCurrentTab(position);
+	}
+
+	@Override
+	public void onTabChanged(String tabId) {
+		Log.e("XXX", tabId);
+		mViewPager.setCurrentItem(Integer.parseInt(tabId.substring(tabId
+				.length() - 1)));
+	}
+
+	@Override
+	public View createTabContent(String tag) {
+		View dummyContent = new View(this);
+		dummyContent.setMinimumHeight(0);
+		return dummyContent;
+	}
+
 }

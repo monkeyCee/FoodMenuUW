@@ -281,7 +281,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                // arg3 = the id of the item that we have clicked
 	                // if we didn't assign any id for the Object (Book) the arg3 value is 0
 	                // That means if we comment, aBookDetail.setBookIsbn(i); arg3 value become 0
-	                Intent intentProductInfo = new Intent(getActivity(), ProductInfo.class);
+	                Intent intentProductInfo = new Intent(getActivity(), TabbedDialogActivity.class);
 	                Log.d("You clicked on position : " + arg2 + " and id : " + LIST.get((int)arg3), "CLICKITEM");
 	                Long productDay = currentDate.getTimeInMillis();
 	                intentProductInfo.putExtra("Restaurant Position", positionRestaurant);
