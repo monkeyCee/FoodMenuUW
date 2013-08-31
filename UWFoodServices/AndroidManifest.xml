@@ -102,7 +102,7 @@
             android:theme="@android:style/Theme.Dialog" >
         </activity>
         <activity
-            android:name="ca.uwaterloo.uwfoodservices.TabbedDialogActivity"
+            android:name="ca.uwaterloo.uwfoodservices.ProductInfoDialog"
             android:label="@string/title_activity_tabbed_dialog" 
             android:theme="@android:style/Theme.Dialog">
         </activity>

@@ -9,9 +9,9 @@ import java.util.Locale;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -176,7 +176,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	    public int[] HDR_POS2 = new int[7];
 	    
 	    List<String> LIST = new ArrayList<String>();
-	    List<ArrayList<Boolean>> clickableList = null;
+	    List<ArrayList<String>> clickableList = null;
 
 	    private static final Integer LIST_HEADER = 0;
 	    private static final Integer LIST_ITEM = 1;
@@ -191,9 +191,9 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 					container, false);
 			
 			if (clickableList == null) {
-			    clickableList = new ArrayList<ArrayList<Boolean>>();
+			    clickableList = new ArrayList<ArrayList<String>>();
 			    for (int i = 0; i < 7; i ++) {
-			        clickableList.add(new ArrayList<Boolean>());
+			        clickableList.add(new ArrayList<String>());
 			    }
 			}
 			
@@ -237,36 +237,36 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			LIST.clear();
 			
 			LIST.add("LUNCH");
-			clickableList.get(day).add(false);
+			clickableList.get(day).add("header");
 			
 			if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch() == null) {
 				LIST.add("There is nothing on the menu");
-				clickableList.get(day).add(false);
+				clickableList.get(day).add("header");
 			} else {
 				for (int i = 0; i < menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch().size(); i++) {
 					LIST.add(menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductName());
 					if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductID() != null) {
-					    clickableList.get(day).add(true);
+					    clickableList.get(day).add("true");
 					} else {
-					    clickableList.get(day).add(false);
+					    clickableList.get(day).add("false");
 					}
 				}
 			}
 			
 			HDR_POS2[day] = LIST.size();
 			LIST.add("DINNER");
-            clickableList.get(day).add(false);
+            clickableList.get(day).add("header");
 			
 			if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner() == null) {
 				LIST.add("There is nothing on the menu");
-	            clickableList.get(day).add(false);
+	            clickableList.get(day).add("header");
 			} else {
 				for (int i = 0; i < menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().size(); i++) {
 					LIST.add(menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductName());
 					if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductID() != null) {
-                        clickableList.get(day).add(true);
+                        clickableList.get(day).add("true");
                     } else {
-                        clickableList.get(day).add(false);
+                        clickableList.get(day).add("false");
                     }
 				}
 			}
@@ -277,20 +277,29 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			    @Override
 	            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 	                    long arg3) {
-	                // arg2 = the id of the item in our view (List/Grid) that we clicked
-	                // arg3 = the id of the item that we have clicked
-	                // if we didn't assign any id for the Object (Book) the arg3 value is 0
-	                // That means if we comment, aBookDetail.setBookIsbn(i); arg3 value become 0
-	                Intent intentProductInfo = new Intent(getActivity(), TabbedDialogActivity.class);
-	                Log.d("You clicked on position : " + arg2 + " and id : " + LIST.get((int)arg3), "CLICKITEM");
-	                Long productDay = currentDate.getTimeInMillis();
-	                intentProductInfo.putExtra("Restaurant Position", positionRestaurant);
-	                intentProductInfo.putExtra("Product Day", productDay);
-	                intentProductInfo.putExtra("Selected Item", LIST.get((int)arg3));
-	                int currentPosition = arg2;
-	                intentProductInfo.putExtra("Current Position", currentPosition);
-	                intentProductInfo.putExtra("Weekday", day);
-	                startActivity(intentProductInfo);
+			        if (clickableList.get(day).get(arg2) == "true") {
+    	                Intent intentProductInfo = new Intent(getActivity(), ProductInfoDialog.class);
+    	                Log.d("You clicked on position : " + arg2 + " and id : " + LIST.get((int)arg3), "CLICKITEM");
+    	                Long productDay = currentDate.getTimeInMillis();
+    	                intentProductInfo.putExtra("Restaurant Position", positionRestaurant);
+    	                intentProductInfo.putExtra("Product Day", productDay);
+    	                intentProductInfo.putExtra("Selected Item", LIST.get((int)arg3));
+    	                int currentPosition = arg2;
+    	                intentProductInfo.putExtra("Current Position", currentPosition);
+    	                intentProductInfo.putExtra("Weekday", day);
+    	                startActivity(intentProductInfo);
+			        } else {
+			            final Toast toast = Toast.makeText(getActivity(), 
+			                    "There is no nutritional information for this product.", Toast.LENGTH_SHORT);
+			            toast.show();
+			            Handler handler = new Handler();
+			            handler.postDelayed(new Runnable() {
+			               @Override
+			               public void run() {
+			                   toast.cancel(); 
+			               }
+			        }, 800);
+			        }
 			    }
 			});
 			listView.setAdapter(menuListAdapter);
@@ -364,10 +373,13 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	            Typeface tf = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Light.ttf");
 	            Log.d(clickableList.get(day).get(position % clickableList.size()) + " " + LIST.get(position % LIST.size()), "CICKABLE SIZE");
 	            header.setText(LIST.get(position % LIST.size()));
-	            header.setFocusable(clickableList.get(day).get(position % clickableList.size()));
-	            header.setFocusableInTouchMode(clickableList.get(day).get(position % clickableList.size()));
-	            if (clickableList.get(day).get(position % clickableList.size()) == false) {
-	                header.setTextColor(getResources().getColor(R.color.gray));
+	            if (clickableList.get(day).get(position % clickableList.size()).equals("true")) {
+	                header.setFocusable(true);
+	                header.setFocusableInTouchMode(true);
+	            } else {
+	                header.setFocusable(false);
+                    header.setFocusableInTouchMode(false);
+                    //header.setTextColor(getResources().getColor(R.color.gray));
 	            }
 	            header.setTypeface(tf);
 
