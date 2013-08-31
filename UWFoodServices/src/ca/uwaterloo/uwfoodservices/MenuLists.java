@@ -21,6 +21,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import ca.uwaterloo.uwfoodservices.R.drawable;
 import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
@@ -177,6 +179,9 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	    
 	    List<String> LIST = new ArrayList<String>();
 	    List<ArrayList<String>> clickableList = null;
+        List<ArrayList<String>> dietTypeList = null;
+        
+        String dietType;
 
 	    private static final Integer LIST_HEADER = 0;
 	    private static final Integer LIST_ITEM = 1;
@@ -196,6 +201,13 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			        clickableList.add(new ArrayList<String>());
 			    }
 			}
+			
+			if (dietTypeList == null) {
+			    dietTypeList = new ArrayList<ArrayList<String>>();
+                for (int i = 0; i < 7; i ++) {
+                    dietTypeList.add(new ArrayList<String>());
+                }
+            }
 			
 			day = getArguments().getInt(ARG_SECTION_NUMBER);
 
@@ -238,10 +250,12 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			
 			LIST.add("LUNCH");
 			clickableList.get(day).add("header");
+			dietTypeList.get(day).add("header");
 			
 			if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch() == null) {
 				LIST.add("There is nothing on the menu");
 				clickableList.get(day).add("header");
+				dietTypeList.get(day).add("header");
 			} else {
 				for (int i = 0; i < menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch().size(); i++) {
 					LIST.add(menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getLunch().get(i).getProductName());
@@ -250,16 +264,25 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 					} else {
 					    clickableList.get(day).add("false");
 					}
+					dietType = menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day]
+					        .getLunch().get(i).getDietType();
+					if (dietType != null) {
+					    dietTypeList.get(day).add(dietType);
+					} else {
+					    dietTypeList.get(day).add(null);
+					}
 				}
 			}
 			
 			HDR_POS2[day] = LIST.size();
 			LIST.add("DINNER");
             clickableList.get(day).add("header");
+            dietTypeList.get(day).add("header");
 			
 			if (menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner() == null) {
 				LIST.add("There is nothing on the menu");
 	            clickableList.get(day).add("header");
+	            dietTypeList.get(day).add("header");
 			} else {
 				for (int i = 0; i < menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().size(); i++) {
 					LIST.add(menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductName());
@@ -267,6 +290,13 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
                         clickableList.get(day).add("true");
                     } else {
                         clickableList.get(day).add("false");
+                    }
+					dietType = menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day]
+                            .getDinner().get(i).getDietType();
+                    if (dietType != null) {
+                        dietTypeList.get(day).add(dietType);
+                    } else {
+                        dietTypeList.get(day).add(null);
                     }
 				}
 			}
@@ -298,7 +328,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			               public void run() {
 			                   toast.cancel(); 
 			               }
-			        }, 800);
+			            }, 800);
 			        }
 			    }
 			});
@@ -368,18 +398,54 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	            }
 
 	            ImageButton image = (ImageButton)item.findViewById(R.id.button);
+	            if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("Halal")) {
+	                image.setImageResource(R.drawable.ic_halal);
+	            } else if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("Vegetarian")) {
+	                image.setImageResource(R.drawable.ic_vegetarian);
+	            } else if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("Vegan")) {
+                    image.setImageResource(R.drawable.ic_vegan);
+	            }
+	            
+	            if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("null")) {
+	                image.setTag("Non Vegetarian");
+	            } else {
+	                image.setTag(dietTypeList.get(day).get(position % dietTypeList.get(day).size()));
+	            }
+	            
+	            image.setOnClickListener(new View.OnClickListener() {
+                    
+                    @Override
+                    public void onClick(View v) {
+                        if (!v.getTag().equals("header")) {
+                            final Toast toast = Toast.makeText(getActivity(), v.getTag().toString(),
+                                    Toast.LENGTH_SHORT);
+                            int[] location = new int[2];
+                            v.getLocationOnScreen(location);
+                            toast.setGravity(Gravity.TOP|Gravity.LEFT, location[0], location[1]);
+                            toast.show();
+                            
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                               @Override
+                               public void run() {
+                                   toast.cancel(); 
+                               }
+                            }, 800);
+                        }
+                    }
+                });
 	            
 	            TextView header = (TextView)item.findViewById(R.id.lv_item_header);
 	            Typeface tf = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Light.ttf");
-	            Log.d(clickableList.get(day).get(position % clickableList.size()) + " " + LIST.get(position % LIST.size()), "CICKABLE SIZE");
+	            Log.d(clickableList.get(day).get(position % clickableList.get(day).size()) + " " + LIST.get(position % LIST.size()), "CICKABLE SIZE");
 	            header.setText(LIST.get(position % LIST.size()));
-	            if (clickableList.get(day).get(position % clickableList.size()).equals("true")) {
+	            if (clickableList.get(day).get(position % clickableList.get(day).size()).equals("true")) {
 	                header.setFocusable(true);
 	                header.setFocusableInTouchMode(true);
 	            } else {
 	                header.setFocusable(false);
                     header.setFocusableInTouchMode(false);
-                    //header.setTextColor(getResources().getColor(R.color.gray));
+                    header.setTextColor(getResources().getColor(R.color.gray));
 	            }
 	            header.setTypeface(tf);
 

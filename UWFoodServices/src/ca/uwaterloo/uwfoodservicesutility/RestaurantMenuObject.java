@@ -54,10 +54,6 @@ public class RestaurantMenuObject implements Serializable {
         this.location = location;
     }
 
-    public void setTimings(Integer image){
-        this.image = image;
-    }
-
     public void setMenu(DailyMenu[] menu){
         this.menu = menu;
     }
