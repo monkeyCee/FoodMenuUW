@@ -8,10 +8,7 @@ for location in result:
 	timing = "";
 	for timings in location['Hours']['result']:
 		timing += timings + "\n";
-	if(location['ID'] == "20" or location['ID'] == "22"):
-		params = {'id': location['ID'], 'location': location['Name'],'timings': timing}
-	else:
-		params = {'id': location['ID'], 'location': location['Location'],'timings': timing}
+		params = {'id': location['ID'], 'name': location['Name'], 'location': location['Location'],'timings': timing}
 	parameters = urllib.urlencode(params);
 	request = urllib2.Request('http://localhost/create.php', parameters);
 	response = urllib2.urlopen(request);	

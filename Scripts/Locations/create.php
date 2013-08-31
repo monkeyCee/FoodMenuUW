@@ -2,9 +2,10 @@
 
 $response = array();
 
-if(isset($_POST['id']) && isset($_POST['location']) && isset($_POST['timings'])){
+if(isset($_POST['id']) && isset($_POST['location']) && isset($_POST['timings']) && isset($_POST['name'])){
 
 	$id = $_POST['id'];
+	$name = mysql_real_escape_string($_POST['name']) ;
 	$location = $_POST['location'];
 	$timings = $_POST['timings'];
 
@@ -12,7 +13,7 @@ if(isset($_POST['id']) && isset($_POST['location']) && isset($_POST['timings']))
 
 	$db = new DB_CONNECT();
 
-	$result = mysql_query("INSERT INTO locations(id,location,timings) VALUES('$id', '$location', '$timings')");
+	$result = mysql_query("INSERT INTO locations(id,name,location,timings) VALUES('$id', '$name','$location', '$timings')");
 
 	if($result){
 		$response['success'] = 1;
