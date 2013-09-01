@@ -93,7 +93,7 @@ public class MenuUtilities {
     }
     
     public static Integer getInteger(String string) {
-        if (string.equals("null")) {
+        if (string.equals("null") || string.equals("")) {
             return null;
         } else {
             return Integer.valueOf(string);

@@ -54,7 +54,7 @@ public class ParseMenuData {
             JSONArray lunch;
             JSONArray dinner;
             String product_name;
-            Integer product_id;
+            Integer product_id = null;
             String diet_type;
 
             String weekDay;
@@ -112,10 +112,15 @@ public class ParseMenuData {
                             product_name = lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME);
                             
                             product_id = MenuUtilities.getInteger(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
-                            Log.d(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID), "GETINTEGER PRODUCT GET STRING");
-                            Log.d(product_id + "", "GETINTEGER PRODUCT ID");
                             diet_type = lunch.getJSONObject(k).getString(TAG_DIET_TYPE);
-
+                            
+                         // Check for 'Chef Special' which has a product id but does not contain any product info
+                            if (product_id != null) {
+                                if (product_id == 2439) {
+                                    product_id = null;
+                                }
+                            }
+                            
                             lunchList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
 
                         }
@@ -129,13 +134,20 @@ public class ParseMenuData {
                             product_id = MenuUtilities.getInteger(dinner.getJSONObject(k).getString(TAG_PRODUCT_ID));
                             diet_type = dinner.getJSONObject(k).getString(TAG_DIET_TYPE);
 
+                         // Check for 'Chef Special' which has a product id but does not contain any product info
+                            if (product_id != null) {
+                                if (product_id == 2439) {
+                                    product_id = null;
+                                }
+                            }
+                            
                             dinnerList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
                         }
                     }
-
+                    
                     if (lunchList.size() == 0) { lunchList = null; }
                     if (dinnerList.size() == 0) { dinnerList = null; }
-                    menuArray[position] = new DailyMenu(lunchList, dinnerList); // THIS ONE
+                    menuArray[position] = new DailyMenu(lunchList, dinnerList);
                 }
                 restaurantMenu.add(new RestaurantMenuObject(outlet_id, outlet_name, location_name, image, menuArray));
             }
