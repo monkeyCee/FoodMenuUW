@@ -32,6 +32,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 import android.widget.Toast;
+import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
 import ca.uwaterloo.uwfoodservicesutility.ProductInfoHolder;
@@ -61,6 +62,7 @@ public class ProductInfoDialog extends FragmentActivity implements
     NetworkReceiver receiver;
     
     static ParseProductInfo productInfoParser;
+    static ProductInfoHolder productInfoHolder = null;
     
     static boolean loaded = false;
     
@@ -80,7 +82,9 @@ public class ProductInfoDialog extends FragmentActivity implements
 		receiver = new NetworkReceiver(this);
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		
-
+		ProductInfoHolder.resetInstance();
+		loaded = false;
+		
         Intent intent = getIntent();
         restaurantPosition = intent.getIntExtra("Restaurant Position", -1);
         productDay = intent.getLongExtra("Product Day", -1);
@@ -220,10 +224,9 @@ public class ProductInfoDialog extends FragmentActivity implements
             textIngredients.setTypeface(tf);
             
             while(loaded == false) {
-                //Log.d("WAITING", "LOADED");
             }
-            
-            ProductInfoHolder productInfoHolder = ProductInfoHolder.getInstance();
+                
+            productInfoHolder = ProductInfoHolder.getInstance();
             
             left_list.clear();
             right_list.clear();
@@ -300,6 +303,8 @@ public class ProductInfoDialog extends FragmentActivity implements
                 textIngredients.setPadding(0, left_list.size() * 48 + 45, 0, 0);
                 textIngredients.setText(ingredients);
             }
+            
+            MenuUtilities.setListViewHeightBasedOnChildren(listView);
             
             return rootView;
         }

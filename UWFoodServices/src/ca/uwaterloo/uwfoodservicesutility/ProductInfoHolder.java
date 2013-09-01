@@ -25,5 +25,9 @@ public class ProductInfoHolder{
     public int getCount(){
         return productInfo.size();
     }
+    
+    public static void resetInstance() {
+        mInstance = null;
+    }
 
 }
