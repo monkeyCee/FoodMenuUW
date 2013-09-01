@@ -113,7 +113,8 @@ public class SplashScreen extends Activity {
                     @Override
                     public void run() 
                     {
-                        if((RestaurantLocationHolder.getInstance().objects == null) || (RestaurantMenuHolder.getInstance().restaurantMenu == null)){
+                        if((RestaurantLocationHolder.getInstance().objects == null)
+                                || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
                             handler.postDelayed(this, 1000);
                         }
                     }
@@ -175,8 +176,7 @@ public class SplashScreen extends Activity {
                 watcardVendorParser.Parse(jObjArray[2]);
 
                 try {
-                    
-                    InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().restaurantMenu);
+                    InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().getRestaurantMenu());
                     InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance().objects);
                     InternalStorage.writeObject (context, "watcard_vendor", WatcardVendorHolder.getInstance().objects);
                 } catch (IOException e) {
@@ -217,6 +217,7 @@ public class SplashScreen extends Activity {
         prefEditor.commit();
 
         return "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + Integer.parseInt(weekInYear) + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
+        //return "http://api.uwaterloo.ca/public/v2/foodservices/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
     }
 
     public int getCurrentWeek(){
@@ -251,7 +252,6 @@ public class SplashScreen extends Activity {
 	    			String urlMenu = getDatedMenuUrl();
 	    			String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
 	    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
-	    			
 	    			
 	    			final Handler handler = new Handler();
 		    		final Runnable r = new Runnable()

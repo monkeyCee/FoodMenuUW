@@ -106,6 +106,8 @@
 	<item>Off-Campus Flex Locations</item>	
 	</string-array>
 
+    <string name="title_activity_product_info">ProductInfo</string>
+    <string name="title_activity_tabbed_dialog">TabbedDialogActivity</string>
     <string name="title_activity_balance_watcard">BalanceWatcard</string>
     <string name="title_activity_data_watcard">DataWatcard</string>
 

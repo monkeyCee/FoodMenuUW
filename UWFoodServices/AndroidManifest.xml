@@ -104,6 +104,17 @@
         </activity>
         
         <activity
+            android:name="ca.uwaterloo.uwfoodservices.ProductInfo"
+            android:label="@string/title_activity_product_info"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.ProductInfoDialog"
+            android:label="@string/title_activity_tabbed_dialog" 
+            android:theme="@android:style/Theme.Holo.Dialog" >
+        </activity>
+        <activity
             android:name="ca.uwaterloo.uwfoodservices.LoginWatcard"
             android:label="@string/title_activity_about_page" 
             android:screenOrientation="portrait" 

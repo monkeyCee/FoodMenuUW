@@ -6,10 +6,10 @@ public class RestaurantMenuItem implements Serializable {
 
     private static final long serialVersionUID = 7448812273887636334L;
     String product_name;
-    int product_id;
+    Integer product_id;
     String diet_type;
 
-    public RestaurantMenuItem(String product_name, int product_id, String diet_type) {
+    public RestaurantMenuItem(String product_name, Integer product_id, String diet_type) {
         this.product_name = product_name;
         this.product_id = product_id;
         this.diet_type = diet_type;
@@ -19,7 +19,7 @@ public class RestaurantMenuItem implements Serializable {
         return product_name;
     }
 
-    public int getProductID() {
+    public Integer getProductID() {
         return product_id;
     }
 
@@ -31,7 +31,7 @@ public class RestaurantMenuItem implements Serializable {
         this.product_name = product_name;
     }
 
-    public void setProductID(int product_id) {
+    public void setProductID(Integer product_id) {
         this.product_id = product_id;
     }
 

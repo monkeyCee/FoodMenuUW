@@ -2,12 +2,15 @@ package ca.uwaterloo.uwfoodservicesutility;
 
 import java.util.ArrayList;
 
-public class RestaurantMenuHolder{
+import android.app.Application;
+import android.util.Log;
+
+public class RestaurantMenuHolder extends Application{
 
     private static RestaurantMenuHolder mInstance = null;
-    public ArrayList<RestaurantMenuObject> restaurantMenu;
+    private static ArrayList<RestaurantMenuObject> restaurantMenu;
 
-    public static RestaurantMenuHolder getInstance(ArrayList<RestaurantMenuObject> restaurantMenu){
+    public synchronized static RestaurantMenuHolder getInstance(ArrayList<RestaurantMenuObject> restaurantMenu){
         if(mInstance == null){
             mInstance = new RestaurantMenuHolder(restaurantMenu);
         }
@@ -15,15 +18,24 @@ public class RestaurantMenuHolder{
     }
 
     public static RestaurantMenuHolder getInstance(){
+        if(mInstance == null){
+            mInstance = new RestaurantMenuHolder(restaurantMenu);
+        }
         return mInstance;
     }
 
     private RestaurantMenuHolder(ArrayList<RestaurantMenuObject> restaurantMenu){
-        this.restaurantMenu = restaurantMenu;
+        RestaurantMenuHolder.restaurantMenu = restaurantMenu;
     }
 
     public int getCount(){
+        Log.d((restaurantMenu == null) +"", "mInstance null?");
+        Log.d(restaurantMenu.size() +"", "mInstance - size");
         return restaurantMenu.size();
+    }
+    
+    public ArrayList<RestaurantMenuObject> getRestaurantMenu() {
+        return restaurantMenu;
     }
 
 }

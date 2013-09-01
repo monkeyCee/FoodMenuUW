@@ -1,0 +1,42 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    style="@style/productInfoItem"
+    android:background="@android:drawable/list_selector_background"
+    >
+
+    <TextView
+        android:id="@+id/lv_item_nutrition"
+        style="@style/listViewProductDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/item_separator"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:gravity="left|center_vertical"
+        android:singleLine="true"
+        android:textIsSelectable="false" />
+
+    <TextView
+        android:id="@+id/lv_item_percent"
+        style="@style/listViewProductDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/lv_item_nutrition"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="right|center_vertical"
+        android:singleLine="true"
+        android:textIsSelectable="false" />
+
+    <View
+        android:id="@+id/item_separator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lvDividerHeight"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/lvDividerColor"
+        android:descendantFocusability="blocksDescendants" />
+
+</RelativeLayout>
