@@ -70,12 +70,18 @@ public class ProductInfoDialog extends FragmentActivity implements
 	private TabHost mTabHost;
 	private ProductInfoAdapter mPagerContent;
 	
+	static Typeface tf;
+	static TextView item_nutrition;
+	static TextView item_percent;
+	
 	@SuppressWarnings("unchecked")
     @Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.fragment_product_info_dialog);
+		
+		tf = Typeface.createFromAsset(this.getAssets(), "Roboto-Light.ttf");
 		
 		//Linearlayout layout = (LinearLayout) findViewById(R.id.)
 		
@@ -148,6 +154,7 @@ public class ProductInfoDialog extends FragmentActivity implements
 		mPagerContent = new ProductInfoAdapter(getSupportFragmentManager());
 		mViewPager.setAdapter(mPagerContent);
 		mViewPager.setCurrentItem(tabPosition);
+		mViewPager.setOffscreenPageLimit(1);
 		mViewPager.setOnPageChangeListener(this);
 	}
 
@@ -198,7 +205,7 @@ public class ProductInfoDialog extends FragmentActivity implements
             fragment.setArguments(args);
             return fragment;
         }
-
+        
     }
 
 	public static class ProductInfoFragment extends Fragment {
@@ -345,20 +352,19 @@ public class ProductInfoDialog extends FragmentActivity implements
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 
-                View item = convertView;
+                Log.d("POSITION: " + position, "GETVIEW");
                 
-                item = LayoutInflater.from(mContext).inflate(R.layout.lv_nutrition, parent, false);
-                Typeface tf = Typeface.createFromAsset(mContext.getAssets(), "Roboto-Light.ttf");
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.lv_nutrition, parent, false);
 
-                TextView item_nutrition = (TextView)item.findViewById(R.id.lv_item_nutrition);
-                item_nutrition.setText(left_list.get(position % left_list.size()));
+                item_nutrition = (TextView)convertView.findViewById(R.id.lv_item_nutrition);
+                item_nutrition.setText(left_list.get(position));
                 item_nutrition.setTypeface(tf);
                 
-                TextView item_percent = (TextView)item.findViewById(R.id.lv_item_percent);
-                item_percent.setText(right_list.get(position % right_list.size()));
+                item_percent = (TextView)convertView.findViewById(R.id.lv_item_percent);
+                item_percent.setText(right_list.get(position));
                 item_percent.setTypeface(tf);
 
-                return item;
+                return convertView;
             }
             
         }
@@ -391,5 +397,4 @@ public class ProductInfoDialog extends FragmentActivity implements
 		dummyContent.setMinimumHeight(0);
 		return dummyContent;
 	}
-	
 }
