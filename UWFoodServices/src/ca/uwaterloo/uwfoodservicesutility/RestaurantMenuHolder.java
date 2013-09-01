@@ -14,7 +14,6 @@ public class RestaurantMenuHolder extends Application{
         if(mInstance == null){
             mInstance = new RestaurantMenuHolder(restaurantMenu);
         }
-        Log.d(restaurantMenu.size() +"", "mInstance - size getInstance 1 ");
         return mInstance;
     }
 

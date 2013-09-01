@@ -104,7 +104,27 @@
         <activity
             android:name="ca.uwaterloo.uwfoodservices.ProductInfoDialog"
             android:label="@string/title_activity_tabbed_dialog" 
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:theme="@android:style/Theme.Holo.Dialog" >
+        </activity>
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.LoginWatcard"
+            android:label="@string/title_activity_login_watcard"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.NoActionBar" >
+        </activity>
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.BalanceWatcard"
+            android:label="@string/title_activity_balance_watcard"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.NoActionBar"
+            android:noHistory="true" >
+        </activity>
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.DataWatcard"
+            android:label="@string/title_activity_data_watcard"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.NoActionBar"
+            android:noHistory="true" >
         </activity>
     </application>
 

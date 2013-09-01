@@ -21,7 +21,7 @@ public class ImageAdapter extends BaseAdapter{
     private RestaurantLocationHolder locationHolder;
     private Context context;
 
-    private String[] sliding_list = {"Home", "Skip to Menu", "Location & Hours", "About Us"};
+    private String[] sliding_list = {"Home", "Skip to Menu", "Location & Hours", "WatCard Balance", "About Us"};
     Typeface tf;
 
     public ImageAdapter(Context context, String id){
@@ -31,7 +31,7 @@ public class ImageAdapter extends BaseAdapter{
         tf = Typeface.createFromAsset(context.getAssets(),
                 "Roboto-Light.ttf");
         menuHolder = RestaurantMenuHolder.getInstance();
-        locationHolder = RestaurantLocationHolder.getInstance(context);
+        locationHolder = RestaurantLocationHolder.getInstance();
         MenuUtilities.setImageHash();
     }
 

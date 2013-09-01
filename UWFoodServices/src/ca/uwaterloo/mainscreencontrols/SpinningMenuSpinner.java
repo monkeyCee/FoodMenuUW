@@ -268,7 +268,8 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
     		pts[1] = item.getTop();
     		pts[2] = 0;
     		
-    		mm.mapPoints(pts);
+    		if (mm!=null)
+    		    mm.mapPoints(pts);
     		
     		int mappedLeft = (int)pts[0];
     		int mappedTop =  (int)pts[1];
@@ -277,7 +278,8 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
     		pts[1] = item.getBottom();
     		pts[2] = 0;
     		
-    		mm.mapPoints(pts);
+    		if (mm!=null)
+    		    mm.mapPoints(pts);
 
     		int mappedRight = (int)pts[0];
     		int mappedBottom = (int)pts[1];

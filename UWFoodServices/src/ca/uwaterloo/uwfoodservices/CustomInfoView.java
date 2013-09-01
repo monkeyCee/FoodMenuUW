@@ -20,7 +20,7 @@ public class CustomInfoView implements GoogleMap.InfoWindowAdapter {
     public CustomInfoView(Context context){
         this.context = context;
         inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        holder = RestaurantLocationHolder.getInstance(context);
+        holder = RestaurantLocationHolder.getInstance();
     }
 
     @Override

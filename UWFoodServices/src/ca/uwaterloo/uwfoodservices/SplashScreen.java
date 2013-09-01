@@ -113,7 +113,7 @@ public class SplashScreen extends Activity {
                     @Override
                     public void run() 
                     {
-                        if((RestaurantLocationHolder.getInstance(SplashScreen.this).objects == null)
+                        if((RestaurantLocationHolder.getInstance().objects == null)
                                 || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
                             handler.postDelayed(this, 1000);
                         }
@@ -135,17 +135,6 @@ public class SplashScreen extends Activity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
-    
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
 
@@ -153,16 +142,6 @@ public class SplashScreen extends Activity {
             this.unregisterReceiver(receiver);
         }
 
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-    
-    @Override
-    public void onStop() {	
-        super.onStop();
     }
 
     private static class AsyncDataFetcher extends AsyncTask<String, Void, JSONObject[]> {
@@ -180,7 +159,7 @@ public class SplashScreen extends Activity {
 
         @Override
         protected JSONObject[] doInBackground(String... urls) {
-            JSONParser json_parse = new JSONParser();
+            NetworkParser json_parse = new NetworkParser();
             JSONObject[] jsonObjectArray = new JSONObject[2];
             jsonObjectArray[0] = json_parse.getJSONFromUrl(urls[0]);
             jsonObjectArray[1] = json_parse.getJSONFromUrl(urls[1]);
@@ -195,7 +174,7 @@ public class SplashScreen extends Activity {
 
                 try {
                     InternalStorage.writeObject(context, "menu", RestaurantMenuHolder.getInstance().getRestaurantMenu());
-                    InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance(context).objects);
+                    InternalStorage.writeObject(context, "location", RestaurantLocationHolder.getInstance().objects);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -234,6 +213,7 @@ public class SplashScreen extends Activity {
         prefEditor.commit();
 
         return "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + Integer.parseInt(weekInYear) + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
+        //return "http://api.uwaterloo.ca/public/v2/foodservices/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
     }
 
     public int getCurrentWeek(){
@@ -272,7 +252,7 @@ public class SplashScreen extends Activity {
 		    		{
 		    		    public void run() 
 		    		    {
-		    		    	if(RestaurantLocationHolder.getInstance(SplashScreen.this) == null || RestaurantMenuHolder.getInstance() == null){
+		    		    	if(RestaurantLocationHolder.getInstance() == null || RestaurantMenuHolder.getInstance() == null){
 		    		    		handler.postDelayed(this, 1000);
 		    		    	}
 		    		    }
@@ -368,7 +348,7 @@ public class SplashScreen extends Activity {
 		                        }
 		                                
 		                        if(restaurantMenu != null && restaurantLocations != null){
-		                            RestaurantLocationHolder.getInstance(SplashScreen.this, restaurantLocations);
+		                            RestaurantLocationHolder.getInstance(restaurantLocations);
 		                            RestaurantMenuHolder.getInstance(restaurantMenu);
 		                        }
 						}

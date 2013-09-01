@@ -45,6 +45,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     ViewPager vp;
     static String restaurantSelection;
     static int positionRestaurant;
+    RestaurantLocationHolder holder = RestaurantLocationHolder.getInstance();
     
     SharedPreferences.Editor editor;
     SharedPreferences pref;
@@ -223,20 +224,28 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			}
 			
 			if (formattedDate.endsWith("1")) { 
-				formattedDate += "st"; 
-			} else {
-				if (formattedDate.endsWith("2")) { 
-					formattedDate += "nd";
+				if (formattedDate.endsWith("11")) {
+				    formattedDate += "th"; 
 				} else {
-					if (formattedDate.endsWith("3")) {
-						formattedDate += "rd";
-					} else { 
-					formattedDate += "th"; 
-					}
+				    formattedDate += "st";
 				}
+			} else if (formattedDate.endsWith("2")) { 
+			    if (formattedDate.endsWith("12")) {
+			        formattedDate+= "th";
+			    } else {
+			        formattedDate += "nd";
+			    }
+			} else if (formattedDate.endsWith("3")) {
+			    if (formattedDate.endsWith("13")) {
+                    formattedDate+= "th";
+                } else {
+                    formattedDate += "rd";
+                }
+			} else { 
+				formattedDate += "th"; 
 			}
 			
-			RestaurantMenuHolder menuHolder = RestaurantMenuHolder.getInstance();
+			RestaurantMenuHolder menuHolder = RestaurantMenuHolder.getInstance(null);
 			
 			TextView textDay = (TextView) rootView.findViewById(R.id.textDay);
 			SpannableString content = new SpannableString(formattedDate);
