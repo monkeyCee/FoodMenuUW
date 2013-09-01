@@ -10,7 +10,7 @@ for location in result:
 		timing += timings + "\n";
 		params = {'id': location['ID'], 'name': location['Name'], 'location': location['Location'],'timings': timing}
 	parameters = urllib.urlencode(params);
-	request = urllib2.Request('http://localhost/create.php', parameters);
+	request = urllib2.Request('http://localhost/insertLocations.php', parameters);
 	response = urllib2.urlopen(request);	
   	print response.read();
 	

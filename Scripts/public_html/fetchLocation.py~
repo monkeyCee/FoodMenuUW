@@ -8,8 +8,7 @@ for location in result:
 	timing = "";
 	for timings in location['Hours']['result']:
 		timing += timings + "\n";
-#		params = {'id': location['ID'], 'name': location['Name'], 'location': location['Location'],'timings': timing}
-		params = {'id': location['ID'], 'name': '', 'location': location['Location'],'timings': timing}
+		params = {'id': location['ID'], 'name': location['Name'], 'location': location['Location'],'timings': timing}
 	parameters = urllib.urlencode(params);
 	request = urllib2.Request('http://localhost/create.php', parameters);
 	response = urllib2.urlopen(request);	

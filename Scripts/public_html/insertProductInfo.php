@@ -48,6 +48,7 @@ if( 	isset($_POST['diet_type']) &&
 	require_once __DIR__ . '/db_connect.php';
 
 	$db = new DB_CONNECT();
+	mysql_query("ALTER TABLE productInfo AUTO_INCREMENT = 1");
 
 	$result = mysql_query("INSERT INTO productInfo VALUES((select id from restaurantMenu where item = '$pid'),
                                                         '$diet',

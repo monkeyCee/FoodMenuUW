@@ -13,6 +13,8 @@ if(isset($_POST['restaurant']) && isset($_POST['day']) && isset($_POST['meal']) 
 
 	$db = new DB_CONNECT();
 
+	mysql_query("ALTER TABLE restaurantMenu AUTO_INCREMENT = 1");
+
 	if(isset($_POST['product'])){
 		$product = mysql_real_escape_string($_POST['product']);
 		$result = mysql_query("INSERT INTO restaurantMenu(restaurant,day,meal,item,product) VALUES('$restaurant', '$day','$meal', '$pid', 			'$product')");
