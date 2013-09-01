@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -21,14 +23,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
-import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
+import android.widget.Toast;
 import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
 import ca.uwaterloo.uwfoodservicesutility.ProductInfoHolder;
@@ -64,7 +67,7 @@ public class ProductInfoDialog extends FragmentActivity implements
 	private ViewPager mViewPager;
 	private TabHost mTabHost;
 	private ProductInfoAdapter mPagerContent;
-
+	
 	@SuppressWarnings("unchecked")
     @Override
 	protected void onCreate(Bundle arg0) {
@@ -294,6 +297,7 @@ public class ProductInfoDialog extends FragmentActivity implements
                 for (int i = 1; i < ingredientList.size(); i++) {
                     ingredients += ", " + ingredientList.get(i);
                 }
+                textIngredients.setPadding(0, left_list.size() * 48 + 45, 0, 0);
                 textIngredients.setText(ingredients);
             }
             
@@ -351,6 +355,7 @@ public class ProductInfoDialog extends FragmentActivity implements
 
                 return item;
             }
+            
         }
     }
 
@@ -381,5 +386,5 @@ public class ProductInfoDialog extends FragmentActivity implements
 		dummyContent.setMinimumHeight(0);
 		return dummyContent;
 	}
-
+	
 }
