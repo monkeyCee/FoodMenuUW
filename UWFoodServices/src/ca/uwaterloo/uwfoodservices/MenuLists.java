@@ -297,6 +297,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
                         dietTypeList.get(day).add(dietType);
                     } else {
                         dietTypeList.get(day).add(null);
+                        Log.d(menuHolder.getRestaurantMenu().get(positionRestaurant).getMenu()[day].getDinner().get(i).getProductName(), "null");
                     }
 				}
 			}
@@ -398,16 +399,22 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	            }
 
 	            ImageButton image = (ImageButton)item.findViewById(R.id.button);
-	            if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("Halal")) {
+	            if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("null")) {
+                    image.setImageResource(R.drawable.ic_no_information);
+	            } else if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("Halal")) {
 	                image.setImageResource(R.drawable.ic_halal);
 	            } else if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("Vegetarian")) {
 	                image.setImageResource(R.drawable.ic_vegetarian);
 	            } else if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("Vegan")) {
                     image.setImageResource(R.drawable.ic_vegan);
-	            }
+	            } else if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("Non Vegetarian")) {
+                    image.setImageResource(R.drawable.ic_non_vegetarian);
+	            } /*else if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("header")) {
+                    image.setAlpha(0.0f);
+	            }*/
 	            
 	            if (dietTypeList.get(day).get(position % dietTypeList.get(day).size()).equals("null")) {
-	                image.setTag("Non Vegetarian");
+	                image.setTag("No Information");
 	            } else {
 	                image.setTag(dietTypeList.get(day).get(position % dietTypeList.get(day).size()));
 	            }
