@@ -24,9 +24,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
+import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
 import ca.uwaterloo.uwfoodservicesutility.ProductInfoHolder;
@@ -63,7 +65,8 @@ public class ProductInfoDialog extends FragmentActivity implements
 	private TabHost mTabHost;
 	private ProductInfoAdapter mPagerContent;
 
-	@Override
+	@SuppressWarnings("unchecked")
+    @Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -111,7 +114,7 @@ public class ProductInfoDialog extends FragmentActivity implements
         }
         
         productInfoParser = new ParseProductInfo();
-        new AsyncDataFetcher(this).execute(productInfoUrls);
+        new AsyncDataFetcher().execute(productInfoUrls);
 		
         tabPosition = 0;
         for (int i = 0; i < productNames.size(); i ++) {
@@ -143,32 +146,22 @@ public class ProductInfoDialog extends FragmentActivity implements
 
 	private static class AsyncDataFetcher extends AsyncTask<List<String>, Void, Void> {
 
-        Context context;
-
-        public AsyncDataFetcher(Context context) {
-            this.context = context;
+        public AsyncDataFetcher() {
+            
         }
 
         @Override
         protected Void doInBackground(List<String>... urls) {
             List<JSONObject> jsonList = new ArrayList<JSONObject>();
             JSONParser json_parse = new JSONParser();
-            Log.d("PREPARE TO LOAD - BEFORE", "LOADED");
             for (int i = 0; i < urls[0].size(); i ++) {
                 jsonList.add(json_parse.getJSONFromUrl(urls[0].get(i)));
                 Log.d("added " + urls[0].get(i), "LOADED");
             }
-            Log.d("" + (jsonList != null), "LOADED");
-            Log.d("returning jsonList", "LOADED");
             
-            Log.d("ONPOST", "LOADED");
-            Log.d("" + (jsonList.size()), "LOADED - SIZE JSONLIST");
             if(jsonList != null){
-                Log.d("PREPARE TO LOAD", "LOADED");
                 productInfoParser.Parse(jsonList); 
                 loaded = true;
-            } else {
-                Log.d("NOT LOADED?", "LOADED");
             }
             return null;
         }
@@ -212,12 +205,16 @@ public class ProductInfoDialog extends FragmentActivity implements
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_restaurant_menu,
+            View rootView = inflater.inflate(R.layout.fragment_product_info,
                     container, false);
+            
+            Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Light.ttf");
             
             position = getArguments().getInt(ARG_SECTION_NUMBER);
             
             ListView listView = (ListView) rootView.findViewById(R.id.list_menu);
+            TextView textIngredients = (TextView) rootView.findViewById(R.id.textIngredients);
+            textIngredients.setTypeface(tf);
             
             while(loaded == false) {
                 //Log.d("WAITING", "LOADED");
@@ -287,16 +284,23 @@ public class ProductInfoDialog extends FragmentActivity implements
                 left_list.add("Iron"); 
                 right_list.add(productInfoHolder.productInfo.get(position).get_iron_percent() + " %");
             }
-            Log.d(position + "", "POSITION4");
             ProductInfoAdapter productInfoAdapter = new ProductInfoAdapter(getActivity());
-            Log.d(position + "", "POSITION5");
             listView.setAdapter(productInfoAdapter);
-            Log.d(position + "", "POSITION6");
+            
+            if (productInfoHolder.productInfo.get(position).get_ingredients() != null) {
+                String ingredients = "Ingredients: ";
+                List<String> ingredientList = productInfoHolder.productInfo.get(position).get_ingredients();
+                ingredients += ingredientList.get(0);
+                for (int i = 1; i < ingredientList.size(); i++) {
+                    ingredients += ", " + ingredientList.get(i);
+                }
+                textIngredients.setText(ingredients);
+            }
+            
             return rootView;
         }
         
         private class ProductInfoAdapter extends BaseAdapter {
-            public int textWidth;
             
             private final Context mContext;
             

@@ -12,13 +12,10 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +28,6 @@ import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
 import ca.uwaterloo.uwfoodservicesutility.ProductInfoHolder;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuItem;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.MenuItem;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class ProductInfo extends Activity{
 
@@ -60,6 +53,7 @@ public class ProductInfo extends Activity{
     
     static boolean loaded = false;
     
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +105,7 @@ public class ProductInfo extends Activity{
         }
         Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 3");
         productInfoParser = new ParseProductInfo();
-        new AsyncDataFetcher(this).execute(productInfoUrls);
+        new AsyncDataFetcher().execute(productInfoUrls);
         Log.d((menuHolder.getRestaurantMenu() == null) +"", "mInstance null? 4");
 
         tabPosition = 0;
@@ -128,32 +122,20 @@ public class ProductInfo extends Activity{
     
     private static class AsyncDataFetcher extends AsyncTask<List<String>, Void, Void> {
 
-        Context context;
-
-        public AsyncDataFetcher(Context context) {
-            this.context = context;
+        public AsyncDataFetcher() {
         }
 
         @Override
         protected Void doInBackground(List<String>... urls) {
             List<JSONObject> jsonList = new ArrayList<JSONObject>();
             JSONParser json_parse = new JSONParser();
-            Log.d("PREPARE TO LOAD - BEFORE", "LOADED");
             for (int i = 0; i < urls[0].size(); i ++) {
                 jsonList.add(json_parse.getJSONFromUrl(urls[0].get(i)));
-                Log.d("added " + urls[0].get(i), "LOADED");
             }
-            Log.d("" + (jsonList != null), "LOADED");
-            Log.d("returning jsonList", "LOADED");
             
-            Log.d("ONPOST", "LOADED");
-            Log.d("" + (jsonList.size()), "LOADED - SIZE JSONLIST");
             if(jsonList != null){
-                Log.d("PREPARE TO LOAD", "LOADED");
                 productInfoParser.Parse(jsonList); 
                 loaded = true;
-            } else {
-                Log.d("NOT LOADED?", "LOADED");
             }
             return null;
         }
@@ -282,7 +264,6 @@ public class ProductInfo extends Activity{
         }
         
         private class ProductInfoAdapter extends BaseAdapter {
-            public int textWidth;
             
             private final Context mContext;
             

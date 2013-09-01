@@ -104,7 +104,7 @@
         <activity
             android:name="ca.uwaterloo.uwfoodservices.ProductInfoDialog"
             android:label="@string/title_activity_tabbed_dialog" 
-            android:theme="@android:style/Theme.Dialog">
+            android:theme="@android:style/Theme.Holo.Dialog">
         </activity>
     </application>
 

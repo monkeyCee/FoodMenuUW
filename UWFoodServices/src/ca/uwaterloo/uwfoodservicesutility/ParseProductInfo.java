@@ -114,8 +114,6 @@ public class ParseProductInfo {
             }
             
             holder = ProductInfoHolder.getInstance(productInfoList);
-            //Log.d(holder.productInfo.size() + "", "PRODUCT INFO - SIZE 1");
-            Log.d("LOAD SOMETHING", "LOADED");
             
         } catch (JSONException e) {
             e.printStackTrace();

@@ -94,5 +94,6 @@
     <string name="contains_information_provided_by_the_university_of_waterloo_under_license_on_an_as_is_basis_">Contains information provided by the University of Waterloo under license on an \'as is\' basis.</string>
     <string name="title_activity_product_info">ProductInfo</string>
     <string name="title_activity_tabbed_dialog">TabbedDialogActivity</string>
+    <string name="title">Title</string>
 
 </resources>
