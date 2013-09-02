@@ -8,8 +8,10 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -29,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +52,8 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     
     SharedPreferences.Editor editor;
     SharedPreferences pref;
-    NetworkReceiver receiver;
+    public String networkPref;
+    private static NetworkReceiver receiver;
 
     public static String formattedDate;
     static int weekDay;
@@ -62,7 +66,10 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_lists);
         
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = new NetworkReceiver(this);
+        this.registerReceiver(receiver, filter);
+        networkPref = receiver.getNetworkPref();
         
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -248,6 +255,9 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			RestaurantMenuHolder menuHolder = RestaurantMenuHolder.getInstance(null);
 			
 			TextView textDay = (TextView) rootView.findViewById(R.id.textDay);
+			if (formattedDate.substring(0,3).equals("Sep")) {
+			    formattedDate = "Sept" + formattedDate.substring(3);
+			}
 			SpannableString content = new SpannableString(formattedDate);
 			content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
 			textDay.setText(content);
@@ -316,28 +326,45 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			    @Override
 	            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 	                    long arg3) {
-			        if (clickableList.get(day).get(arg2) == "true") {
-    	                Intent intentProductInfo = new Intent(getActivity(), ProductInfoDialog.class);
-    	                Log.d("You clicked on position : " + arg2 + " and id : " + LIST.get((int)arg3), "CLICKITEM");
-    	                Long productDay = currentDate.getTimeInMillis();
-    	                intentProductInfo.putExtra("Restaurant Position", positionRestaurant);
-    	                intentProductInfo.putExtra("Product Day", productDay);
-    	                intentProductInfo.putExtra("Selected Item", LIST.get((int)arg3));
-    	                int currentPosition = arg2;
-    	                intentProductInfo.putExtra("Current Position", currentPosition);
-    	                intentProductInfo.putExtra("Weekday", day);
-    	                startActivity(intentProductInfo);
+			        if (clickableList.get(day).get(arg2).equals("true")) {
+			            if (receiver.isNetwork()) {
+        	                Intent intentProductInfo = new Intent(getActivity(), ProductInfoDialog.class);
+        	                Log.d("You clicked on position : " + arg2 + " and id : " + LIST.get((int)arg3), "CLICKITEM");
+        	                Long productDay = currentDate.getTimeInMillis();
+        	                intentProductInfo.putExtra("Restaurant Position", positionRestaurant);
+        	                intentProductInfo.putExtra("Product Day", productDay);
+        	                intentProductInfo.putExtra("Selected Item", LIST.get((int)arg3));
+        	                int currentPosition = arg2;
+        	                intentProductInfo.putExtra("Current Position", currentPosition);
+        	                intentProductInfo.putExtra("Weekday", day);
+        	                startActivity(intentProductInfo);
+			            } else {
+			                final Toast toast = Toast.makeText(getActivity(), 
+	                                "Cannot display product info.\nThere is no network.", Toast.LENGTH_SHORT);
+			                ((TextView)((LinearLayout)toast.getView()).getChildAt(0))
+			                .setGravity(Gravity.CENTER_HORIZONTAL);
+			                toast.show();
+	                        Handler handler = new Handler();
+	                        handler.postDelayed(new Runnable() {
+	                           @Override
+	                           public void run() {
+	                               toast.cancel(); 
+	                           }
+	                        }, 1000);
+			            }
 			        } else {
-			            final Toast toast = Toast.makeText(getActivity(), 
-			                    "There is no nutritional information for this product.", Toast.LENGTH_SHORT);
-			            toast.show();
-			            Handler handler = new Handler();
-			            handler.postDelayed(new Runnable() {
-			               @Override
-			               public void run() {
-			                   toast.cancel(); 
-			               }
-			            }, 800);
+			            if (!clickableList.get(day).get(arg2).equals("header")) {
+    			            final Toast toast = Toast.makeText(getActivity(), 
+    			                    "There is no nutritional information for this product.", Toast.LENGTH_SHORT);
+    			            toast.show();
+    			            Handler handler = new Handler();
+    			            handler.postDelayed(new Runnable() {
+    			               @Override
+    			               public void run() {
+    			                   toast.cancel(); 
+    			               }
+    			            }, 800);
+			            }
 			        }
 			    }
 			});
