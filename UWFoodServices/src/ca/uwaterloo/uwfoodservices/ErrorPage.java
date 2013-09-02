@@ -22,6 +22,7 @@ public class ErrorPage extends Activity {
         text.setTypeface(tf);
 
         Button refresh = (Button) findViewById(R.id.ready);
+        refresh.setTypeface(tf);
         refresh.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -32,6 +33,7 @@ public class ErrorPage extends Activity {
         });
 
         Button settings = (Button) findViewById(R.id.settingsPhone);
+        settings.setTypeface(tf);
         settings.setOnClickListener(new View.OnClickListener() {
 
             @Override

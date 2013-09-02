@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -20,9 +22,17 @@ public class LoginWatcard extends Activity {
         setContentView(R.layout.activity_login_watcard);
         
         TextView login = (TextView) findViewById(R.id.login);
+        TextView pinReset = (TextView) findViewById(R.id.resetPin);
+        TextView newStudents = (TextView) findViewById(R.id.newStudent);
         Typeface tf = Typeface.createFromAsset(this.getAssets(),
                 "Roboto-Light.ttf");
         login.setTypeface(tf);
+        pinReset.setTypeface(tf);
+        newStudents.setTypeface(tf);
+        pinReset.setText(Html.fromHtml("Click <a href='https://account.watcard.uwaterloo.ca/pinreset.asp'>here</a> to reset your PIN"));
+        pinReset.setMovementMethod(LinkMovementMethod.getInstance());
+        newStudents.setText(Html.fromHtml("<a href='http://www.watcard.uwaterloo.ca/newstudents.html'>Information for new students</a>"));
+        newStudents.setMovementMethod(LinkMovementMethod.getInstance());
         login.setText("WatCard Login");
         
         final EditText username = (EditText) findViewById(R.id.username);
@@ -59,13 +69,13 @@ public class LoginWatcard extends Activity {
             else{
                 int code = data.getIntExtra("Code", -2);
                 if(code == 0){
-                    Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Server Error.", Toast.LENGTH_SHORT).show();
                 }
                 else if(code == 1){
-                    Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Invalid Credentials.", Toast.LENGTH_SHORT).show();
                 }
                 else if(code == -1){
-                    Toast.makeText(getApplicationContext(), "No Network.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "No network or the network does not match your preference.", Toast.LENGTH_SHORT).show();
                 }
             }
         }

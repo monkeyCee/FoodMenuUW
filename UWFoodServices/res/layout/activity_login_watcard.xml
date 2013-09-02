@@ -74,4 +74,23 @@
         android:text="@string/login"
         android:textColor="#FFFFFF" />
 
+    <TextView
+        android:id="@+id/resetPin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/go"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/defaultdata" />
+
+    <TextView
+        android:id="@+id/newStudent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/resetPin"
+        android:layout_marginTop="15dp"
+        android:text="@string/defaultdata" />
+
+
 </RelativeLayout>

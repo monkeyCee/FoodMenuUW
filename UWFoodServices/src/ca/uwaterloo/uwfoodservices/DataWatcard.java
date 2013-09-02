@@ -73,6 +73,7 @@ public class DataWatcard extends Activity {
             
         }
         else{
+            code = -1;
             errorAndCancel();
         }
        
