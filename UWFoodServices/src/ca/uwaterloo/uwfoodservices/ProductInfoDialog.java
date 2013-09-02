@@ -5,13 +5,12 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -23,15 +22,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
@@ -74,6 +70,8 @@ public class ProductInfoDialog extends FragmentActivity implements
 	static TextView item_nutrition;
 	static TextView item_percent;
 	
+	private static ProgressDialog dialog;
+	
 	@SuppressWarnings("unchecked")
     @Override
 	protected void onCreate(Bundle arg0) {
@@ -82,6 +80,10 @@ public class ProductInfoDialog extends FragmentActivity implements
 		setContentView(R.layout.fragment_product_info_dialog);
 		
 		tf = Typeface.createFromAsset(this.getAssets(), "Roboto-Light.ttf");
+		
+		dialog = new ProgressDialog(this);
+		dialog.setMessage("Please wait");
+        dialog.show();
 		
 		//Linearlayout layout = (LinearLayout) findViewById(R.id.)
 		
@@ -127,7 +129,7 @@ public class ProductInfoDialog extends FragmentActivity implements
         }
         
         productInfoParser = new ParseProductInfo();
-        new AsyncDataFetcher().execute(productInfoUrls);
+        new AsyncDataFetcher(this).execute(productInfoUrls);
 		
         tabPosition = 0;
         for (int i = 0; i < productNames.size(); i ++) {
@@ -160,9 +162,17 @@ public class ProductInfoDialog extends FragmentActivity implements
 
 	private static class AsyncDataFetcher extends AsyncTask<List<String>, Void, Void> {
 
-        public AsyncDataFetcher() {
+	    private Context context;
+	    
+	    
+        public AsyncDataFetcher(Context context) {
+            this.context = context;
+        }
+        
+        protected void onPreExecute() {
             
         }
+
 
         @Override
         protected Void doInBackground(List<String>... urls) {
@@ -179,6 +189,15 @@ public class ProductInfoDialog extends FragmentActivity implements
             }
             return null;
         }
+        
+        @Override
+        protected void onPostExecute(Void result) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            super.onPostExecute(result);
+        }
+        
 	}
 	
 	public static class ProductInfoAdapter extends FragmentPagerAdapter {
