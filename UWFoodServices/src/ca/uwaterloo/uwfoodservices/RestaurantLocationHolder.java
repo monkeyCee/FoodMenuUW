@@ -1,7 +1,5 @@
 package ca.uwaterloo.uwfoodservices;
 
-import android.content.Context;
-
 public class RestaurantLocationHolder{
 
     private static RestaurantLocationHolder mInstance = null;

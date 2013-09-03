@@ -4,9 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
+import android.app.Activity;
 import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
-import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
 
 public class ParseWatcardVendorData {
     
@@ -16,12 +15,11 @@ public class ParseWatcardVendorData {
     private String location = "Location";
     private String telephone = "Telephone";
     private String response = "response";
-    private Context context;
-    private WatcardVendorHolder holder;
     private WatcardVendorObject[] watcard_vendor_objects;
+    protected InitialiseSingleton init;
 
-    public ParseWatcardVendorData(Context context){
-        this.context = context;
+    public ParseWatcardVendorData(Activity activity){
+        init = (InitialiseSingleton)activity.getApplication();
     }
 
     public void Parse(JSONObject json){
@@ -43,8 +41,8 @@ public class ParseWatcardVendorData {
                 watcard_vendor_objects[i] = new WatcardVendorObject(vendor_name, location_name, telephone_number);
 
             }
-
-            holder = WatcardVendorHolder.getInstance(watcard_vendor_objects);
+            
+            init.initWatcardLocations(watcard_vendor_objects);
 
         } catch (JSONException e) {
             e.printStackTrace();

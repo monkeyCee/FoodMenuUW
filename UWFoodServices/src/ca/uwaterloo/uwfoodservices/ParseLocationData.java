@@ -4,10 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
-
-import android.content.Context;
 
 public class ParseLocationData {
 
@@ -17,13 +16,12 @@ public class ParseLocationData {
     private String location = "Location";
     private String hours = "Hours";
     private String response = "response";
-    private Context context;
-    private RestaurantLocationHolder holder;
     private RestaurantObject[] location_objects;
     private String[] details;
+    protected InitialiseSingleton init;
 
-    public ParseLocationData(Context context){
-        this.context = context;
+    public ParseLocationData(Activity activity){
+        init = (InitialiseSingleton)activity.getApplication();
     }
 
     public void Parse(JSONObject json){
@@ -60,7 +58,7 @@ public class ParseLocationData {
 
             }
 
-            holder = RestaurantLocationHolder.getInstance(location_objects);
+            init.initLocations(location_objects);
 
         } catch (JSONException e) {
             e.printStackTrace();
