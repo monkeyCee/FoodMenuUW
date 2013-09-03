@@ -6,7 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
+import ca.uwaterloo.uwfoodservices.InitialiseSingleton;
+
+import android.app.Activity;
 
 public class ParseMenuData {
 
@@ -30,11 +32,11 @@ public class ParseMenuData {
     private static final String TAG_PRODUCT_ID = "product_id";
     private static final String TAG_DIET_TYPE = "diet_type";
 
-    @SuppressWarnings("unused")
-    private static RestaurantMenuHolder holder;
     private ArrayList<RestaurantMenuObject> restaurantMenu;
+    protected InitialiseSingleton init;
 
-    public ParseMenuData(){
+    public ParseMenuData(Activity activity){
+        init = (InitialiseSingleton)activity.getApplication();
     }
 
     public String capitalize(String product_name) {
@@ -215,10 +217,12 @@ public class ParseMenuData {
                     menuArray[position] = new DailyMenu(lunchList, dinnerList);
                     restaurantMenu.add(new RestaurantMenuObject(outlet_id, outlet_name, location_name, image, menuArray));
                 }
-                holder = RestaurantMenuHolder.getInstance(restaurantMenu);
+                //holder = RestaurantMenuHolder.getInstance(restaurantMenu);
+                init.initMenus(restaurantMenu);
             }
-
-            holder = RestaurantMenuHolder.getInstance(restaurantMenu);
+            
+            init.initMenus(restaurantMenu);
+            //holder = RestaurantMenuHolder.getInstance(restaurantMenu);
             
         } catch (JSONException e) {
             e.printStackTrace();

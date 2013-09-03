@@ -238,9 +238,9 @@ public class SplashScreen extends Activity {
 	@SuppressWarnings("unchecked")
     private void loadData() {
 
-    	menuParser = new ParseMenuData();
-		locationParser = new ParseLocationData(this);
-		watcardVendorParser = new ParseWatcardVendorData(this);
+    	menuParser = new ParseMenuData(SplashScreen.this);
+		locationParser = new ParseLocationData(SplashScreen.this);
+		watcardVendorParser = new ParseWatcardVendorData(SplashScreen.this);
         		
 		if(refreshPref.equals("locations") || refreshPref.equals("menu")){
 		    
