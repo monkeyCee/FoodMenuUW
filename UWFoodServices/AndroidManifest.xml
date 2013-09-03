@@ -33,7 +33,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyC1u5cWRzGJsG4v89khhHYdLCiJz4Zd3Kw" />
+            android:value="AIzaSyCQgPReUADFnaBTF5tCXk00MJMTkGUdk6g" />
 
         <activity
             android:name="ca.uwaterloo.uwfoodservices.RestaurantMenuList"
@@ -101,6 +101,40 @@
             android:label="@string/title_activity_about_page" 
             android:screenOrientation="portrait" 
             android:theme="@android:style/Theme.Holo">
+        </activity>
+        
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.ProductInfo"
+            android:label="@string/title_activity_product_info"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.ProductInfoDialog"
+            android:label="@string/title_activity_tabbed_dialog" 
+            android:theme="@android:style/Theme.Holo.Dialog" >
+        </activity>
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.LoginWatcard"
+            android:label="@string/title_activity_about_page" 
+            android:screenOrientation="portrait" 
+            android:theme="@android:style/Theme.Holo.NoActionBar">
+        </activity>
+        
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.DataWatcard"
+            android:label="@string/title_activity_about_page" 
+            android:screenOrientation="portrait" 
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Holo.NoActionBar">
+        </activity>
+        
+        <activity
+            android:name="ca.uwaterloo.uwfoodservices.BalanceWatcard"
+            android:label="@string/title_activity_about_page" 
+            android:screenOrientation="portrait" 
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Holo.NoActionBar">
         </activity>
     </application>
 

@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class ParseMenuData {
 
     private static final String TAG_META = "meta";
@@ -40,7 +42,9 @@ public class ParseMenuData {
         product_name = "";
 
         for(int i = 0; i < tokens.length; i++){
-            if (!(tokens[i].equals("w/") || tokens[i].equals("and") || tokens[i].equals("on") || tokens[i].equals("with") || tokens[i].equals("de") )) {
+            if (!(tokens[i].equals("w/") || tokens[i].equals("and") || tokens[i].equals("on") 
+                    || tokens[i].equals("with") || tokens[i].equals("de") || tokens[i].equals("a"))
+                    || tokens[i].equals("served") || tokens[i].equals("in") || tokens[i].equals("of")) {
                 char capLetter = Character.toUpperCase(tokens[i].charAt(0));
                 product_name +=  " " + capLetter + tokens[i].substring(1, tokens[i].length());
             } else {
@@ -71,7 +75,7 @@ public class ParseMenuData {
         product_name = product_name.trim();
         
         if (product_name.contains(" and ")) {
-            product_name = product_name.replace("and", "&");
+            product_name = product_name.replace(" and ", " & ");
         }
         product_name = product_name.trim();
         
@@ -100,7 +104,6 @@ public class ParseMenuData {
             JSONObject meta = json.getJSONObject(TAG_META);
             
             if (meta.getString("status").equals("200")){
-    
                 JSONObject data = json.getJSONObject(TAG_DATA);
                 JSONArray outlets = data.getJSONArray(TAG_OUTLETS);
                 JSONObject restaurant;
@@ -111,7 +114,7 @@ public class ParseMenuData {
                 JSONArray lunch;
                 JSONArray dinner;
                 String product_name;
-                int product_id;
+                Integer product_id = null;
                 String diet_type;
     
                 String weekDay;
@@ -166,34 +169,39 @@ public class ParseMenuData {
                         if (meals.has(TAG_LUNCH) && (meals.getJSONArray(TAG_LUNCH).length() > 0)) {
                             lunch = meals.getJSONArray(TAG_LUNCH);
                             for (int k = 0; k < lunch.length(); k ++) {
-                                product_name = checkProductName(lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME), outlet_name);
-
-                                if (lunch.getJSONObject(k).getString(TAG_PRODUCT_ID).equals("null")) {
-                                    product_id = -1;
-                                } else {
-                                    product_id = Integer.parseInt(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
-                                }
+                                product_name = lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME);
+                                
+                                product_id = MenuUtilities.getInteger(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
                                 diet_type = lunch.getJSONObject(k).getString(TAG_DIET_TYPE);
-
+                                
+                             // Check for 'Chef Special' which has a product id but does not contain any product info
+                                if (product_id != null) {
+                                    if (product_id == 2439) {
+                                        product_id = null;
+                                    }
+                                }
+                                
                                 lunchList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
+    
                             }
                         }
                         // Dinner
                         if (meals.has(TAG_DINNER) && (meals.getJSONArray(TAG_DINNER).length() > 0)) {
                             dinner = meals.getJSONArray(TAG_DINNER);
                             for (int k = 0; k < dinner.length(); k ++) {
-                                product_name = checkProductName(dinner.getJSONObject(k).getString(TAG_PRODUCT_NAME), outlet_name);
+                                product_name = dinner.getJSONObject(k).getString(TAG_PRODUCT_NAME);
     
-                                if (dinner.getJSONObject(k).getString(TAG_PRODUCT_ID).equals("null")) {
-                                    product_id = -1;
-                                } else {
-                                    product_id = Integer.parseInt(dinner.getJSONObject(k).getString(TAG_PRODUCT_ID));
-                                }
-    
+                                product_id = MenuUtilities.getInteger(dinner.getJSONObject(k).getString(TAG_PRODUCT_ID));
                                 diet_type = dinner.getJSONObject(k).getString(TAG_DIET_TYPE);
     
+                             // Check for 'Chef Special' which has a product id but does not contain any product info
+                                if (product_id != null) {
+                                    if (product_id == 2439) {
+                                        product_id = null;
+                                    }
+                                }
+                                
                                 dinnerList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
-
                             }
                         }
     
@@ -201,6 +209,10 @@ public class ParseMenuData {
                         if (dinnerList.size() == 0) { dinnerList = null; }
                         menuArray[position] = new DailyMenu(lunchList, dinnerList); // THIS ONE
                     }
+                    
+                    if (lunchList.size() == 0) { lunchList = null; }
+                    if (dinnerList.size() == 0) { dinnerList = null; }
+                    menuArray[position] = new DailyMenu(lunchList, dinnerList);
                     restaurantMenu.add(new RestaurantMenuObject(outlet_id, outlet_name, location_name, image, menuArray));
                 }
                 holder = RestaurantMenuHolder.getInstance(restaurantMenu);

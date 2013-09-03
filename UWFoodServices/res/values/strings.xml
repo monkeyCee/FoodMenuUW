@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name" translatable="false">UW Food Menu</string>
+    <string name="defaultdata">Default</string>
     <string name="hello_world" translatable="false">Hello world!</string>
     <string name="mainScreenText" translatable="false">What would you like to view?</string>
     <string name="mainscreen" translatable="false">Images for the main screen!</string>
@@ -18,10 +19,14 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="title_activity_menu_lists">MenuLists</string>
+    <string name="title_activity_login_watcard">Watcard login</string>
     <string name="ShowAll">Show All</string>
     <string name="Clear">Clear Map</string>
     <string name="error">Network connection required. Click the settings button to go to your phone settings. When you are connected, hit the refresh button.</string>
     <string name="ready">Refresh!</string>
+    <string name="Username">Student ID</string>
+    <string name="Password">WatCard PIN</string>
+    <string name="login">Login</string>
     <string name="settingsPhone">Phone Settings</string>
 
     <!-- Menu List strings. -->
@@ -92,5 +97,18 @@
     <string name="licenses">LICENSES</string>
     <string name="click_here_to_view_legal_notice">Click here to view Legal Notice</string>
     <string name="contains_information_provided_by_the_university_of_waterloo_under_license_on_an_as_is_basis_">Contains information provided by the University of Waterloo under license on an \'as is\' basis.</string>
+
+    <string name="title_activity_watcard_vendors">WatcardVendors</string>
+        
+    <string-array name="spinner_array">
+    <item>All</item>
+	<item>On-Campus Food Services</item>
+	<item>Off-Campus Flex Locations</item>	
+	</string-array>
+
+    <string name="title_activity_product_info">ProductInfo</string>
+    <string name="title_activity_tabbed_dialog">TabbedDialogActivity</string>
+    <string name="title_activity_balance_watcard">BalanceWatcard</string>
+    <string name="title_activity_data_watcard">DataWatcard</string>
 
 </resources>

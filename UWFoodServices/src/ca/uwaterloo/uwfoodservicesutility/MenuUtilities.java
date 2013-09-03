@@ -8,6 +8,12 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.text.TextPaint;
 import android.view.Display;
+import android.view.View;
+import android.view.View.MeasureSpec;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import ca.uwaterloo.uwfoodservices.R;
 
 public class MenuUtilities {
@@ -37,6 +43,25 @@ public class MenuUtilities {
         imageHash.put("University Club", R.drawable.universityclub);
         imageHash.put("UW Food Services Admin Office", R.drawable.foodservices);
         imageHash.put("Williams Fresh Café", R.drawable.williams_0);
+        
+        imageHash.put("Apple Two Hairstylists", R.drawable.appletwo);
+        imageHash.put("Campus Pizza", R.drawable.campuspizza);
+        imageHash.put("Curry in a Hurry", R.drawable.curryinahurry);
+        imageHash.put("Domino's Pizza", R.drawable.dominospizza);
+        imageHash.put("East Side Mario's", R.drawable.eastsidemarios);
+        imageHash.put("Farah Foods", R.drawable.farahfoods);
+        imageHash.put("Grab a Greek", R.drawable.grabagreek);
+        imageHash.put("McGinnis Front Row", R.drawable.frontrow);
+        imageHash.put("Meet Point", R.drawable.meetpoint);
+        imageHash.put("Pita Pit", R.drawable.pitapit);
+        imageHash.put("Pizza Pizza", R.drawable.pizzapizza);
+        imageHash.put("Sobeys", R.drawable.sobeys);
+        imageHash.put("Student Health Pharmacy", R.drawable.studenthealthpharmacy);
+        imageHash.put("Swiss Chalet", R.drawable.swisschalet);
+        imageHash.put("The Grill", R.drawable.thegrill);
+        imageHash.put("Waterloo Taxi", R.drawable.waterlootaxi);
+        imageHash.put("Williams Coffee Pub", R.drawable.williams_1);
+        
         return imageHash;
     }
     
@@ -51,6 +76,8 @@ public class MenuUtilities {
         else if (name.equals("LA Cafe")) { return "Liquid Assets Café"; }
         else if (name.equals("UW Food Services Administrative Office")) { return "UW Food Services Admin Office"; }
         else if (name.equals("Williams Fresh Cafe")) { return "Williams Fresh Café"; }
+        else if (name.equals("East Side Mario&apos;s")){return "East Side Mario's";}
+        else if (name.equals("Domino&apos;s Pizza")){return "Domino's Pizza";}
         return name;
     }
 
@@ -91,4 +118,53 @@ public class MenuUtilities {
         display.getSize(size);
         return size.y;
     }
+    
+    public static Integer getInteger(String string) {
+        if (string.equals("null") || string.equals("")) {
+            return null;
+        } else {
+            return Integer.valueOf(string);
+        }
+    }
+    
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter(); 
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
+    /*
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+        int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(), MeasureSpec.AT_MOST);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0) {
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LayoutParams.WRAP_CONTENT));
+            }
+            view.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }*/
 }
