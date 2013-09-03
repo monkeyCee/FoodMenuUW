@@ -85,7 +85,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         calendar = Calendar.getInstance();
         currentDate = Calendar.getInstance();
         
-        simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
+        simpleDateFormat = new SimpleDateFormat("MMM dd", Locale.CANADA);
         formattedDate = simpleDateFormat.format(calendar.getTime());
         weekDay = 0;
         if (calendar.getTime().toString().split(" ")[0].equals("Mon")) { weekDay = 0; }
@@ -259,7 +259,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 			calendar = Calendar.getInstance();
 			calendar.add(Calendar.DATE, getArguments().getInt(ARG_SECTION_NUMBER) - weekDay);
 			
-			simpleDateFormat = new SimpleDateFormat("MMMMMMMMM dd", Locale.CANADA);
+			simpleDateFormat = new SimpleDateFormat("MMM dd", Locale.CANADA);
 			
 			if (simpleDateFormat.format(calendar.getTime()).split(" ")[1].startsWith("0")) {
 				formattedDate = simpleDateFormat.format(calendar.getTime()).split(" ")[0] +
