@@ -113,17 +113,32 @@ public class SplashScreen extends Activity {
                     @Override
                     public void run() 
                     {
-                        if((RestaurantLocationHolder.getInstance().objects == null)
-                                || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+                        if((RestaurantLocationHolder.getInstance() == null)
+                                || (RestaurantMenuHolder.getInstance() == null)){
+                            
+                            if((RestaurantLocationHolder.getInstance().objects == null)
+                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+                                handler.postDelayed(this, 1000);
+                            }
                             handler.postDelayed(this, 1000);
+                        }
+                        else{
+                            if((RestaurantLocationHolder.getInstance().objects == null)
+                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+                                handler.postDelayed(this, 1000);
+                            }
+                            else{
+                                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+                                startActivity(intent);
+                            }
+                            
                         }
                     }
                 };
 
                 handler.postDelayed(r, 2000);
                 
-                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
-                startActivity(intent);
+                
             }
         });
     }
@@ -238,9 +253,9 @@ public class SplashScreen extends Activity {
 	@SuppressWarnings("unchecked")
     private void loadData() {
 
-    	menuParser = new ParseMenuData();
-		locationParser = new ParseLocationData(this);
-		watcardVendorParser = new ParseWatcardVendorData(this);
+    	menuParser = new ParseMenuData(SplashScreen.this);
+		locationParser = new ParseLocationData(SplashScreen.this);
+		watcardVendorParser = new ParseWatcardVendorData(SplashScreen.this);
         		
 		if(refreshPref.equals("locations") || refreshPref.equals("menu")){
 		    
@@ -254,39 +269,55 @@ public class SplashScreen extends Activity {
 	    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
 	    			
 	    			final Handler handler = new Handler();
-		    		final Runnable r = new Runnable()
-		    		{
-		    		    public void run() 
-		    		    {
-		    		    	if(RestaurantLocationHolder.getInstance() == null || RestaurantMenuHolder.getInstance() == null ||
-		    		    	        WatcardVendorHolder.getInstance() == null){
-		    		    		handler.postDelayed(this, 1000);
-		    		    	}
-		    		    }
-		    		};
+	                final Runnable r = new Runnable()
+	                {
+	                    @Override
+	                    public void run() 
+	                    {
+	                        if((RestaurantLocationHolder.getInstance() == null)
+	                                || (RestaurantMenuHolder.getInstance() == null)){
+	                            
+	                            if((RestaurantLocationHolder.getInstance().objects == null)
+	                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+	                                handler.postDelayed(this, 1000);
+	                            }
+	                            handler.postDelayed(this, 1000);
+	                        }
+	                        else{
+	                            if((RestaurantLocationHolder.getInstance().objects == null)
+	                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+	                                handler.postDelayed(this, 1000);
+	                            }
+	                            else{
+	                                if(refreshPref.equals("locations")){
+	                                    Intent intent = new Intent(SplashScreen.this, LocationHours.class);
+	                                    prefEditor.remove("refresh");
+	                                    prefEditor.commit();
+	                                    startActivity(intent);
+	                                }
+	                                else{
+	                                    if(refreshPref.equals("menu")){
+	                                        String restaurant = sharedPrefs.getString("restaurant", "");
+	                                        int position = sharedPrefs.getInt("position", -1);
+	                                        Intent intent = new Intent(SplashScreen.this, MenuLists.class);
+	                                        prefEditor.remove("refresh");
+	                                        prefEditor.remove("restaurant");
+	                                        prefEditor.remove("position");
+	                                        prefEditor.commit();
+	                                        intent.putExtra("Restaurant Name", restaurant);
+	                                        intent.putExtra("Restaurant Position", position);
+	                                        startActivity(intent);
+	                                    }
+	                                }
+	                            }
+	                            
+	                        }
+	                    }
+	                };
 
-		    		handler.postDelayed(r, 2000);
+	                handler.postDelayed(r, 2000);
 		    		
-	    			if(refreshPref.equals("locations")){
-	    				Intent intent = new Intent(this, LocationHours.class);
-	    				prefEditor.remove("refresh");
-	    	            prefEditor.commit();
-	    				startActivity(intent);
-	    			}
-	    			else{
-	    				if(refreshPref.equals("menu")){
-	    					String restaurant = sharedPrefs.getString("restaurant", "");
-	    					int position = sharedPrefs.getInt("position", -1);
-		    				Intent intent = new Intent(this, MenuLists.class);
-		    		        prefEditor.remove("refresh");
-		    		        prefEditor.remove("restaurant");
-		    		        prefEditor.remove("position");
-		    		        prefEditor.commit();
-		    				intent.putExtra("Restaurant Name", restaurant);
-		    				intent.putExtra("Restaurant Position", position);
-		    				startActivity(intent);
-		    			}
-	    			}
+	    			
 	        }
 			
 		}

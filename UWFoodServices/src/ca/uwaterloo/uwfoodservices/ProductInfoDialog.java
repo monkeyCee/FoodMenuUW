@@ -7,6 +7,8 @@ import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -59,6 +61,8 @@ public class ProductInfoDialog extends FragmentActivity implements
     
     static ParseProductInfo productInfoParser;
     static ProductInfoHolder productInfoHolder = null;
+    AsyncDataFetcher dataFetcher = new AsyncDataFetcher();
+    
     
     static boolean loaded = false;
     
@@ -82,10 +86,7 @@ public class ProductInfoDialog extends FragmentActivity implements
 		tf = Typeface.createFromAsset(this.getAssets(), "Roboto-Light.ttf");
 		
 		dialog = new ProgressDialog(this);
-		dialog.setMessage("Please wait");
-        dialog.show();
-		
-		//Linearlayout layout = (LinearLayout) findViewById(R.id.)
+
 		
 		receiver = new NetworkReceiver(this);
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -129,8 +130,10 @@ public class ProductInfoDialog extends FragmentActivity implements
         }
         
         productInfoParser = new ParseProductInfo();
-        new AsyncDataFetcher(this).execute(productInfoUrls);
-		
+        Log.d("Calling Async Task", "Now");
+        
+        dataFetcher.execute(productInfoUrls);
+        
         tabPosition = 0;
         for (int i = 0; i < productNames.size(); i ++) {
             Log.d(productNames.get(i), "TABPOSITION - PRODUCT NAMES");
@@ -141,36 +144,41 @@ public class ProductInfoDialog extends FragmentActivity implements
         }
         
         Log.d(tabPosition + "", "TABPOSITION");
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mTabHost = (TabHost) findViewById(android.R.id.tabhost);
+        mTabHost.setup();
         
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		// TabHost initialization
-		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-		mTabHost.setup();
-		
-		for (int i = 0; i < productNames.size(); i++) {
-			mTabHost.addTab(mTabHost.newTabSpec("tab" + i).setContent(this).setIndicator(productNames.get(i)));
-		}
-		mTabHost.setOnTabChangedListener(this);
-		mTabHost.setCurrentTab(tabPosition);
-		// ViewPager initialization
-		mPagerContent = new ProductInfoAdapter(getSupportFragmentManager());
-		mViewPager.setAdapter(mPagerContent);
-		mViewPager.setCurrentItem(tabPosition);
-		mViewPager.setOffscreenPageLimit(1);
-		mViewPager.setOnPageChangeListener(this);
+        for (int i = 0; i < productNames.size(); i++) {
+            mTabHost.addTab(mTabHost.newTabSpec("tab" + i).setContent(this).setIndicator(productNames.get(i)));
+        }
+        mTabHost.setOnTabChangedListener(this);
+        mTabHost.setCurrentTab(tabPosition);
+        // ViewPager initialization
+        mViewPager.setOnPageChangeListener(this);
+        dialog.setOnDismissListener(new OnDismissListener(){
+
+            @Override
+            public void onDismiss(DialogInterface arg0) {
+                mPagerContent = new ProductInfoAdapter(getSupportFragmentManager());
+                mViewPager.setAdapter(mPagerContent);
+                mViewPager.setCurrentItem(tabPosition);
+                mViewPager.setOffscreenPageLimit(1);
+            }
+            
+        });
+           
+           
 	}
 
 	private static class AsyncDataFetcher extends AsyncTask<List<String>, Void, Void> {
 
-	    private Context context;
-	    
-	    
-        public AsyncDataFetcher(Context context) {
-            this.context = context;
+        public AsyncDataFetcher() {
+
         }
         
         protected void onPreExecute() {
-            
+            dialog.show();
+            dialog.setMessage("Please wait..");
         }
 
 
@@ -194,8 +202,7 @@ public class ProductInfoDialog extends FragmentActivity implements
         protected void onPostExecute(Void result) {
             if (dialog.isShowing()) {
                 dialog.dismiss();
-            }
-            super.onPostExecute(result);
+            }     
         }
         
 	}
@@ -218,6 +225,7 @@ public class ProductInfoDialog extends FragmentActivity implements
 
         @Override
         public Fragment getItem(int position) {
+            Log.d("Calling", "Fragment ProductInfo");
             Fragment fragment = new ProductInfoFragment();
             Bundle args = new Bundle();
             args.putInt(ProductInfoFragment.ARG_SECTION_NUMBER, position);
@@ -252,6 +260,7 @@ public class ProductInfoDialog extends FragmentActivity implements
             while(loaded == false) {
             }
                 
+            Log.d("On create view", "Product Info");
             productInfoHolder = ProductInfoHolder.getInstance();
             
             left_list.clear();
