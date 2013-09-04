@@ -256,17 +256,7 @@ public class ProductInfoDialog extends FragmentActivity implements
             
             left_list.clear();
             right_list.clear();
-            Log.d(position + "", "POSITION1");
-            Log.d(productInfoHolder.productInfo.get(position) + "", "POSITION1");
             serving = "Per " + productInfoHolder.productInfo.get(position).get_serving_size();
-            Log.d(position + "", "POSITION1.1");
-            if (productInfoHolder.productInfo.get(position).get_serving_size_unit().equals("g")) {
-                serving += " grams";
-            } else {
-                serving += " ml";
-            }
-            Log.d(position + "", "POSITION1.9");
-            Log.d(position + "", "POSITION2");
             left_list.add(serving);
             right_list.add("");
             left_list.add("Amount");
@@ -275,11 +265,21 @@ public class ProductInfoDialog extends FragmentActivity implements
             right_list.add("");
             left_list.add("Fat " + productInfoHolder.productInfo.get(position).get_total_fat_g() + " g");
             right_list.add(productInfoHolder.productInfo.get(position).get_total_fat_percent() + " %");
-            left_list.add("  Saturated " + productInfoHolder.productInfo.get(position).get_fat_saturated_g() + " g");
-            right_list.add(productInfoHolder.productInfo.get(position).get_fat_saturated_percent() + " %");
-            if (productInfoHolder.productInfo.get(position).get_fat_trans_g() != null) {
-                left_list.add("  Trans " + productInfoHolder.productInfo.get(position).get_fat_trans_g() + "");
-                right_list.add(productInfoHolder.productInfo.get(position).get_fat_trans_percent() + " %");
+            if (productInfoHolder.productInfo.get(position).get_fat_saturated_g() != null) {
+                left_list.add("  Saturated " + productInfoHolder.productInfo.get(position).get_fat_saturated_g() + " g");
+                if (productInfoHolder.productInfo.get(position).get_fat_saturated_percent() != null) {
+                    right_list.add(productInfoHolder.productInfo.get(position).get_fat_saturated_percent() + " %");
+                } else {
+                    right_list.add("");
+                }
+            }
+                if (productInfoHolder.productInfo.get(position).get_fat_trans_g() != null) {
+                left_list.add("  Trans " + productInfoHolder.productInfo.get(position).get_fat_trans_g() + " g");
+                if (productInfoHolder.productInfo.get(position).get_fat_trans_percent() != null) {
+                    right_list.add(productInfoHolder.productInfo.get(position).get_fat_trans_percent() + " %");
+                } else {
+                    right_list.add("");
+                }
             }
             left_list.add("Cholesterol " + productInfoHolder.productInfo.get(position).get_cholesterol_mg() + " mg");
             right_list.add("");

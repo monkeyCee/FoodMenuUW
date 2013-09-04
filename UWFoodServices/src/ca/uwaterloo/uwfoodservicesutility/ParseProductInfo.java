@@ -66,7 +66,9 @@ public class ParseProductInfo {
                 Integer product_id = MenuUtilities.getInteger(data.getString(TAG_PRODUCT_ID)); 
                 String product_name = data.getString(TAG_PRODUCT_NAME);
                 List<String> ingredients = Arrays.asList(data.getString(TAG_INGREDIENTS).split(", ")); //
-                Integer serving_size = MenuUtilities.getInteger(data.getString(TAG_SERVING_SIZE).replaceAll("\\D+",""));
+                String serving_size = data.getString(TAG_SERVING_SIZE);
+                Integer serving_size_amount = MenuUtilities.getInteger(data.getString(TAG_SERVING_SIZE)
+                        .replaceAll("\\D+",""));
                 String serving_size_unit;
                 if (data.getString(TAG_SERVING_SIZE).contains("grams")) {
                     serving_size_unit = "g";
@@ -103,11 +105,12 @@ public class ParseProductInfo {
                 Integer diet_id = MenuUtilities.getInteger(data.getString(TAG_DIET_ID));
                 String diet_type = data.getString(TAG_DIET_TYPE);
                 Log.d("YES4", "LOADED");
-                productInfoList.add(new ProductInfoObject(product_id, product_name, ingredients, serving_size, serving_size_unit, 
-                        calories, total_fat_g, total_fat_percent, fat_saturated_g, fat_saturated_percent, fat_trans_g,
-                        fat_trans_percent, cholesterol_mg, sodium_mg, sodium_percent, carbo_g, carbo_percent, carbo_fibre_g,
-                        carbo_fibre_percent, carbo_sugars_g, protein_g, vitamin_a_percent, vitamin_c_percent, calcium_percent,
-                        iron_percent, micro_nutrients, tips, diet_id, diet_type));
+                productInfoList.add(new ProductInfoObject(product_id, product_name, ingredients, serving_size, 
+                        serving_size_amount, serving_size_unit, calories, total_fat_g, total_fat_percent, 
+                        fat_saturated_g, fat_saturated_percent, fat_trans_g, fat_trans_percent, cholesterol_mg,
+                        sodium_mg, sodium_percent, carbo_g, carbo_percent, carbo_fibre_g, carbo_fibre_percent,
+                        carbo_sugars_g, protein_g, vitamin_a_percent, vitamin_c_percent, calcium_percent, iron_percent, 
+                        micro_nutrients, tips, diet_id, diet_type));
                 Log.d("YES5", "LOADED");
                 
                 Log.d(productInfoList.size() + "", "PRODUCT INFO LIST - SIZE");

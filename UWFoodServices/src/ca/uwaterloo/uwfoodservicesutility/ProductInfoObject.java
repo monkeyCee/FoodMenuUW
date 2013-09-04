@@ -10,7 +10,8 @@ public class ProductInfoObject implements Serializable {
     Integer product_id;
     String product_name;
     List<String> ingredients;
-    Integer serving_size;
+    String serving_size;
+    Integer serving_size_amount;
     String serving_size_unit;
     Integer calories;
     Integer total_fat_g;
@@ -38,7 +39,7 @@ public class ProductInfoObject implements Serializable {
     String diet_type;
     
     public ProductInfoObject(Integer product_id, String product_name, List<String> ingredients,
-            Integer serving_size, String serving_size_unit, Integer calories, Integer total_fat_g, 
+            String serving_size, Integer serving_size_amount, String serving_size_unit, Integer calories, Integer total_fat_g, 
             Integer total_fat_percent, Integer fat_saturated_g, Integer fat_saturated_percent, Integer fat_trans_g,
             Integer fat_trans_percent, Integer cholesterol_mg, Integer sodium_mg, Integer sodium_percent,
             Integer carbo_g, Integer carbo_percent, Integer carbo_fibre_g, Integer carbo_fibre_percent,
@@ -50,6 +51,7 @@ public class ProductInfoObject implements Serializable {
         this.product_name = product_name;
         this.ingredients = ingredients;
         this.serving_size = serving_size;
+        this.serving_size_amount = serving_size_amount;
         this.serving_size_unit = serving_size_unit;
         this.calories = calories;
         this.total_fat_g = total_fat_g;
@@ -80,7 +82,8 @@ public class ProductInfoObject implements Serializable {
     public Integer get_product_id(){ return product_id; }
     public String get_product_name(){ return product_name; }
     public List<String> get_ingredients(){ return ingredients; }
-    public Integer get_serving_size(){ return serving_size; }
+    public String get_serving_size(){ return serving_size; }
+    public Integer get_serving_size_amount(){ return serving_size_amount; }
     public String get_serving_size_unit(){ return serving_size_unit; }
     public Integer get_calories(){ return calories; }
     public Integer get_total_fat_g(){ return total_fat_g; }
@@ -100,7 +103,7 @@ public class ProductInfoObject implements Serializable {
     public Integer get_protein_g(){ return protein_g; }
     public Integer get_vitamin_a_percent(){ return vitamin_a_percent; }
     public Integer get_vitamin_c_percent(){ return vitamin_c_percent; }
-    public Integer get_calcium_percent(){ return sodium_percent; }
+    public Integer get_calcium_percent(){ return calcium_percent; }
     public Integer get_iron_percent(){ return iron_percent; }
     public List<String> get_micro_nutrients(){ return micro_nutrients; }
     public String get_tips(){ return tips; }
@@ -110,7 +113,8 @@ public class ProductInfoObject implements Serializable {
     public void product_id(Integer product_id){ this.product_id = product_id; }
     public void product_name(String product_name){ this.product_name = product_name; }
     public void ingredients(ArrayList<String> ingredients){ this.ingredients = ingredients; }
-    public void serving_size(Integer serving_size){ this.serving_size = serving_size; }
+    public void serving_size(String serving_size){ this.serving_size = serving_size; }
+    public void serving_size(Integer serving_size_amount){ this.serving_size_amount = serving_size_amount; }
     public void serving_size_unit(String serving_size_unit){ this.serving_size_unit = serving_size_unit; }
     public void calories(Integer calories){ this.calories = calories; }
     public void total_fat_g(Integer total_fat_g){ this.total_fat_g = total_fat_g; }
