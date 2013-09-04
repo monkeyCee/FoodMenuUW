@@ -113,17 +113,32 @@ public class SplashScreen extends Activity {
                     @Override
                     public void run() 
                     {
-                        if((RestaurantLocationHolder.getInstance().objects == null)
-                                || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+                        if((RestaurantLocationHolder.getInstance() == null)
+                                || (RestaurantMenuHolder.getInstance() == null)){
+                            
+                            if((RestaurantLocationHolder.getInstance().objects == null)
+                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+                                handler.postDelayed(this, 1000);
+                            }
                             handler.postDelayed(this, 1000);
+                        }
+                        else{
+                            if((RestaurantLocationHolder.getInstance().objects == null)
+                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+                                handler.postDelayed(this, 1000);
+                            }
+                            else{
+                                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+                                startActivity(intent);
+                            }
+                            
                         }
                     }
                 };
 
                 handler.postDelayed(r, 2000);
                 
-                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
-                startActivity(intent);
+                
             }
         });
     }
@@ -254,18 +269,35 @@ public class SplashScreen extends Activity {
 	    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
 	    			
 	    			final Handler handler = new Handler();
-		    		final Runnable r = new Runnable()
-		    		{
-		    		    public void run() 
-		    		    {
-		    		    	if(RestaurantLocationHolder.getInstance() == null || RestaurantMenuHolder.getInstance() == null ||
-		    		    	        WatcardVendorHolder.getInstance() == null){
-		    		    		handler.postDelayed(this, 1000);
-		    		    	}
-		    		    }
-		    		};
+	                final Runnable r = new Runnable()
+	                {
+	                    @Override
+	                    public void run() 
+	                    {
+	                        if((RestaurantLocationHolder.getInstance() == null)
+	                                || (RestaurantMenuHolder.getInstance() == null)){
+	                            
+	                            if((RestaurantLocationHolder.getInstance().objects == null)
+	                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+	                                handler.postDelayed(this, 1000);
+	                            }
+	                            handler.postDelayed(this, 1000);
+	                        }
+	                        else{
+	                            if((RestaurantLocationHolder.getInstance().objects == null)
+	                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+	                                handler.postDelayed(this, 1000);
+	                            }
+	                            else{
+	                                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+	                                startActivity(intent);
+	                            }
+	                            
+	                        }
+	                    }
+	                };
 
-		    		handler.postDelayed(r, 2000);
+	                handler.postDelayed(r, 2000);
 		    		
 	    			if(refreshPref.equals("locations")){
 	    				Intent intent = new Intent(this, LocationHours.class);

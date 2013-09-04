@@ -8,6 +8,8 @@ import java.util.Locale;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -63,8 +65,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
     static SimpleDateFormat simpleDateFormat;
     static Calendar currentDate;
     
-    private static ProgressDialog dialog;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,21 +149,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
     }
 
-    @Override
-    protected void onPause() {
-        // Hacked together way to make progress dialog work
-        if (dialog != null) {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-               @Override
-               public void run() {
-                   dialog.dismiss(); 
-               }
-            }, 2000);
-        }
-        super.onStop();
-    }
-    
 	public static class MenuAdapter extends FragmentPagerAdapter {
 
 		private ArrayList<MenuFragment> mFragments;
@@ -215,24 +200,6 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 		
 		public MenuFragment() {
 		}
-
-		class ProgressAsyncTask extends AsyncTask<Void, Void, Void> {
-	        
-	        public ProgressAsyncTask() {
-	        }
-	        
-	        @Override
-	        protected void onPreExecute() {
-	            dialog = new ProgressDialog(getActivity());
-	            dialog.setMessage("Please wait");
-	            dialog.show();
-	        }
-
-	        @Override
-	        protected Void doInBackground(Void... params) {
-	            return null;
-	        }
-	    }
 		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -366,7 +333,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
 	                    long arg3) {
 			        if (clickableList.get(day).get(arg2).equals("true")) {
 			            if (receiver.isNetwork()) {
-        	                Intent intentProductInfo = new Intent(getActivity(), ProductInfoDialog.class);
+        	                final Intent intentProductInfo = new Intent(getActivity(), ProductInfoDialog.class);
         	                Long productDay = currentDate.getTimeInMillis();
         	                intentProductInfo.putExtra("Restaurant Position", positionRestaurant);
         	                intentProductInfo.putExtra("Product Day", productDay);
@@ -374,10 +341,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
         	                int currentPosition = arg2;
         	                intentProductInfo.putExtra("Current Position", currentPosition);
         	                intentProductInfo.putExtra("Weekday", day);
-        	                
-        	                new ProgressAsyncTask().execute();
-        	               
-        	                startActivity(intentProductInfo);
+        	                startActivity(intentProductInfo);                
         	                
 			            } else {
 			                final Toast toast = Toast.makeText(getActivity(), 
