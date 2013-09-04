@@ -1,7 +1,6 @@
 package ca.uwaterloo.uwfoodservices;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,7 +138,7 @@ public class ImageAdapter extends BaseAdapter{
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            if (position < locationHolder.getCount() && position >=0)
+            if ((position < locationHolder.getCount()) && (position >=0))
             {
                 holder.restaraunt_name.setText(locationHolder.objects[position].getRestaurant());
                 holder.location.setText(locationHolder.objects[position].getLocation());
@@ -156,8 +155,8 @@ public class ImageAdapter extends BaseAdapter{
                 holder.restaraunt_name.setTypeface(tf);
                 holder.location.setTypeface(tf);
             }
-            
-            
+
+
 
             return convertView;
         }

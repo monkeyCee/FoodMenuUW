@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +19,7 @@ public class LoginWatcard extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_watcard);
-        
+
         TextView login = (TextView) findViewById(R.id.login);
         TextView pinReset = (TextView) findViewById(R.id.resetPin);
         TextView newStudents = (TextView) findViewById(R.id.newStudent);
@@ -34,14 +33,14 @@ public class LoginWatcard extends Activity {
         newStudents.setText(Html.fromHtml("<a href='http://www.watcard.uwaterloo.ca/newstudents.html'>Information for new students</a>"));
         newStudents.setMovementMethod(LinkMovementMethod.getInstance());
         login.setText("WatCard Login");
-        
+
         final EditText username = (EditText) findViewById(R.id.username);
         final EditText password = (EditText) findViewById(R.id.password);
         Button go = (Button) findViewById(R.id.go);
         go.setTypeface(tf);
-        
+
         go.setOnClickListener(new View.OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {      
                 if(!username.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
@@ -53,12 +52,12 @@ public class LoginWatcard extends Activity {
                 else{
                     Toast.makeText(getApplicationContext(), "Invalid Credentials", Toast.LENGTH_SHORT).show();
                 }
-                
+
             }
         });
-             
+
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {

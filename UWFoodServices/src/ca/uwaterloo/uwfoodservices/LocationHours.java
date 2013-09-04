@@ -12,22 +12,18 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
-import android.view.Menu;
 import android.widget.Toast;
 
 public class LocationHours extends SlidingMenus implements ActionBar.TabListener, ActivityCommunicator {
-    
+
     ViewPager vp;
     ActionBar actionBar;
     public FragmentCommunicator fragmentCommunicator;
@@ -41,9 +37,9 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_hours);
-        
+
         pref = PreferenceManager.getDefaultSharedPreferences(this);
-        
+
         receiver = new NetworkReceiver(this);
         actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -73,14 +69,14 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
             }
 
         });
-        
+
         vp.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 actionBar.setSelectedNavigationItem(position);
             }
         });
-        
+
         for (int i = 0; i < 2; i++) {
             actionBar.addTab(actionBar.newTab()
                     .setText(location_tabs[i])
@@ -90,7 +86,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
         vp.setCurrentItem(0);
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
     }
-    
+
     public class MenuAdapter extends FragmentStatePagerAdapter {
 
         private ArrayList<MenuFragment> mFragments;        
@@ -98,8 +94,9 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
         public MenuAdapter(FragmentManager fm) {
             super(fm);
             mFragments = new ArrayList<MenuFragment>();
-            for (int i = 0; i < location_tabs.length; i++)
+            for (int i = 0; i < location_tabs.length; i++) {
                 mFragments.add(new MenuFragment());
+            }
         }
 
         @Override
@@ -113,12 +110,13 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
                 Fragment fragment = new ListViewFragment();
                 Bundle args = new Bundle();
                 args.putInt(MenuFragment.ARG_SECTION_NUMBER, position);
-                if (filterType.equals("all"))
+                if (filterType.equals("all")) {
                     args.putString ("type", "all");
-                else if (filterType.equals("location"))
+                } else if (filterType.equals("location")) {
                     args.putString ("type", "location");
-                else if (filterType.equals("watcardVendors"))
+                } else if (filterType.equals("watcardVendors")) {
                     args.putString ("type", "watcardVendors");
+                }
                 fragment.setArguments(args);
                 return fragment;        
             }
@@ -129,7 +127,7 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
                 fragment.setArguments(args);
                 return fragment;
             }            
-    }
+        }
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -142,19 +140,19 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
             toggle();
             return true;
         } else if (item.getTitle() == "Refresh") {
-            
-              if(receiver.isNetwork()){
-                    Intent intent = new Intent(LocationHours.this, SplashScreen.class);
-                    editor = pref.edit();
-                    editor.putString("refresh", "locations");
-                    editor.commit();
-                    startActivity(intent);
-                    finish();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Cannot refresh because either there is no network or the network does not match your preferences", Toast.LENGTH_SHORT).show();
-                }
-              
+
+            if(receiver.isNetwork()){
+                Intent intent = new Intent(LocationHours.this, SplashScreen.class);
+                editor = pref.edit();
+                editor.putString("refresh", "locations");
+                editor.commit();
+                startActivity(intent);
+                finish();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Cannot refresh because either there is no network or the network does not match your preferences", Toast.LENGTH_SHORT).show();
+            }
+
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -169,25 +167,25 @@ public class LocationHours extends SlidingMenus implements ActionBar.TabListener
     @Override
     public void passDataToActivity(int position, String filterOption) {
         this.filterType = filterOption;
-       fragmentCommunicator.passDataToFragment(position, filterType);        
+        fragmentCommunicator.passDataToFragment(position, filterType);        
     }
 
     @Override
     public void onTabSelected(Tab tab, FragmentTransaction ft) {
         vp.setCurrentItem(tab.getPosition());
-        
+
     }
 
     @Override
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void onTabReselected(Tab tab, FragmentTransaction ft) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

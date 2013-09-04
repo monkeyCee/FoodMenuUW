@@ -14,7 +14,7 @@ public class ParseProductInfo {
     private static final String TAG_META = "meta";
 
     private static final String TAG_DATA = "data";
-    
+
     private static final String TAG_PRODUCT_ID = "product_id";
     private static final String TAG_PRODUCT_NAME = "product_name";
     private static final String TAG_INGREDIENTS = "ingredients";
@@ -47,7 +47,7 @@ public class ParseProductInfo {
     private static final String TAG_DIET_TYPE = "diet_type";
 
     private static ProductInfoHolder holder;
-    
+
     public ParseProductInfo(){
     }
 
@@ -55,14 +55,11 @@ public class ParseProductInfo {
 
         List<ProductInfoObject> productInfoList = new ArrayList<ProductInfoObject>();
         try {
-            Log.d("YES 1 " + json.size(), "PRODUCT INFO");
-            
+
             for (JSONObject jsonObject : json) {
-                Log.d("YES1", "LOADED");
                 JSONObject meta = jsonObject.getJSONObject(TAG_META);
-                
+
                 JSONObject data = jsonObject.getJSONObject(TAG_DATA);
-                Log.d("YES 1", "PRODUCT INFO");
                 Integer product_id = MenuUtilities.getInteger(data.getString(TAG_PRODUCT_ID)); 
                 String product_name = data.getString(TAG_PRODUCT_NAME);
                 List<String> ingredients = Arrays.asList(data.getString(TAG_INGREDIENTS).split(", ")); //
@@ -79,7 +76,6 @@ public class ParseProductInfo {
                 } else {
                     serving_size_unit = "ml";
                 }
-                Log.d("YES2", "LOADED");
                 Integer calories = MenuUtilities.getInteger(data.getString(TAG_CALORIES));
                 Integer total_fat_g = MenuUtilities.getInteger(data.getString(TAG_TOTAL_FAT_G));
                 Integer total_fat_percent = MenuUtilities.getInteger(data.getString(TAG_TOTAL_FAT_PERCENT));
@@ -104,24 +100,20 @@ public class ParseProductInfo {
                 String tips = data.getString(TAG_TIPS);
                 Integer diet_id = MenuUtilities.getInteger(data.getString(TAG_DIET_ID));
                 String diet_type = data.getString(TAG_DIET_TYPE);
-                Log.d("YES4", "LOADED");
                 productInfoList.add(new ProductInfoObject(product_id, product_name, ingredients, serving_size, 
                         serving_size_amount, serving_size_unit, calories, total_fat_g, total_fat_percent, 
                         fat_saturated_g, fat_saturated_percent, fat_trans_g, fat_trans_percent, cholesterol_mg,
                         sodium_mg, sodium_percent, carbo_g, carbo_percent, carbo_fibre_g, carbo_fibre_percent,
                         carbo_sugars_g, protein_g, vitamin_a_percent, vitamin_c_percent, calcium_percent, iron_percent, 
                         micro_nutrients, tips, diet_id, diet_type));
-                Log.d("YES5", "LOADED");
-                
-                Log.d(productInfoList.size() + "", "PRODUCT INFO LIST - SIZE");
             }
-            
+
             holder = ProductInfoHolder.getInstance(productInfoList);
-            
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        
+
     }
 
 }

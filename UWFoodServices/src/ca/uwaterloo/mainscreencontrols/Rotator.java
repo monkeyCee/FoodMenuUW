@@ -14,24 +14,24 @@ public class Rotator {
     private int mMode;
     private float mStartAngle;
     private float mCurrAngle;
-    
+
     private long mStartTime;
     private long mDuration;
-    
+
     private float mDeltaAngle;
-    
+
     private boolean mFinished;
 
     private float mCoeffVelocity = 0.05f;
     private float mVelocity;
-    
+
     private static final int DEFAULT_DURATION = 250;
     private static final int SCROLL_MODE = 0;
     private static final int FLING_MODE = 1;
-    
+
     private final float mDeceleration = 240.0f;
-    
-    
+
+
     /**
      * Create a Scroller with the specified interpolator. If the interpolator is
      * null, the default (viscous) interpolator will be used.
@@ -39,7 +39,7 @@ public class Rotator {
     public Rotator(Context context) {
         mFinished = true;
     }
-    
+
     /**
      * 
      * Returns whether the scroller has finished scrolling.
@@ -49,7 +49,7 @@ public class Rotator {
     public final boolean isFinished() {
         return mFinished;
     }
-    
+
     /**
      * Force the finished field to a particular value.
      *  
@@ -58,7 +58,7 @@ public class Rotator {
     public final void forceFinished(boolean finished) {
         mFinished = finished;
     }
-    
+
     /**
      * Returns how long the scroll event will take, in milliseconds.
      * 
@@ -67,7 +67,7 @@ public class Rotator {
     public final long getDuration() {
         return mDuration;
     }
-    
+
     /**
      * Returns the current X offset in the scroll. 
      * 
@@ -76,9 +76,9 @@ public class Rotator {
     public final float getCurrAngle() {
         return mCurrAngle;
     }
-        
-    
-    
+
+
+
     /**
      * @hide
      * Returns the current velocity.
@@ -87,7 +87,7 @@ public class Rotator {
      * negative.
      */
     public float getCurrVelocity() {
-        return mCoeffVelocity * mVelocity - mDeceleration * timePassed() /* / 2000.0f*/;
+        return (mCoeffVelocity * mVelocity) - (mDeceleration * timePassed() /* / 2000.0f*/);
     }
 
     /**
@@ -98,9 +98,9 @@ public class Rotator {
     public final float getStartAngle() {
         return mStartAngle;
     }    
-    
-    
-    
+
+
+
     /**
      * Returns the time elapsed since the beginning of the scrolling.
      *
@@ -109,7 +109,7 @@ public class Rotator {
     public int timePassed() {
         return (int)(AnimationUtils.currentAnimationTimeMillis() - mStartTime);
     }
-    
+
     /**
      * Extend the scroll animation. This allows a running animation to scroll
      * further and longer, when used with {@link #setFinalX(int)} or {@link #setFinalY(int)}.
@@ -123,7 +123,7 @@ public class Rotator {
         mDuration = passed + extend;
         mFinished = false;
     }
-    
+
     /**
      * Stops the animation. Contrary to {@link #forceFinished(boolean)},
      * aborting the animating cause the scroller to move to the final x and y
@@ -134,7 +134,7 @@ public class Rotator {
     public void abortAnimation() {
         mFinished = true;
     }    
-    
+
 
     /**
      * Call this when you want to know the new location.  If it returns true,
@@ -146,47 +146,47 @@ public class Rotator {
         if (mFinished) {
             return false;
         }
-        
+
         long systemClock = AnimationUtils.currentAnimationTimeMillis();
         long timePassed = systemClock - mStartTime;
-        
+
         if (timePassed < mDuration) {
-        	switch (mMode) {
-        		case SCROLL_MODE:
+            switch (mMode) {
+            case SCROLL_MODE:
 
-        			float sc = (float)timePassed / mDuration;
-                    mCurrAngle = mStartAngle + Math.round(mDeltaAngle * sc);    
-                    break;
-                    
-        		case FLING_MODE:
+                float sc = (float)timePassed / mDuration;
+                mCurrAngle = mStartAngle + Math.round(mDeltaAngle * sc);    
+                break;
 
-        			float timePassedSeconds = timePassed / 1000.0f;        			
-        			float distance;
+            case FLING_MODE:
 
-        			if(mVelocity < 0)
-        			{
-                    	distance = mCoeffVelocity * mVelocity * timePassedSeconds - 
-                    	(mDeceleration * timePassedSeconds * timePassedSeconds / 2.0f);
-        			}
-        			else{
-                    	distance = -mCoeffVelocity * mVelocity * timePassedSeconds - 
-                    	(mDeceleration * timePassedSeconds * timePassedSeconds / 2.0f);        				
-        			}
+                float timePassedSeconds = timePassed / 1000.0f;        			
+                float distance;
 
-                    mCurrAngle = mStartAngle - Math.signum(mVelocity)*Math.round(distance);                    
-                    
-                    break;                    
-        	}
+                if(mVelocity < 0)
+                {
+                    distance = (mCoeffVelocity * mVelocity * timePassedSeconds) - 
+                            ((mDeceleration * timePassedSeconds * timePassedSeconds) / 2.0f);
+                }
+                else{
+                    distance = (-mCoeffVelocity * mVelocity * timePassedSeconds) - 
+                            ((mDeceleration * timePassedSeconds * timePassedSeconds) / 2.0f);        				
+                }
+
+                mCurrAngle = mStartAngle - (Math.signum(mVelocity)*Math.round(distance));                    
+
+                break;                    
+            }
             return true;
         }
         else
         {
-        	mFinished = true;
-        	return false;
+            mFinished = true;
+            return false;
         }
     }
-    
-    
+
+
     /**
      * Start scrolling by providing a starting point and the distance to travel.
      * 
@@ -208,7 +208,7 @@ public class Rotator {
         mStartAngle = startAngle;
         mDeltaAngle = dAngle;
     }    
-    
+
     /**
      * Start scrolling by providing a starting point and the distance to travel.
      * The scroll will use the default value of 250 milliseconds for the
@@ -226,8 +226,8 @@ public class Rotator {
     public void startRotate(float startAngle, float dAngle) {
         startRotate(startAngle, dAngle, DEFAULT_DURATION);
     }
-    
-    
+
+
     /**
      * Start scrolling based on a fling gesture. The distance travelled will
      * depend on the initial velocity of the fling.
@@ -235,19 +235,19 @@ public class Rotator {
      * @param velocityAngle Initial velocity of the fling (X) measured in pixels per second.
      */
     public void fling(float velocityAngle) {
-    	
+
         mMode = FLING_MODE;
         mFinished = false;
 
         float velocity = velocityAngle;
-     
+
         mVelocity = velocity;
-        mDuration = (int)(1000.0f * Math.sqrt(2.0f * mCoeffVelocity * 
-        		Math.abs(velocity)/mDeceleration));
-        
+        mDuration = (int)(1000.0f * Math.sqrt((2.0f * mCoeffVelocity * 
+                Math.abs(velocity))/mDeceleration));
+
         mStartTime = AnimationUtils.currentAnimationTimeMillis();        
-        
+
     }
-    
-    
+
+
 }

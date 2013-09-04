@@ -1,7 +1,7 @@
 package ca.uwaterloo.uwfoodservices;
 
 public class WatcardVendorHolder {
-    
+
     private static WatcardVendorHolder mInstance = null;
     public WatcardVendorObject[] objects;
 

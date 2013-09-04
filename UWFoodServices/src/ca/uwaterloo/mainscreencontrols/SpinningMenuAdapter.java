@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup {
@@ -168,7 +169,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
      * The last selected position we used when notifying
      */
     int mOldSelectedPosition = INVALID_POSITION;
-    
+
     /**
      * The id of the last selected position we used when notifying
      */
@@ -204,7 +205,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
     public SpinningMenuAdapter(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-    
+
 
     /**
      * Interface definition for a callback to be invoked when an item in this
@@ -525,7 +526,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
     public Object getSelectedItem() {
         T adapter = getAdapter();
         int selection = getSelectedItemPosition();
-        if (adapter != null && adapter.getCount() > 0 && selection >= 0) {
+        if ((adapter != null) && (adapter.getCount() > 0) && (selection >= 0)) {
             return adapter.getItem(selection);
         } else {
             return null;
@@ -592,7 +593,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
      * @return The position within the adapter's data set
      */
     public int getLastVisiblePosition() {
-        return mFirstPosition + getChildCount() - 1;
+        return (mFirstPosition + getChildCount()) - 1;
     }
 
     /**
@@ -638,7 +639,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
     @Override
     public void setFocusable(boolean focusable) {
         final T adapter = getAdapter();
-        final boolean empty = adapter == null || adapter.getCount() == 0;
+        final boolean empty = (adapter == null) || (adapter.getCount() == 0);
 
         mDesiredFocusableState = focusable;
         if (!focusable) {
@@ -651,7 +652,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
     @Override
     public void setFocusableInTouchMode(boolean focusable) {
         final T adapter = getAdapter();
-        final boolean empty = adapter == null || adapter.getCount() == 0;
+        final boolean empty = (adapter == null) || (adapter.getCount() == 0);
 
         mDesiredFocusableInTouchModeState = focusable;
         if (focusable) {
@@ -663,7 +664,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
 
     void checkFocus() {
         final T adapter = getAdapter();
-        final boolean empty = adapter == null || adapter.getCount() == 0;
+        final boolean empty = (adapter == null) || (adapter.getCount() == 0);
         final boolean focusable = !empty || isInFilterMode();
         // The order in which we set focusable in touch mode/focusable may matter
         // for the client, see View.setFocusableInTouchMode() comments for more
@@ -701,7 +702,9 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
                 this.onLayout(false, getLeft(), getTop(), getRight(), getBottom()); 
             }
         } else {
-            if (mEmptyView != null) mEmptyView.setVisibility(View.GONE);
+            if (mEmptyView != null) {
+                mEmptyView.setVisibility(View.GONE);
+            }
             setVisibility(View.VISIBLE);
         }
     }
@@ -714,12 +717,12 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
      */
     public Object getItemAtPosition(int position) {
         T adapter = getAdapter();
-        return (adapter == null || position < 0) ? null : adapter.getItem(position);
+        return ((adapter == null) || (position < 0)) ? null : adapter.getItem(position);
     }
 
     public long getItemIdAtPosition(int position) {
         T adapter = getAdapter();
-        return (adapter == null || position < 0) ? INVALID_ROW_ID : adapter.getItemId(position);
+        return ((adapter == null) || (position < 0)) ? INVALID_ROW_ID : adapter.getItemId(position);
     }
 
     @Override
@@ -756,8 +759,8 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
 
             // Detect the case where a cursor that was previously invalidated has
             // been repopulated with new data.
-            if (SpinningMenuAdapter.this.getAdapter().hasStableIds() && mInstanceState != null
-                    && mOldItemCount == 0 && mItemCount > 0) {
+            if (SpinningMenuAdapter.this.getAdapter().hasStableIds() && (mInstanceState != null)
+                    && (mOldItemCount == 0) && (mItemCount > 0)) {
                 SpinningMenuAdapter.this.onRestoreInstanceState(mInstanceState);
                 mInstanceState = null;
             } else {
@@ -797,6 +800,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
     }
 
     private class SelectionNotifier extends Handler implements Runnable {
+        @Override
         public void run() {
             if (mDataChanged) {
                 // Data has changed between when this SelectionNotifier
@@ -826,14 +830,15 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
         }
 
         // we fire selection events here not in View
-        if (mSelectedPosition != ListView.INVALID_POSITION && isShown() && !isInTouchMode()) {
+        if ((mSelectedPosition != AdapterView.INVALID_POSITION) && isShown() && !isInTouchMode()) {
             sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
         }
     }
 
     private void fireOnSelected() {
-        if (mOnItemSelectedListener == null)
+        if (mOnItemSelectedListener == null) {
             return;
+        }
 
         int selection = this.getSelectedItemPosition();
         if (selection >= 0) {
@@ -876,7 +881,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
 
     @Override
     protected boolean canAnimate() {
-        return super.canAnimate() && mItemCount > 0;
+        return super.canAnimate() && (mItemCount > 0);
     }
 
     void handleDataChanged() {
@@ -1010,7 +1015,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
                 return seed;
             }
 
-            hitLast = last == count - 1;
+            hitLast = last == (count - 1);
             hitFirst = first == 0;
 
             if (hitLast && hitFirst) {
@@ -1067,7 +1072,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
         mNextSelectedPosition = position;
         mNextSelectedRowId = getItemIdAtPosition(position);
         // If we are trying to sync to the selection, update that too
-        if (mNeedSync && mSyncMode == SYNC_SELECTED_POSITION && position >= 0) {
+        if (mNeedSync && (mSyncMode == SYNC_SELECTED_POSITION) && (position >= 0)) {
             mSyncPosition = position;
             mSyncRowId = mNextSelectedRowId;
         }
@@ -1095,7 +1100,7 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
                 // Sync the based on the offset of the first view
                 View v = getChildAt(0);
                 T adapter = getAdapter();
-                if (mFirstPosition >= 0 && mFirstPosition < adapter.getCount()) {
+                if ((mFirstPosition >= 0) && (mFirstPosition < adapter.getCount())) {
                     mSyncRowId = adapter.getItemId(mFirstPosition);
                 } else {
                     mSyncRowId = NO_ID;
@@ -1108,5 +1113,5 @@ public abstract class  SpinningMenuAdapter <T extends Adapter> extends ViewGroup
             }
         }
     }
-    
+
 }

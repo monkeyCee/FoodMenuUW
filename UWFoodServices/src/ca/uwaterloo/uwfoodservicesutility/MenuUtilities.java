@@ -9,9 +9,7 @@ import android.graphics.Rect;
 import android.text.TextPaint;
 import android.view.Display;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import ca.uwaterloo.uwfoodservices.R;
@@ -43,7 +41,7 @@ public class MenuUtilities {
         imageHash.put("University Club", R.drawable.universityclub);
         imageHash.put("UW Food Services Admin Office", R.drawable.foodservices);
         imageHash.put("Williams Fresh Café", R.drawable.williams_0);
-        
+
         imageHash.put("Apple Two Hairstylists", R.drawable.appletwo);
         imageHash.put("Campus Pizza", R.drawable.campuspizza);
         imageHash.put("Curry in a Hurry", R.drawable.curryinahurry);
@@ -61,10 +59,10 @@ public class MenuUtilities {
         imageHash.put("The Grill", R.drawable.thegrill);
         imageHash.put("Waterloo Taxi", R.drawable.waterlootaxi);
         imageHash.put("Williams Coffee Pub", R.drawable.williams_1);
-        
+
         return imageHash;
     }
-    
+
     public static Map<String, Integer> getImageHash() {
         return imageHash;
     }
@@ -86,11 +84,11 @@ public class MenuUtilities {
     public static void setMenuItemTextWidth(int width) {
         menuItemTextWidth = width;
     }
-    
+
     public static int getMenuItemTextWidth() {
         return menuItemTextWidth;
     }
-    
+
     public static int getTextWidth(String text, TextPaint textpaint) {
         Rect bounds = new Rect();
         textpaint.getTextBounds(text, 0, text.length(), bounds);
@@ -111,14 +109,14 @@ public class MenuUtilities {
         display.getSize(size);
         return size.x;
     }
-    
+
     public static int getScreenHeight(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         return size.y;
     }
-    
+
     public static Integer getInteger(String string) {
         if (string.equals("null") || string.equals("")) {
             return null;
@@ -126,7 +124,7 @@ public class MenuUtilities {
             return Integer.valueOf(string);
         }
     }
-    
+
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter(); 
         if (listAdapter == null) {

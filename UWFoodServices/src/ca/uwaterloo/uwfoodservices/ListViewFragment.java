@@ -2,10 +2,8 @@ package ca.uwaterloo.uwfoodservices;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +21,7 @@ public class ListViewFragment extends Fragment {
     private Spinner spinner;
     private Context context;
     private ActivityCommunicator activityCommunicator;
-    
+
     private String type;
     private int positionTracker;
 
@@ -61,24 +59,24 @@ public class ListViewFragment extends Fragment {
                     @Override
                     public void onItemSelected(AdapterView<?> arg0, View view1, int pos, long id)
                     {
-                            switch (pos)
-                            {
-                                case 0:   
-                                    type = "all";
-                                    listView.setAdapter(new ImageAdapter(context, "all"));
-                                    activityCommunicator.passDataToActivity(-1, "all");                                    
-                                    break;
-                                case 1:
-                                    type = "location";
-                                    listView.setAdapter(new ImageAdapter(context, "location"));
-                                    activityCommunicator.passDataToActivity(-1, "location");
-                                    break;
-                                case 2:
-                                    type = "watcardVendors";
-                                    listView.setAdapter(new ImageAdapter(context, "watcardVendors"));
-                                    activityCommunicator.passDataToActivity(-1, "watcardVendors");
-                                    break;
-                            }                                                            
+                        switch (pos)
+                        {
+                        case 0:   
+                            type = "all";
+                            listView.setAdapter(new ImageAdapter(context, "all"));
+                            activityCommunicator.passDataToActivity(-1, "all");                                    
+                            break;
+                        case 1:
+                            type = "location";
+                            listView.setAdapter(new ImageAdapter(context, "location"));
+                            activityCommunicator.passDataToActivity(-1, "location");
+                            break;
+                        case 2:
+                            type = "watcardVendors";
+                            listView.setAdapter(new ImageAdapter(context, "watcardVendors"));
+                            activityCommunicator.passDataToActivity(-1, "watcardVendors");
+                            break;
+                        }                                                            
                     }
 
                     @Override
@@ -87,9 +85,9 @@ public class ListViewFragment extends Fragment {
                     }    
 
                 });
-                
+
             }});
-        
+
     }
 
     @Override
@@ -103,12 +101,13 @@ public class ListViewFragment extends Fragment {
             listView = (ListView) view.findViewById(R.id.list_restaurant);
             spinner = (Spinner) view.findViewById(R.id.spinner);
 
-            if (type.equals("location"))
+            if (type.equals("location")) {
                 spinner.setSelection(1, false);
-            else if (type.equals("watcardVendors"))
+            } else if (type.equals("watcardVendors")) {
                 spinner.setSelection(2, false);
-            else
+            } else {
                 spinner.setSelection(0, false);
+            }
 
         } catch (InflateException e) {}
         return view;

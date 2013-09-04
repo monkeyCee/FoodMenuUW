@@ -34,7 +34,7 @@ public class Coordinates {
         map.put("University Club ", new LatLng(43.472284,-80.547364));
         map.put("UW Food Services Admin Office ", new LatLng(43.469591,-80.543349));
         map.put("Williams Fresh Café Environment 3", new LatLng(43.46824,-80.543573));
-        
+
         map.put("Apple Two Hairstylists", new LatLng(43.471758, -80.545506));
         map.put("Campus Pizza", new LatLng(43.472208, -80.537952));
         map.put("Curry in a Hurry", new LatLng(43.471838, -80.538545));
@@ -52,7 +52,7 @@ public class Coordinates {
         map.put("The Grill", new LatLng(43.472578, -80.538070));
         map.put("Waterloo Taxi", new LatLng(43.470360, -80.544700));
         map.put("Williams Coffee Pub", new LatLng(43.472400, -80.538400));              
-        
+
 
     }
 

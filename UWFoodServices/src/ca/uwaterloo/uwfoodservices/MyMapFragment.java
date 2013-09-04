@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MyMapFragment extends Fragment implements FragmentCommunicator{
-    
+
     public static final String ARG_SECTION_NUMBER = "section_number";
     private GoogleMap myMap = null;
     static final LatLng UW = new LatLng(43.4722, -80.5472);
@@ -82,7 +81,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
                 public void onCheckedChanged(RadioGroup group, int position) {
 
                     if(position == R.id.ShowAll){
-                        
+
                         myMap.clear();
                         LatLng coordinate = new LatLng(43.469828,-80.546415);
                         CameraUpdate center=
@@ -90,7 +89,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
                         CameraUpdate zoom=CameraUpdateFactory.zoomTo(zoomValue);
                         myMap.moveCamera(center);
                         myMap.animateCamera(zoom);
-                        
+
                         if (filterType.equals("all"))
                         {
                             for(int i = 0; i < holderLoc.getCount(); i++){ 
@@ -164,7 +163,7 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
         this.filterType = filterType;
         showAll.setChecked(false);
         clear.setChecked(false); 
-        
+
         if (position == -1){
             myMap.clear();
             LatLng coordinate = new LatLng(43.469828,-80.546415);
@@ -173,21 +172,22 @@ public class MyMapFragment extends Fragment implements FragmentCommunicator{
             myMap.moveCamera(center);
             myMap.animateCamera(zoom);
             return;}
-        
+
         if (filterType.equals("all"))
         {
-            if (position>=0 && position < holderLoc.getCount())
+            if ((position>=0) && (position < holderLoc.getCount())) {
                 setupLocationMarker(position);
-            else
+            } else
             {
                 position -= holderLoc.getCount();
                 setupVendorMarker(position);
             }
         }
-        else if (filterType.equals("location"))
+        else if (filterType.equals("location")) {
             setupLocationMarker(position);
-        else if (filterType.equals("watcardVendors"))
-            setupVendorMarker(position);        
+        } else if (filterType.equals("watcardVendors")) {
+            setupVendorMarker(position);
+        }        
     }
     public void setupLocationMarker(int position)
     {

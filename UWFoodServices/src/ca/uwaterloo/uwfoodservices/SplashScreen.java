@@ -53,17 +53,17 @@ public class SplashScreen extends Activity {
     static SimpleDateFormat simpleDateFormat;
 
     private NetworkReceiver receiver;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_splash_screen);
-		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-		receiver = new NetworkReceiver(this);
-		this.registerReceiver(receiver, filter);
 
-		networkPref = receiver.getNetworkPref();
-		sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash_screen);
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new NetworkReceiver(this);
+        this.registerReceiver(receiver, filter);
+
+        networkPref = receiver.getNetworkPref();
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         cachePref = sharedPrefs.getBoolean("save_data_preference", true);
         weekStored = sharedPrefs.getInt("storedWeek", -1);
         refreshPref = sharedPrefs.getString("refresh", "");
@@ -115,7 +115,7 @@ public class SplashScreen extends Activity {
                     {
                         if((RestaurantLocationHolder.getInstance() == null)
                                 || (RestaurantMenuHolder.getInstance() == null)){
-                            
+
                             if((RestaurantLocationHolder.getInstance().objects == null)
                                     || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
                                 handler.postDelayed(this, 1000);
@@ -131,14 +131,14 @@ public class SplashScreen extends Activity {
                                 Intent intent = new Intent(SplashScreen.this, MainScreen.class);
                                 startActivity(intent);
                             }
-                            
+
                         }
                     }
                 };
 
                 handler.postDelayed(r, 2000);
-                
-                
+
+
             }
         });
     }
@@ -218,7 +218,7 @@ public class SplashScreen extends Activity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("w", Locale.CANADA);
         simpleDateFormat.setCalendar(calendar);
         String weekInYear = simpleDateFormat.format(calendar.getTime());
-       
+
         weekDay = 0;
         if (calendar.getTime().toString().split(" ")[0].equals("Mon")) { weekDay = 0; }
         if (calendar.getTime().toString().split(" ")[0].equals("Tue")) { weekDay = 1; }
@@ -246,172 +246,172 @@ public class SplashScreen extends Activity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("w", Locale.CANADA);
         simpleDateFormat.setCalendar(calendar);
         String weekInYear = simpleDateFormat.format(calendar.getTime());
-        
+
         return Integer.parseInt(weekInYear);
     }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     private void loadData() {
 
-    	menuParser = new ParseMenuData(SplashScreen.this);
-		locationParser = new ParseLocationData(SplashScreen.this);
-		watcardVendorParser = new ParseWatcardVendorData(SplashScreen.this);
-        		
-		if(refreshPref.equals("locations") || refreshPref.equals("menu")){
-		    
-			if (receiver.isNetwork()) {
-				
-					Toast.makeText(getApplicationContext(), "Refreshing..", Toast.LENGTH_SHORT).show();
-	        
-	    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
-	    			String urlMenu = getDatedMenuUrl();
-	    			String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
-	    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
-	    			
-	    			final Handler handler = new Handler();
-	                final Runnable r = new Runnable()
-	                {
-	                    @Override
-	                    public void run() 
-	                    {
-	                        if((RestaurantLocationHolder.getInstance() == null)
-	                                || (RestaurantMenuHolder.getInstance() == null)){
-	                            
-	                            if((RestaurantLocationHolder.getInstance().objects == null)
-	                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
-	                                handler.postDelayed(this, 1000);
-	                            }
-	                            handler.postDelayed(this, 1000);
-	                        }
-	                        else{
-	                            if((RestaurantLocationHolder.getInstance().objects == null)
-	                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
-	                                handler.postDelayed(this, 1000);
-	                            }
-	                            else{
-	                                if(refreshPref.equals("locations")){
-	                                    Intent intent = new Intent(SplashScreen.this, LocationHours.class);
-	                                    prefEditor.remove("refresh");
-	                                    prefEditor.commit();
-	                                    startActivity(intent);
-	                                }
-	                                else{
-	                                    if(refreshPref.equals("menu")){
-	                                        String restaurant = sharedPrefs.getString("restaurant", "");
-	                                        int position = sharedPrefs.getInt("position", -1);
-	                                        Intent intent = new Intent(SplashScreen.this, MenuLists.class);
-	                                        prefEditor.remove("refresh");
-	                                        prefEditor.remove("restaurant");
-	                                        prefEditor.remove("position");
-	                                        prefEditor.commit();
-	                                        intent.putExtra("Restaurant Name", restaurant);
-	                                        intent.putExtra("Restaurant Position", position);
-	                                        startActivity(intent);
-	                                    }
-	                                }
-	                            }
-	                            
-	                        }
-	                    }
-	                };
+        menuParser = new ParseMenuData(SplashScreen.this);
+        locationParser = new ParseLocationData(SplashScreen.this);
+        watcardVendorParser = new ParseWatcardVendorData(SplashScreen.this);
 
-	                handler.postDelayed(r, 2000);
-		    		
-	    			
-	        }
-			
-		}
-		
-		else{
-			
-			StartSplashScreen();
-			
-	    	if (!cachePref) {
-	    		InternalStorage.deleteObject(SplashScreen.this, "menu");
-				InternalStorage.deleteObject(SplashScreen.this, "location");
-				InternalStorage.deleteObject(SplashScreen.this, "watcard_vendor");
-							
-				if (receiver.isNetwork()) {
-							        
-		    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
-		    			String urlMenu = getDatedMenuUrl();
-		    			String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
-		    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
-		    			
-		        }
-				
-				else{ 
-					Toast.makeText(getApplicationContext(), "There is no stored data. There is either no network or the network does not match your preference.", Toast.LENGTH_SHORT).show();
-					showErrorPage(); }			
-			}
-	    	
-	    	else{
+        if(refreshPref.equals("locations") || refreshPref.equals("menu")){
 
-	    		try {
-					if(!(InternalStorage.cacheExists(SplashScreen.this, "menu")) || !(InternalStorage.cacheExists(SplashScreen.this, "location"))||
-					        !(InternalStorage.cacheExists(SplashScreen.this, "watcard_vendor"))){
-					    
-						if (receiver.isNetwork()) {				        
-				    			String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
-				    			String urlMenu = getDatedMenuUrl();
-				    			String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
-				    			new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);			
-				        }
-						else{ 
-							Toast.makeText(getApplicationContext(), "There is no stored data and either there is no network or the network does not match your preference", Toast.LENGTH_SHORT).show();
-							showErrorPage(); }
-					}
-					
-					else{
-						
-						if(getCurrentWeek() != weekStored && !receiver.isNetwork()){
-						    Toast.makeText(getApplicationContext(), "The data you are viewing is old. We recommend you switch on your network to get the new data", Toast.LENGTH_SHORT).show();
-						}
-						
-						if( getCurrentWeek() != weekStored && receiver.isNetwork()){
+            if (receiver.isNetwork()) {
+
+                Toast.makeText(getApplicationContext(), "Refreshing..", Toast.LENGTH_SHORT).show();
+
+                String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
+                String urlMenu = getDatedMenuUrl();
+                String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
+                new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
+
+                final Handler handler = new Handler();
+                final Runnable r = new Runnable()
+                {
+                    @Override
+                    public void run() 
+                    {
+                        if((RestaurantLocationHolder.getInstance() == null)
+                                || (RestaurantMenuHolder.getInstance() == null)){
+
+                            if((RestaurantLocationHolder.getInstance().objects == null)
+                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+                                handler.postDelayed(this, 1000);
+                            }
+                            handler.postDelayed(this, 1000);
+                        }
+                        else{
+                            if((RestaurantLocationHolder.getInstance().objects == null)
+                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
+                                handler.postDelayed(this, 1000);
+                            }
+                            else{
+                                if(refreshPref.equals("locations")){
+                                    Intent intent = new Intent(SplashScreen.this, LocationHours.class);
+                                    prefEditor.remove("refresh");
+                                    prefEditor.commit();
+                                    startActivity(intent);
+                                }
+                                else{
+                                    if(refreshPref.equals("menu")){
+                                        String restaurant = sharedPrefs.getString("restaurant", "");
+                                        int position = sharedPrefs.getInt("position", -1);
+                                        Intent intent = new Intent(SplashScreen.this, MenuLists.class);
+                                        prefEditor.remove("refresh");
+                                        prefEditor.remove("restaurant");
+                                        prefEditor.remove("position");
+                                        prefEditor.commit();
+                                        intent.putExtra("Restaurant Name", restaurant);
+                                        intent.putExtra("Restaurant Position", position);
+                                        startActivity(intent);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                };
+
+                handler.postDelayed(r, 2000);
+
+
+            }
+
+        }
+
+        else{
+
+            StartSplashScreen();
+
+            if (!cachePref) {
+                InternalStorage.deleteObject(SplashScreen.this, "menu");
+                InternalStorage.deleteObject(SplashScreen.this, "location");
+                InternalStorage.deleteObject(SplashScreen.this, "watcard_vendor");
+
+                if (receiver.isNetwork()) {
+
+                    String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
+                    String urlMenu = getDatedMenuUrl();
+                    String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
+                    new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
+
+                }
+
+                else{ 
+                    Toast.makeText(getApplicationContext(), "There is no stored data. There is either no network or the network does not match your preference.", Toast.LENGTH_SHORT).show();
+                    showErrorPage(); }			
+            }
+
+            else{
+
+                try {
+                    if(!(InternalStorage.cacheExists(SplashScreen.this, "menu")) || !(InternalStorage.cacheExists(SplashScreen.this, "location"))||
+                            !(InternalStorage.cacheExists(SplashScreen.this, "watcard_vendor"))){
+
+                        if (receiver.isNetwork()) {				        
+                            String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
+                            String urlMenu = getDatedMenuUrl();
+                            String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
+                            new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);			
+                        }
+                        else{ 
+                            Toast.makeText(getApplicationContext(), "There is no stored data and either there is no network or the network does not match your preference", Toast.LENGTH_SHORT).show();
+                            showErrorPage(); }
+                    }
+
+                    else{
+
+                        if((getCurrentWeek() != weekStored) && !receiver.isNetwork()){
+                            Toast.makeText(getApplicationContext(), "The data you are viewing is old. We recommend you switch on your network to get the new data", Toast.LENGTH_SHORT).show();
+                        }
+
+                        if( (getCurrentWeek() != weekStored) && receiver.isNetwork()){
                             Toast.makeText(getApplicationContext(), "Fetching the new data for the new week!", Toast.LENGTH_SHORT).show();
                             String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
                             String urlMenu = getDatedMenuUrl();
                             String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
                             new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors); 
                         }
-						
-						else{
-		                        ArrayList<RestaurantMenuObject> restaurantMenu = null;
-		                        RestaurantObject[] restaurantLocations = null;
-		                        WatcardVendorObject[] watcardVendors = null;
-		                        try {
-		                            restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
-		                            restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
-		                            watcardVendors = (WatcardVendorObject[]) InternalStorage.readObject(SplashScreen.this, "watcard_vendor");
-	
-		                        } catch (IOException e) {
-		                            e.printStackTrace();
-		                        } catch (ClassNotFoundException e) {
-		                            e.printStackTrace();
-		                        }
-		                                
-		                        if(restaurantMenu != null && restaurantLocations != null){
-		                            RestaurantLocationHolder.getInstance(restaurantLocations);
-		                            RestaurantMenuHolder.getInstance(restaurantMenu);
-		                            WatcardVendorHolder.getInstance(watcardVendors);
-		                        }
-						}
-			
-						
-					}
-					
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-	    		
-	    	}
-			
-		}
-		
-	    
+
+                        else{
+                            ArrayList<RestaurantMenuObject> restaurantMenu = null;
+                            RestaurantObject[] restaurantLocations = null;
+                            WatcardVendorObject[] watcardVendors = null;
+                            try {
+                                restaurantMenu = (ArrayList<RestaurantMenuObject>) InternalStorage.readObject(SplashScreen.this, "menu");
+                                restaurantLocations = (RestaurantObject[]) InternalStorage.readObject(SplashScreen.this, "location");
+                                watcardVendors = (WatcardVendorObject[]) InternalStorage.readObject(SplashScreen.this, "watcard_vendor");
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
+
+                            if((restaurantMenu != null) && (restaurantLocations != null)){
+                                RestaurantLocationHolder.getInstance(restaurantLocations);
+                                RestaurantMenuHolder.getInstance(restaurantMenu);
+                                WatcardVendorHolder.getInstance(watcardVendors);
+                            }
+                        }
+
+
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+
+
     }
 
     private void showErrorPage() {

@@ -15,7 +15,7 @@ public class ErrorPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection_cache);
-        
+
         Typeface tf = Typeface.createFromAsset(this.getAssets(),
                 "Roboto-Light.ttf");
         TextView text = (TextView) findViewById(R.id.errortext);

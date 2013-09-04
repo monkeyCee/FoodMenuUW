@@ -13,13 +13,11 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.widget.Toast;
 import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 
 public class DataWatcard extends Activity {
-    
+
     private static ProgressDialog progressDialog;
     private NetworkReceiver receiver;
     private static int code = -2;
@@ -28,7 +26,7 @@ public class DataWatcard extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_watcard);
-          
+
         progressDialog = new ProgressDialog(this);
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = new NetworkReceiver(this);
@@ -41,7 +39,7 @@ public class DataWatcard extends Activity {
         getMenuInflater().inflate(R.menu.data_watcard, menu);
         return true;
     }
-    
+
     private void retrieveData(){
         Intent intent = getIntent();
         String username = intent.getStringExtra("Username");
@@ -59,9 +57,9 @@ public class DataWatcard extends Activity {
                         noError();
                     }
                 }
-                
+
             });
-            
+
             progressDialog.setOnCancelListener(new OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) { 
@@ -70,30 +68,30 @@ public class DataWatcard extends Activity {
                     errorAndCancel();
                 }
             });  
-            
+
         }
         else{
             code = -1;
             errorAndCancel();
         }
-       
+
     }
-    
+
     private static class AsyncDataFetcher extends AsyncTask<String, Integer, Integer> {
-        
+
         private Context context;
-        
+
         public AsyncDataFetcher(Context context){
             this.context = context;
         }
-        
+
         @Override
         protected void onPreExecute()
         {             
             progressDialog.show();
             progressDialog.setMessage("Fetching your balance..");
         }; 
-        
+
         @Override
         protected Integer doInBackground(String... details) {
             Document doc = new NetworkParser().getHTML(details[0], details[1]);
@@ -108,24 +106,24 @@ public class DataWatcard extends Activity {
                     progressDialog.cancel();
                 }
             }
-            
+
             return null;
         }
-        
+
         @Override
         protected void onPostExecute(Integer position) {
             progressDialog.dismiss();
         }
-               
+
     }
-    
+
     private void errorAndCancel(){
         Intent returnIntent = new Intent();
         returnIntent.putExtra("Code", code);
         setResult(RESULT_CANCELED, returnIntent);        
         finish();
     }
-    
+
     private void noError(){
         Intent returnIntent = new Intent();
         setResult(RESULT_OK, returnIntent);     

@@ -29,11 +29,9 @@ public class RestaurantMenuHolder extends Application{
     }
 
     public int getCount(){
-        Log.d((restaurantMenu == null) +"", "mInstance null?");
-        Log.d(restaurantMenu.size() +"", "mInstance - size");
         return restaurantMenu.size();
     }
-    
+
     public ArrayList<RestaurantMenuObject> getRestaurantMenu() {
         return restaurantMenu;
     }

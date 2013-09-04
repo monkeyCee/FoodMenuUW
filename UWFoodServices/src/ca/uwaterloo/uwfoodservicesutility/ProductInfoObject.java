@@ -37,7 +37,7 @@ public class ProductInfoObject implements Serializable {
     String tips;
     Integer diet_id;
     String diet_type;
-    
+
     public ProductInfoObject(Integer product_id, String product_name, List<String> ingredients,
             String serving_size, Integer serving_size_amount, String serving_size_unit, Integer calories, Integer total_fat_g, 
             Integer total_fat_percent, Integer fat_saturated_g, Integer fat_saturated_percent, Integer fat_trans_g,
@@ -46,7 +46,7 @@ public class ProductInfoObject implements Serializable {
             Integer carbo_sugars_g, Integer protein_g, Integer vitamin_a_percent, Integer vitamin_c_percent,
             Integer calcium_percent, Integer iron_percent, List<String> micro_nutrients, String tips,
             Integer diet_id, String diet_type){
-        
+
         this.product_id = product_id;
         this.product_name = product_name;
         this.ingredients = ingredients;
@@ -140,5 +140,5 @@ public class ProductInfoObject implements Serializable {
     public void tips(String tips){ this.tips = tips; }
     public void diet_id(Integer diet_id){ this.diet_id = diet_id; }
     public void diet_type(String diet_type){ this.diet_type = diet_type; }
-    
+
 }

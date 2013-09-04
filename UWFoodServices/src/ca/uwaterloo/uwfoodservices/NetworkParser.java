@@ -20,8 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
 import android.util.Log;
 
 public class NetworkParser {
@@ -71,14 +69,14 @@ public class NetworkParser {
         return jObj;
 
     }
-    
+
     public Document getHTML(String username, String password){
-             
+
         DefaultHttpClient httpclient = new DefaultHttpClient();
         HttpResponse response;
         HttpEntity entity;
         HttpPost httpost = new HttpPost("https://account.watcard.uwaterloo.ca/watgopher661.asp");
-        
+
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
         nvps.add(new BasicNameValuePair("acnt_1", username));
         nvps.add(new BasicNameValuePair("acnt_2", password));
@@ -88,7 +86,7 @@ public class NetworkParser {
         nvps.add(new BasicNameValuePair("watgopher_title", "WatCard Account Status"));
         nvps.add(new BasicNameValuePair("watgopher_regex", "/<hr>([\\s\\S]*)<hr>/;"));
         nvps.add(new BasicNameValuePair("watgopher_style", "onecard_regular"));
-        
+
         try {
             httpost.setEntity(new UrlEncodedFormEntity(nvps, "UTF_8"));
             response = httpclient.execute(httpost);
@@ -111,7 +109,7 @@ public class NetworkParser {
         }finally {
             httpclient.getConnectionManager().shutdown();
         }
-        
+
         return doc;
     }
 

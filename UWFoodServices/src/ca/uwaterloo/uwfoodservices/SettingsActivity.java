@@ -9,7 +9,7 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        
+
         getActionBar().setIcon(R.drawable.settings_icon);
 
         getFragmentManager().beginTransaction().replace(android.R.id.content,

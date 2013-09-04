@@ -31,7 +31,7 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
 
     final RecycleBin mRecycler = new RecycleBin();
     private DataSetObserver mDataSetObserver;
-		
+
     public SpinningMenuSpinner(Context context) {
         super(context);
         initSpinningMenuSpinner();
@@ -45,29 +45,31 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
         super(context, attrs, defStyle);
         initSpinningMenuSpinner();
     }
-    
+
 
     private void initSpinningMenuSpinner() {
         setFocusable(true);
         setWillNotDraw(false);
     }    
-           
-    
-	public SpinnerAdapter getAdapter() {
+
+
+    @Override
+    public SpinnerAdapter getAdapter() {
         return mAdapter;
     }
 
-	public void setAdapter(SpinnerAdapter adapter) {
+    @Override
+    public void setAdapter(SpinnerAdapter adapter) {
         if (null != mAdapter) {
             mAdapter.unregisterDataSetObserver(mDataSetObserver);
             resetList();
         }
-        
+
         mAdapter = adapter;
-        
+
         mOldSelectedPosition = INVALID_POSITION;
         mOldSelectedRowId = INVALID_ROW_ID;
-        
+
         if (mAdapter != null) {
             mOldItemCount = mItemCount;
             mItemCount = mAdapter.getCount();
@@ -80,12 +82,12 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
 
             setSelectedPositionInt(position);
             setNextSelectedPositionInt(position);
-            
+
             if (mItemCount == 0) {
                 // Nothing selected
                 checkSelectionChanged();
             }
-            
+
         } else {
             checkFocus();            
             resetList();
@@ -94,25 +96,26 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
         }
 
         requestLayout();
-		
-	}
 
+    }
+
+    @Override
     public View getSelectedView() {
-        if (mItemCount > 0 && mSelectedPosition >= 0) {
+        if ((mItemCount > 0) && (mSelectedPosition >= 0)) {
             return getChildAt(mSelectedPosition - mFirstPosition);
         } else {
             return null;
         }
     }
-	
+
 
     public void setSelection(int position, boolean animate) {
         // Animate only if requested position is already on screen somewhere
-        boolean shouldAnimate = animate && mFirstPosition <= position &&
-                position <= mFirstPosition + getChildCount() - 1;
+        boolean shouldAnimate = animate && (mFirstPosition <= position) &&
+                (position <= ((mFirstPosition + getChildCount()) - 1));
         setSelectionInt(position, shouldAnimate);
     }
-    
+
     void setSelectionInt(int position, boolean animate) {
         if (position != mOldSelectedPosition) {
             mBlockLayoutRequests = true;
@@ -122,26 +125,28 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
             mBlockLayoutRequests = false;
         }
     }
-    
+
     abstract void layout(int delta, boolean animate);    
 
-	public void setSelection(int position) {
+    @Override
+    public void setSelection(int position) {
         setSelectionInt(position, false);
-	}
+    }
 
     void resetList() {
         mDataChanged = false;
         mNeedSync = false;
-        
+
         removeAllViewsInLayout();
         mOldSelectedPosition = INVALID_POSITION;
         mOldSelectedRowId = INVALID_ROW_ID;
-        
+
         setSelectedPositionInt(INVALID_POSITION);
         setNextSelectedPositionInt(INVALID_POSITION);
         invalidate();
     }
-	
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize;
@@ -159,13 +164,13 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
         if (mDataChanged) {
             handleDataChanged();
         }
-        
+
         int preferredHeight = 0;
         int preferredWidth = 0;
         boolean needsMeasuring = true;
-        
+
         int selectedPosition = getSelectedItemPosition();
-        if (selectedPosition >= 0 && mAdapter != null && selectedPosition < mAdapter.getCount()) {
+        if ((selectedPosition >= 0) && (mAdapter != null) && (selectedPosition < mAdapter.getCount())) {
             // Try looking in the recycler. (Maybe we were measured once already)
             View view = mRecycler.get(selectedPosition);
             if (view == null) {
@@ -185,14 +190,14 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
                     mBlockLayoutRequests = false;
                 }
                 measureChild(view, widthMeasureSpec, heightMeasureSpec);
-                
+
                 preferredHeight = getChildHeight(view) + mSpinnerPadding.top + mSpinnerPadding.bottom;
                 preferredWidth = getChildWidth(view) + mSpinnerPadding.left + mSpinnerPadding.right;
-                
+
                 needsMeasuring = false;
             }
         }
-        
+
         if (needsMeasuring) {
             // No views -- just use padding
             preferredHeight = mSpinnerPadding.top + mSpinnerPadding.bottom;
@@ -211,22 +216,23 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
         mHeightMeasureSpec = heightMeasureSpec;
         mWidthMeasureSpec = widthMeasureSpec;
     }
-    
+
     int getChildHeight(View child) {
         return child.getMeasuredHeight();
     }
-    
+
     int getChildWidth(View child) {
         return child.getMeasuredWidth();
     }
-    
+
+    @Override
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
 
         return new SpinningMenu.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-    	
+
     }
-    
+
     void recycleAllViews() {
         final int childCount = getChildCount();
         final SpinningMenuSpinner.RecycleBin recycleBin = mRecycler;
@@ -239,71 +245,75 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
             recycleBin.put(index, v);
         }  
     }    
-    
+
     @Override
     public void requestLayout() {
         if (!mBlockLayoutRequests) {
             super.requestLayout();
         }
     }
-    
+
 
     @Override
     public int getCount() {
         return mItemCount;
     }    
-	
+
     public int pointToPosition(int x, int y) {    	
 
-    	ArrayList<SpinningMenuItem> fitting = new ArrayList<SpinningMenuItem>();
-    	
-    	for(int i = 0; i < mAdapter.getCount(); i++){
+        ArrayList<SpinningMenuItem> fitting = new ArrayList<SpinningMenuItem>();
 
-    		SpinningMenuItem item = (SpinningMenuItem)getChildAt(i);
+        for(int i = 0; i < mAdapter.getCount(); i++){
 
-    		Matrix mm = item.getCIMatrix();
-    		float[] pts = new float[3];
-    		
-    		pts[0] = item.getLeft();
-    		pts[1] = item.getTop();
-    		pts[2] = 0;
-    		
-    		if (mm!=null)
-    		    mm.mapPoints(pts);
-    		
-    		int mappedLeft = (int)pts[0];
-    		int mappedTop =  (int)pts[1];
-    		    		
-    		pts[0] = item.getRight();
-    		pts[1] = item.getBottom();
-    		pts[2] = 0;
-    		
-    		if (mm!=null)
-    		    mm.mapPoints(pts);
+            SpinningMenuItem item = (SpinningMenuItem)getChildAt(i);
 
-    		int mappedRight = (int)pts[0];
-    		int mappedBottom = (int)pts[1];
-    		
-    		if(mappedLeft < x && mappedRight > x & mappedTop < y && mappedBottom > y)
-    			fitting.add(item);
-    		
-    	}
-    	
-    	Collections.sort(fitting);
-    	
-    	if(fitting.size() != 0)
-    		return fitting.get(0).getIndex();
-    	else
-    		return mSelectedPosition;
+            Matrix mm = item.getCIMatrix();
+            float[] pts = new float[3];
+
+            pts[0] = item.getLeft();
+            pts[1] = item.getTop();
+            pts[2] = 0;
+
+            if (mm!=null) {
+                mm.mapPoints(pts);
+            }
+
+            int mappedLeft = (int)pts[0];
+            int mappedTop =  (int)pts[1];
+
+            pts[0] = item.getRight();
+            pts[1] = item.getBottom();
+            pts[2] = 0;
+
+            if (mm!=null) {
+                mm.mapPoints(pts);
+            }
+
+            int mappedRight = (int)pts[0];
+            int mappedBottom = (int)pts[1];
+
+            if((mappedLeft < x) && ((mappedRight > x) & (mappedTop < y)) && (mappedBottom > y)) {
+                fitting.add(item);
+            }
+
+        }
+
+        Collections.sort(fitting);
+
+        if(fitting.size() != 0) {
+            return fitting.get(0).getIndex();
+        } else {
+            return mSelectedPosition;
+        }
     }
-    
+
     static class SavedState extends BaseSavedState {
         long selectedId;
         int position;
         SavedState(Parcelable superState) {
             super(superState);
         }
-        
+
         private SavedState(Parcel in) {
             super(in);
             selectedId = in.readLong();
@@ -326,11 +336,13 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
-                = new Parcelable.Creator<SavedState>() {
+        = new Parcelable.Creator<SavedState>() {
+            @Override
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
 
+            @Override
             public SavedState[] newArray(int size) {
                 return new SavedState[size];
             }
@@ -353,7 +365,7 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         SavedState ss = (SavedState) state;
-  
+
         super.onRestoreInstanceState(ss.getSuperState());
 
         if (ss.selectedId >= 0) {
@@ -365,14 +377,14 @@ public abstract class SpinningMenuSpinner extends SpinningMenuAdapter<SpinnerAda
             requestLayout();
         }
     }
-    
+
     class RecycleBin {
         private final SparseArray<View> mScrapHeap = new SparseArray<View>();
 
         public void put(int position, View v) {
             mScrapHeap.put(position, v);
         }
-        
+
         View get(int position) {
             // System.out.print("Looking for " + position);
             View result = mScrapHeap.get(position);
