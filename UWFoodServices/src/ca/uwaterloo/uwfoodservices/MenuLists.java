@@ -338,7 +338,7 @@ public class MenuLists extends SlidingMenus implements ActionBar.TabListener{
                             int currentPosition = arg2;
                             intentProductInfo.putExtra("Current Position", currentPosition);
                             intentProductInfo.putExtra("Weekday", day);
-                            startActivity(intentProductInfo);                
+                            startActivityForResult(intentProductInfo, 1);                
 
                         } else {
                             final Toast toast = Toast.makeText(getActivity(), 

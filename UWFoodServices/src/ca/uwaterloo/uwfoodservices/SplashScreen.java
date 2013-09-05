@@ -46,6 +46,7 @@ public class SplashScreen extends Activity {
     public static boolean cachePref;
     public static String refreshPref = null;
     public static int weekStored;
+    public static boolean cacheLoad = false;
 
     public static String formattedDate;
     static int weekDay;
@@ -53,6 +54,7 @@ public class SplashScreen extends Activity {
     static SimpleDateFormat simpleDateFormat;
 
     private NetworkReceiver receiver;
+    AsyncDataFetcher fetcher = new AsyncDataFetcher(SplashScreen.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +100,8 @@ public class SplashScreen extends Activity {
 
             @Override
             public void onAnimationStart(Animation animation) {
-            }
+  
+            }   
 
             @Override
             public void onAnimationRepeat(Animation animation) {
@@ -113,32 +116,19 @@ public class SplashScreen extends Activity {
                     @Override
                     public void run() 
                     {
-                        if((RestaurantLocationHolder.getInstance() == null)
-                                || (RestaurantMenuHolder.getInstance() == null)){
-
-                            if((RestaurantLocationHolder.getInstance().objects == null)
-                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
-                                handler.postDelayed(this, 1000);
-                            }
-                            handler.postDelayed(this, 1000);
+                        if(fetcher.getStatus().equals(AsyncTask.Status.FINISHED) || (cacheLoad)){
+                            Intent intent = new Intent(SplashScreen.this, MainScreen.class);
+                            startActivity(intent);
                         }
                         else{
-                            if((RestaurantLocationHolder.getInstance().objects == null)
-                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
-                                handler.postDelayed(this, 1000);
-                            }
-                            else{
-                                Intent intent = new Intent(SplashScreen.this, MainScreen.class);
-                                startActivity(intent);
-                            }
-
-                        }
+                            handler.postDelayed(this,1000);
+                        }        
                     }
                 };
 
                 handler.postDelayed(r, 2000);
 
-
+                   
             }
         });
     }
@@ -266,64 +256,50 @@ public class SplashScreen extends Activity {
                 String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
                 String urlMenu = getDatedMenuUrl();
                 String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
-                new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
-
+                fetcher.execute(urlMenu, urlLocations, urlWatcardVendors);	
+                
                 final Handler handler = new Handler();
                 final Runnable r = new Runnable()
                 {
                     @Override
                     public void run() 
                     {
-                        if((RestaurantLocationHolder.getInstance() == null)
-                                || (RestaurantMenuHolder.getInstance() == null)){
-
-                            if((RestaurantLocationHolder.getInstance().objects == null)
-                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
-                                handler.postDelayed(this, 1000);
-                            }
-                            handler.postDelayed(this, 1000);
-                        }
-                        else{
-                            if((RestaurantLocationHolder.getInstance().objects == null)
-                                    || (RestaurantMenuHolder.getInstance().getRestaurantMenu() == null)){
-                                handler.postDelayed(this, 1000);
+                        if(fetcher.getStatus().equals(AsyncTask.Status.FINISHED) || (cacheLoad)){
+                            if(refreshPref.equals("locations")){
+                                Intent intent = new Intent(SplashScreen.this, LocationHours.class);
+                                prefEditor.remove("refresh");
+                                prefEditor.commit();
+                                startActivity(intent);
                             }
                             else{
-                                if(refreshPref.equals("locations")){
-                                    Intent intent = new Intent(SplashScreen.this, LocationHours.class);
+                                if(refreshPref.equals("menu")){
+                                    String restaurant = sharedPrefs.getString("restaurant", "");
+                                    int position = sharedPrefs.getInt("position", -1);
+                                    Intent intent = new Intent(SplashScreen.this, MenuLists.class);
                                     prefEditor.remove("refresh");
+                                    prefEditor.remove("restaurant");
+                                    prefEditor.remove("position");
                                     prefEditor.commit();
+                                    intent.putExtra("Restaurant Name", restaurant);
+                                    intent.putExtra("Restaurant Position", position);
                                     startActivity(intent);
                                 }
-                                else{
-                                    if(refreshPref.equals("menu")){
-                                        String restaurant = sharedPrefs.getString("restaurant", "");
-                                        int position = sharedPrefs.getInt("position", -1);
-                                        Intent intent = new Intent(SplashScreen.this, MenuLists.class);
-                                        prefEditor.remove("refresh");
-                                        prefEditor.remove("restaurant");
-                                        prefEditor.remove("position");
-                                        prefEditor.commit();
-                                        intent.putExtra("Restaurant Name", restaurant);
-                                        intent.putExtra("Restaurant Position", position);
-                                        startActivity(intent);
-                                    }
-                                }
                             }
-
                         }
+                        else{
+                            handler.postDelayed(this,1000);
+                        }        
                     }
                 };
 
                 handler.postDelayed(r, 2000);
-
 
             }
 
         }
 
         else{
-
+            cacheLoad = false;
             StartSplashScreen();
 
             if (!cachePref) {
@@ -336,7 +312,7 @@ public class SplashScreen extends Activity {
                     String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
                     String urlMenu = getDatedMenuUrl();
                     String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
-                    new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);	
+                    fetcher.execute(urlMenu, urlLocations, urlWatcardVendors);	
 
                 }
 
@@ -355,7 +331,7 @@ public class SplashScreen extends Activity {
                             String urlLocations = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=FoodServices&output=json";
                             String urlMenu = getDatedMenuUrl();
                             String urlWatcardVendors = "http://api.uwaterloo.ca/public/v1/?key=4aa5eb25c8cc979600724104ccfb70ea&service=WatcardVendors&output=json";
-                            new AsyncDataFetcher(SplashScreen.this).execute(urlMenu, urlLocations, urlWatcardVendors);			
+                            fetcher.execute(urlMenu, urlLocations, urlWatcardVendors);			
                         }
                         else{ 
                             Toast.makeText(getApplicationContext(), "There is no stored data and either there is no network or the network does not match your preference", Toast.LENGTH_SHORT).show();
@@ -377,6 +353,7 @@ public class SplashScreen extends Activity {
                         }
 
                         else{
+                            
                             ArrayList<RestaurantMenuObject> restaurantMenu = null;
                             RestaurantObject[] restaurantLocations = null;
                             WatcardVendorObject[] watcardVendors = null;
@@ -395,7 +372,9 @@ public class SplashScreen extends Activity {
                                 RestaurantLocationHolder.getInstance(restaurantLocations);
                                 RestaurantMenuHolder.getInstance(restaurantMenu);
                                 WatcardVendorHolder.getInstance(watcardVendors);
+                                cacheLoad = true;
                             }
+                                                        
                         }
 
 

@@ -136,6 +136,7 @@ public class DataWatcard extends Activity {
         if (receiver != null) {
             this.unregisterReceiver(receiver);
         }
+        progressDialog.cancel();
 
     }
 }

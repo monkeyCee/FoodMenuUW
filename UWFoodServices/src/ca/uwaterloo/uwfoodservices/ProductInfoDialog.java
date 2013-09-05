@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +21,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +31,6 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabContentFactory;
 import android.widget.TextView;
 import ca.uwaterloo.uwfoodservicesutility.MenuUtilities;
-import ca.uwaterloo.uwfoodservicesutility.NetworkReceiver;
 import ca.uwaterloo.uwfoodservicesutility.ParseProductInfo;
 import ca.uwaterloo.uwfoodservicesutility.ProductInfoHolder;
 import ca.uwaterloo.uwfoodservicesutility.RestaurantMenuHolder;
@@ -57,7 +56,6 @@ TabContentFactory {
 
     SharedPreferences.Editor editor;
     SharedPreferences pref;
-    NetworkReceiver receiver;
 
     static ParseProductInfo productInfoParser;
     static ProductInfoHolder productInfoHolder = null;
@@ -87,8 +85,6 @@ TabContentFactory {
 
         dialog = new ProgressDialog(this);
 
-
-        receiver = new NetworkReceiver(this);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         ProductInfoHolder.resetInstance();
@@ -153,14 +149,28 @@ TabContentFactory {
 
             @Override
             public void onDismiss(DialogInterface arg0) {
-                mPagerContent = new ProductInfoAdapter(getSupportFragmentManager());
-                mViewPager.setAdapter(mPagerContent);
-                mViewPager.setCurrentItem(tabPosition);
-                mViewPager.setOffscreenPageLimit(1);
+                if(!dataFetcher.isCancelled()){
+                    mPagerContent = new ProductInfoAdapter(getSupportFragmentManager());
+                    mViewPager.setAdapter(mPagerContent);
+                    mViewPager.setCurrentItem(tabPosition);
+                    mViewPager.setOffscreenPageLimit(1);
+                }
+                else{
+                    Intent returnIntent = new Intent();
+                    setResult(RESULT_CANCELED, returnIntent);        
+                    finish();
+                }
             }
 
         });
 
+        dialog.setOnCancelListener(new OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) { 
+                dataFetcher.cancel(true);
+                dialog.dismiss();
+            }
+        });
 
     }
 
@@ -417,4 +427,11 @@ TabContentFactory {
         dummyContent.setMinimumHeight(0);
         return dummyContent;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        dialog.cancel();
+    }
+    
 }
