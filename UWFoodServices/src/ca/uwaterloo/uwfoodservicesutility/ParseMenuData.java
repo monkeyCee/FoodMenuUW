@@ -155,7 +155,7 @@ public class ParseMenuData {
 
                         lunchList = new ArrayList<RestaurantMenuItem>();
                         dinnerList = new ArrayList<RestaurantMenuItem>();
-
+                        
                         day = menu.getJSONObject(j);
                         meals = day.getJSONObject(TAG_MEALS);
                         weekDay = day.getString(TAG_DAY);
@@ -212,8 +212,12 @@ public class ParseMenuData {
                         menuArray[position] = new DailyMenu(lunchList, dinnerList); // THIS ONE
                     }
 
-                    if (lunchList.size() == 0) { lunchList = null; }
-                    if (dinnerList.size() == 0) { dinnerList = null; }
+                    if (lunchList != null) {
+                        if (lunchList.size() == 0) { lunchList = null; }
+                    }
+                    if (dinnerList != null) {
+                            if (dinnerList.size() == 0) { dinnerList = null; }
+                    }
                     menuArray[position] = new DailyMenu(lunchList, dinnerList);
                     restaurantMenu.add(new RestaurantMenuObject(outlet_id, outlet_name, location_name, image, menuArray));
                 }

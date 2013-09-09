@@ -20,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import android.util.Log;
 
 public class NetworkParser {
 
@@ -55,14 +54,12 @@ public class NetworkParser {
             is.close();
             json = sb.toString();
         } catch (Exception e) {
-            Log.e("Buffer Error", "Error converting result " + e.toString());
         }
 
         // Assigning that string to the JSON Object
         try {
             jObj = new JSONObject(json);
         } catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
         }
 
         // return JSON object which carries the JSON data
