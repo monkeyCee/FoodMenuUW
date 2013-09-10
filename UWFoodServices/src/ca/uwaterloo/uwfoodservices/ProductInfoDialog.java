@@ -191,7 +191,7 @@ TabContentFactory {
         @Override
         protected Void doInBackground(List<String>... urls) {
             List<JSONObject> jsonList = new ArrayList<JSONObject>();
-            JSONParser json_parse = new JSONParser();
+            NetworkParser json_parse = new NetworkParser();
             for (int i = 0; i < urls[0].size(); i ++) {
                 jsonList.add(json_parse.getJSONFromUrl(urls[0].get(i)));
             }
