@@ -124,6 +124,14 @@ public class MenuUtilities {
             return Integer.valueOf(string);
         }
     }
+    
+    public static Double getDouble(String string) {
+        if (string.equals("null") || string.equals("")) {
+            return null;
+        } else {
+            return Double.valueOf(string);
+        }
+    }
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter(); 
