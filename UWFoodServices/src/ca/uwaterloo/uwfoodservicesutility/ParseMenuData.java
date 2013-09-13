@@ -6,9 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import ca.uwaterloo.uwfoodservices.InitialiseSingleton;
-
 import android.app.Activity;
+import android.util.Log;
+import ca.uwaterloo.uwfoodservices.InitialiseSingleton;
 
 public class ParseMenuData {
 
@@ -44,27 +44,55 @@ public class ParseMenuData {
         product_name = "";
 
         for(int i = 0; i < tokens.length; i++){
-            if (!(tokens[i].equals("w/") || tokens[i].equals("and") || tokens[i].equals("on") 
-                    || tokens[i].equals("with") || tokens[i].equals("de") || tokens[i].equals("a"))
-                    || tokens[i].equals("served") || tokens[i].equals("in") || tokens[i].equals("of")) {
-                char capLetter = Character.toUpperCase(tokens[i].charAt(0));
-                product_name +=  " " + capLetter + tokens[i].substring(1, tokens[i].length());
-            } else {
-                product_name +=  " " + tokens[i];
+            //Log.d(String.format("\\u%04x", (int) tokens[i].charAt(0)), "TOKEN");
+            if (tokens[i].length() > 0) {
+                if (!(tokens[i].equals("w/") || tokens[i].equals("and") || tokens[i].equals("on") 
+                        || tokens[i].equals("with") || tokens[i].equals("de") || tokens[i].equals("a"))
+                        || tokens[i].equals("served") || tokens[i].equals("in") || tokens[i].equals("of")) {
+                    char capLetter = Character.toUpperCase(tokens[i].charAt(0));
+                    product_name +=  " " + capLetter + tokens[i].substring(1, tokens[i].length());
+                } else {
+                    product_name +=  " " + tokens[i];
+                }
             }
         }
         return product_name;
     }
 
     public String checkProductName(String product_name, String outlet_name) {
+        Log.d(product_name, "CHECK PRODUCT NAME 1 - " + product_name);
         product_name = product_name.trim();
         if (outlet_name.equals("Bon Appetit")) {
             if (product_name.matches("^BA\\..*")) {
                 product_name = product_name.replace("BA.", "");
             } else if (product_name.matches("^BA,.*")) {
                 product_name = product_name.replace("BA,", "");
+            } else if (product_name.matches("^BA -.*")) {
+                product_name = product_name.replace("BA", "");
             } else if (product_name.matches("^BA.*")) {
                 product_name = product_name.replace("BA", "");
+            }
+        }
+        else if (outlet_name.equals("Festival Fare")) {
+            if (product_name.matches("^FF\\..*")) {
+                product_name = product_name.replace("FF.", "");
+            } else if (product_name.matches("^FF,.*")) {
+                product_name = product_name.replace("FF,", "");
+            } else if (product_name.matches("^FF -.*")) {
+                product_name = product_name.replace("FF,", "");
+            } else if (product_name.matches("^FF.*")) {
+                product_name = product_name.replace("FF", "");
+            }
+        }
+        else if (outlet_name.equals("Liquid Assets Café")) {
+            if (product_name.matches("^LA\\..*")) {
+                product_name = product_name.replace("LA.", "");
+            } else if (product_name.matches("^LA,.*")) {
+                product_name = product_name.replace("LA,", "");
+            } else if (product_name.matches("^LA -.*")) {
+                product_name = product_name.replace("LA,", "");
+            } else if (product_name.matches("^LA.*")) {
+                product_name = product_name.replace("LA", "");
             }
         }
         product_name = product_name.trim();
@@ -95,6 +123,7 @@ public class ParseMenuData {
         product_name = capitalize(product_name);
 
         product_name = product_name.trim();
+        Log.d(product_name, "CHECK PRODUCT NAME END - " + product_name);
         return product_name;
     }
 
@@ -171,7 +200,7 @@ public class ParseMenuData {
                         if (meals.has(TAG_LUNCH) && (meals.getJSONArray(TAG_LUNCH).length() > 0)) {
                             lunch = meals.getJSONArray(TAG_LUNCH);
                             for (int k = 0; k < lunch.length(); k ++) {
-                                product_name = lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME);
+                                product_name = checkProductName(lunch.getJSONObject(k).getString(TAG_PRODUCT_NAME), outlet_name);
 
                                 product_id = MenuUtilities.getInteger(lunch.getJSONObject(k).getString(TAG_PRODUCT_ID));
                                 diet_type = lunch.getJSONObject(k).getString(TAG_DIET_TYPE);
@@ -191,7 +220,7 @@ public class ParseMenuData {
                         if (meals.has(TAG_DINNER) && (meals.getJSONArray(TAG_DINNER).length() > 0)) {
                             dinner = meals.getJSONArray(TAG_DINNER);
                             for (int k = 0; k < dinner.length(); k ++) {
-                                product_name = dinner.getJSONObject(k).getString(TAG_PRODUCT_NAME);
+                                product_name = checkProductName(dinner.getJSONObject(k).getString(TAG_PRODUCT_NAME), outlet_name);
 
                                 product_id = MenuUtilities.getInteger(dinner.getJSONObject(k).getString(TAG_PRODUCT_ID));
                                 diet_type = dinner.getJSONObject(k).getString(TAG_DIET_TYPE);
