@@ -209,6 +209,11 @@ public class ParseMenuData {
                                 if (product_id != null) {
                                     if (product_id == 2439) {
                                         product_id = null;
+                                    // Check for a product_if of '2041' which is incorrectly given to menu items which
+                                    // are not 'Falafel Marinara'
+                                    } else if (product_id == 2041 && product_name != "Falafel Marinara") {
+                                        product_id = null;
+                                        diet_type = "null";
                                     }
                                 }
 
@@ -229,8 +234,15 @@ public class ParseMenuData {
                                 if (product_id != null) {
                                     if (product_id == 2439) {
                                         product_id = null;
+                                    // Check for a product_if of '2041' which is incorrectly given to menu items which
+                                    // are not 'Falafel Marinara'
+                                    } else if (product_id == 2041 && product_name != "Falafel Marinara") {
+                                        product_id = null;
+                                        diet_type = "null";
                                     }
                                 }
+                                
+                                
 
                                 dinnerList.add(new RestaurantMenuItem(product_name, product_id, diet_type));
                             }
