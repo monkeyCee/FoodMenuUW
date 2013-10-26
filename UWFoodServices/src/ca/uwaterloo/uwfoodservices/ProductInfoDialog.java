@@ -120,8 +120,8 @@ TabContentFactory {
         productInfoUrls = new ArrayList<String>();
         for (Integer id:productIds) {
             if (id != null) {
-                productInfoUrls.add("http://api.uwaterloo.ca/public/v2/foodservices/product/" + id
-                        + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
+                productInfoUrls.add("https://api.uwaterloo.ca/v2/foodservices/products/"
+                        +id + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
             }
         }
 
