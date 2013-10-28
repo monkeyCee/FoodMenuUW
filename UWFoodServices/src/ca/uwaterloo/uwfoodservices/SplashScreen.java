@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -221,7 +222,8 @@ public class SplashScreen extends Activity {
         prefEditor.putInt("storedWeek", Integer.parseInt(weekInYear));
         prefEditor.commit();
 
-        return "http://api.uwaterloo.ca/public/v2/foodservices/2013/" + Integer.parseInt(weekInYear) + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
+        return "https://api.uwaterloo.ca/v2/foodservices/2013/" + Integer.parseInt(weekInYear) 
+                + "/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
         //return "http://api.uwaterloo.ca/public/v2/foodservices/menu.json?key=98bbbd30b3e4f621d9cb544a790086d6";
     }
 

@@ -71,7 +71,7 @@ public class MenuUtilities {
         if (name.equals("Browsers Cafe")) { return "Browsers Café"; }
         else if (name.equals("CEIT Cafe")) { return "CEIT Café"; }
         else if (name.equals("Eye Opener Cafe")) { return "Eye-Opener Café"; }
-        else if (name.equals("LA Cafe")) { return "Liquid Assets Café"; }
+        else if (name.equals("LA Cafe") || name.equals("Liquid Assets")) { return "Liquid Assets Café"; }
         else if (name.equals("UW Food Services Administrative Office")) { return "UW Food Services Admin Office"; }
         else if (name.equals("Williams Fresh Cafe")) { return "Williams Fresh Café"; }
         else if (name.equals("East Side Mario&apos;s")){return "East Side Mario's";}
@@ -122,6 +122,14 @@ public class MenuUtilities {
             return null;
         } else {
             return Integer.valueOf(string);
+        }
+    }
+    
+    public static Double getDouble(String string) {
+        if (string.equals("null") || string.equals("")) {
+            return null;
+        } else {
+            return Double.valueOf(string);
         }
     }
 

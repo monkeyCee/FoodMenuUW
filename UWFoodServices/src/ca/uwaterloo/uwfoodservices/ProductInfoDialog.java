@@ -1,5 +1,6 @@
 package ca.uwaterloo.uwfoodservices;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,8 +120,8 @@ TabContentFactory {
         productInfoUrls = new ArrayList<String>();
         for (Integer id:productIds) {
             if (id != null) {
-                productInfoUrls.add("http://api.uwaterloo.ca/public/v2/foodservices/product/" + id
-                        + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
+                productInfoUrls.add("https://api.uwaterloo.ca/v2/foodservices/products/"
+                        +id + ".json?key=98bbbd30b3e4f621d9cb544a790086d6");
             }
         }
 
@@ -191,7 +193,7 @@ TabContentFactory {
         @Override
         protected Void doInBackground(List<String>... urls) {
             List<JSONObject> jsonList = new ArrayList<JSONObject>();
-            JSONParser json_parse = new JSONParser();
+            NetworkParser json_parse = new NetworkParser();
             for (int i = 0; i < urls[0].size(); i ++) {
                 jsonList.add(json_parse.getJSONFromUrl(urls[0].get(i)));
             }
@@ -254,6 +256,8 @@ TabContentFactory {
             View rootView = inflater.inflate(R.layout.fragment_product_info,
                     container, false);
 
+            DecimalFormat format = new DecimalFormat();
+            
             Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "Roboto-Light.ttf");
 
             position = getArguments().getInt(ARG_SECTION_NUMBER);
@@ -274,60 +278,83 @@ TabContentFactory {
             right_list.add("");
             left_list.add("Amount");
             right_list.add("% Daily Value");
-            left_list.add("Calories " + productInfoHolder.productInfo.get(position).get_calories());
-            right_list.add("");
-            left_list.add("Fat " + productInfoHolder.productInfo.get(position).get_total_fat_g() + " g");
-            right_list.add(productInfoHolder.productInfo.get(position).get_total_fat_percent() + " %");
+            if (productInfoHolder.productInfo.get(position).get_calories() != null) {
+                left_list.add("Calories " + format.format(productInfoHolder.productInfo.get(position).get_calories()));
+                right_list.add("");
+            }
+            if (productInfoHolder.productInfo.get(position).get_total_fat_g() != null) {
+                left_list.add("Fat " + format.format(productInfoHolder.productInfo.get(position).get_total_fat_g()) + " g");
+                if (productInfoHolder.productInfo.get(position).get_total_fat_percent() != null) {
+                    right_list.add(format.format(productInfoHolder.productInfo.get(position).get_total_fat_percent()) + " %");
+                } else {
+                    right_list.add("");
+                }
+            }
             if (productInfoHolder.productInfo.get(position).get_fat_saturated_g() != null) {
-                left_list.add("  Saturated " + productInfoHolder.productInfo.get(position).get_fat_saturated_g() + " g");
+                left_list.add("  Saturated " + format.format(productInfoHolder.productInfo.get(position).get_fat_saturated_g()) + " g");
                 if (productInfoHolder.productInfo.get(position).get_fat_saturated_percent() != null) {
-                    right_list.add(productInfoHolder.productInfo.get(position).get_fat_saturated_percent() + " %");
+                    right_list.add(format.format(productInfoHolder.productInfo.get(position).get_fat_saturated_percent()) + " %");
                 } else {
                     right_list.add("");
                 }
             }
             if (productInfoHolder.productInfo.get(position).get_fat_trans_g() != null) {
-                left_list.add("  Trans " + productInfoHolder.productInfo.get(position).get_fat_trans_g() + " g");
+                left_list.add("  Trans " + format.format(productInfoHolder.productInfo.get(position).get_fat_trans_g()) + " g");
                 if (productInfoHolder.productInfo.get(position).get_fat_trans_percent() != null) {
-                    right_list.add(productInfoHolder.productInfo.get(position).get_fat_trans_percent() + " %");
+                    right_list.add(format.format(productInfoHolder.productInfo.get(position).get_fat_trans_percent()) + " %");
                 } else {
                     right_list.add("");
                 }
             }
-            left_list.add("Cholesterol " + productInfoHolder.productInfo.get(position).get_cholesterol_mg() + " mg");
-            right_list.add("");
-            left_list.add("Sodium " + productInfoHolder.productInfo.get(position).get_sodium_mg() + " mg");
-            right_list.add(productInfoHolder.productInfo.get(position).get_sodium_percent() + " %");
+            if (productInfoHolder.productInfo.get(position).get_cholesterol_mg() != null) {
+                left_list.add("Cholesterol " + format.format(productInfoHolder.productInfo.get(position).get_cholesterol_mg()) + " mg");
+                right_list.add("");
+            }
+            if (productInfoHolder.productInfo.get(position).get_sodium_mg() != null) {
+                left_list.add("Sodium " + format.format(productInfoHolder.productInfo.get(position).get_sodium_mg()) + " mg");
+                if (productInfoHolder.productInfo.get(position).get_sodium_percent() != null) {
+                    right_list.add(format.format(productInfoHolder.productInfo.get(position).get_sodium_percent()) + " %");
+                } else {
+                    right_list.add("");
+                }
+            }
             if (productInfoHolder.productInfo.get(position).get_carbo_g() != null) {
-                left_list.add("Carbohydrate " + productInfoHolder.productInfo.get(position).get_carbo_g() + " g");
-                right_list.add(productInfoHolder.productInfo.get(position).get_carbo_percent() + " %");
+                left_list.add("Carbohydrate " + format.format(productInfoHolder.productInfo.get(position).get_carbo_g()) + " g");
+                if (productInfoHolder.productInfo.get(position).get_carbo_percent() != null) {
+                    right_list.add(format.format(productInfoHolder.productInfo.get(position).get_carbo_percent()) + " %");
+                } else {
+                    right_list.add("");
+                }
                 if (productInfoHolder.productInfo.get(position).get_carbo_fibre_g() != null) {
-                    left_list.add("  Fibre " + productInfoHolder.productInfo.get(position).get_carbo_fibre_g() + " g");
+                    left_list.add("  Fibre " + format.format(productInfoHolder.productInfo.get(position).get_carbo_fibre_g()) + " g");
                     right_list.add("");
                 }
                 if (productInfoHolder.productInfo.get(position).get_carbo_fibre_percent() != null) {
-                    left_list.add("  Sugars " + productInfoHolder.productInfo.get(position).get_carbo_fibre_percent() + " g");
+                    left_list.add("  Sugars " + format.format(productInfoHolder.productInfo.get(position).get_carbo_fibre_percent()) + " g");
                     right_list.add("");
                 }
             }
-            left_list.add("Protein " + productInfoHolder.productInfo.get(position).get_protein_g() + " g");
-            right_list.add("");
+            
+            if (productInfoHolder.productInfo.get(position).get_protein_g() != null) {
+                left_list.add("Protein " + format.format(productInfoHolder.productInfo.get(position).get_protein_g()) + " g");
+                right_list.add("");
+            }
 
             if (productInfoHolder.productInfo.get(position).get_vitamin_a_percent() != null) {
                 left_list.add("Vitamin A"); 
-                right_list.add(productInfoHolder.productInfo.get(position).get_vitamin_a_percent() + " %");
+                right_list.add(format.format(productInfoHolder.productInfo.get(position).get_vitamin_a_percent()) + " %");
             }
             if (productInfoHolder.productInfo.get(position).get_vitamin_c_percent() != null) { 
                 left_list.add("Vitamin C"); 
-                right_list.add(productInfoHolder.productInfo.get(position).get_vitamin_c_percent() + " %");
+                right_list.add(format.format(productInfoHolder.productInfo.get(position).get_vitamin_c_percent()) + " %");
             }
             if (productInfoHolder.productInfo.get(position).get_calcium_percent() != null) {
                 left_list.add("Calcium");
-                right_list.add(productInfoHolder.productInfo.get(position).get_calcium_percent() + " %");
+                right_list.add(format.format(productInfoHolder.productInfo.get(position).get_calcium_percent()) + " %");
             }
             if (productInfoHolder.productInfo.get(position).get_iron_percent() != null) {
                 left_list.add("Iron"); 
-                right_list.add(productInfoHolder.productInfo.get(position).get_iron_percent() + " %");
+                right_list.add(format.format(productInfoHolder.productInfo.get(position).get_iron_percent()) + " %");
             }
             ProductInfoAdapter productInfoAdapter = new ProductInfoAdapter(getActivity());
             listView.setAdapter(productInfoAdapter);
