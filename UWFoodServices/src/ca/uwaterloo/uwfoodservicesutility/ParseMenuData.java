@@ -44,7 +44,6 @@ public class ParseMenuData {
         product_name = "";
 
         for(int i = 0; i < tokens.length; i++){
-            //Log.d(String.format("\\u%04x", (int) tokens[i].charAt(0)), "TOKEN");
             if (tokens[i].length() > 0) {
                 if (!(tokens[i].equals("w/") || tokens[i].equals("and") || tokens[i].equals("on") 
                         || tokens[i].equals("with") || tokens[i].equals("de") || tokens[i].equals("a"))
@@ -60,7 +59,6 @@ public class ParseMenuData {
     }
 
     public String checkProductName(String product_name, String outlet_name) {
-        Log.d(product_name, "CHECK PRODUCT NAME 1 - " + product_name);
         product_name = product_name.trim();
         if (outlet_name.equals("Bon Appetit")) {
             if (product_name.matches("^BA\\..*")) {
@@ -123,7 +121,6 @@ public class ParseMenuData {
         product_name = capitalize(product_name);
 
         product_name = product_name.trim();
-        Log.d(product_name, "CHECK PRODUCT NAME END - " + product_name);
         return product_name;
     }
 
